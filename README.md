@@ -1,7 +1,5 @@
 # UnknownRori PHP (WIP)
 
-Version : ?
-
 ## Table of Contents
 
 - Overview
@@ -72,9 +70,10 @@ Next, the request will be sent to Route to depending on type of the request, the
 
 `Q : Why you create this custom non production framework?`
 
-`A : Because i want to polish my backend skill, documentation making, decision making, and of course code efficiency`
+`A : Because i want to polish my backend skill, documentation making, decision making, and of course code efficiency.`
 
+---
 
-`Q : Is this can be used in production`
+`Q : Is this can be used in production.`
 
-`A : Short answer no, Why? because i cannot guarantee the security, unless you modify some of the source code`
+`A : Short answer no, Why? because i cannot guarantee the security, unless you modify some of the source code.`
