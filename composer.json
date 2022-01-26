@@ -1,0 +1,15 @@
+{
+    "name": "unknownrori/php-framework",
+    "description": "my first php-framework",
+    "license": "MIT",
+    "autoload": {
+        "classmap": [
+            "core/",
+            "app/"
+        ]
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "vlucas/phpdotenv": "5.4.x-dev"
+    }
+}
