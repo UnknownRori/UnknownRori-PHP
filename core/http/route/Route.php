@@ -64,7 +64,7 @@ class Route implements IRoute
         $action = $route['action'];
 
         if (!method_exists($controller, $action)) {
-            KernelException::ControllerMethod($route['controller'], $action);
+            KernelException::ClassMethod($route['controller'], $action);
         }
 
         return $controller->$action();
