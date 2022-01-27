@@ -33,15 +33,27 @@ class Middleware
     /**
      * Run specific named middleware
      */
-    public static function RunSingle($middleware)
+    public static function RunSingle(array | string $middleware)
     {
         $self = Middleware::Provide();
-        if (array_key_exists($middleware, $self->middleware['named'])) {
-            $namespace = $self->middleware['named'][$middleware];
-            $middleware = new $namespace;
-            $middleware->Run();
+        if (is_array($middleware)) {
+            array_map(function ($middleware) use ($self) {
+                if (array_key_exists($middleware, $self->middleware['named'])) {
+                    $namespace = $self->middleware['named'][$middleware];
+                    $middleware = new $namespace;
+                    $middleware->Run();
+                } else {
+                    KernelException::MiddlewareNotDefined();
+                }
+            }, $middleware);
         } else {
-            KernelException::MiddlewareNotDefined();
+            if (array_key_exists($middleware, $self->middleware['named'])) {
+                $namespace = $self->middleware['named'][$middleware];
+                $middleware = new $namespace;
+                $middleware->Run();
+            } else {
+                KernelException::MiddlewareNotDefined();
+            }
         }
     }
 }
