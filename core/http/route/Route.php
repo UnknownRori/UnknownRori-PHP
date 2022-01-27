@@ -15,6 +15,10 @@ class Route implements IRoute
         "DELETE" => [],
     ];
 
+    /**
+     * Register URI to route
+     * Route->get|post|patch|delete('uri', [controller::class, 'method'])
+     */
     public static function define($configRoute)
     {
         $route = new static;
@@ -37,9 +41,45 @@ class Route implements IRoute
         return $this;
     }
 
+    /**
+     * Register the uri in http post
+     * @param string $uri that you want to register
+     * @param array $controller [controllername::class, 'method']
+     */
     public function post($uri, $controller = [])
     {
         $this->route['POST'][$uri] = [
+            "controller" => $controller[0],
+            "action" => $controller[1]
+        ];
+
+        return $this;
+    }
+
+
+    /**
+     * Register the uri in http patch
+     * @param string $uri that you want to register
+     * @param array $controller [controllername::class, 'method']
+     */
+    public function patch($uri, $controller = [])
+    {
+        $this->route['PATCH'][$uri] = [
+            "controller" => $controller[0],
+            "action" => $controller[1]
+        ];
+
+        return $this;
+    }
+
+    /**
+     * Register the uri in http delete
+     * @param string $uri that you want to register
+     * @param array $controller [controllername::class, 'method']
+     */
+    public function delete($uri, $controller = [])
+    {
+        $this->route['DELETE'][$uri] = [
             "controller" => $controller[0],
             "action" => $controller[1]
         ];
@@ -56,6 +96,10 @@ class Route implements IRoute
         return $this->call($this->route[$requestType][$uri]);
     }
 
+    /**
+     * Calling method in the controller
+     * @param string route
+     */
     protected function call($route)
     {
         $namespacedController = "App\Http\Controller\\{$route['controller']}";
@@ -70,6 +114,10 @@ class Route implements IRoute
         return $controller->$action();
     }
 
+    /**
+     * Calling Middleware
+     * @param string $middleware MiddlewareName
+     */
     public function middleware($middleware)
     {
         Middleware::RunSingle($middleware);
