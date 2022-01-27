@@ -3,6 +3,8 @@ from os import system, name
 from core.console.server import Server
 # from server import Server
 
+Version = 0.1
+
 def clear():
     if name == 'nt':
         _ = system('cls')
@@ -16,7 +18,8 @@ class Command:
         '1' : 'Serve',
         '2' : 'Autoload',
         '3' : 'Clear',
-        '4' : 'Help',
+        '4' : 'Version',
+        '5' : 'Help',
     }
 
     def list(self) -> None:
@@ -35,8 +38,10 @@ class Command:
             system("composer dump-autoload")
         elif self.verify(input, '3'):
             clear()
-            print("UnknownRori Console")
+            print("UnknownRori Basic CLI")
         elif self.verify(input, '4'):
+            print(f">> UnknownRori CLI Version : v.{Version}")
+        elif self.verify(input, '5'):
             self.list(Command)
         else:
             print(f"There is no available command called {input}, try pressing Help")
