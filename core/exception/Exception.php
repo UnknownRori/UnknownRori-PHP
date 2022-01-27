@@ -14,7 +14,7 @@ class KernelException implements IException
      */
     public static function RouteNotDefined()
     {
-        return throw new Exception("Route is not defined, did you forget to register it in web route? | ");
+        throw new Exception("Route is not defined, did you forget to register it in web route? | ");
     }
 
     /**
@@ -22,7 +22,7 @@ class KernelException implements IException
      */
     public static function ClassMethod($controller, $method)
     {
-        return throw new Exception("{$controller} does not respond to the {$method} action. | ");
+        throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
 
     public static function MiddlewareNotDefined()
@@ -32,6 +32,11 @@ class KernelException implements IException
 
     public static function PDO_ERROR($e)
     {
-        throw new Exception($e);
+        throw new Exception("{$e} | ");
+    }
+
+    public static function Hash($algo)
+    {
+        throw new Exception("There is no supported algo called {$algo} in this framework | ");
     }
 }
