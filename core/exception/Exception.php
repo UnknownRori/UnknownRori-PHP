@@ -20,7 +20,7 @@ class KernelException implements IException
     /**
      * Throw Exception about Controller Method not founds
      */
-    public static function ControllerMethod($controller, $method)
+    public static function ClassMethod($controller, $method)
     {
         return throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
@@ -28,5 +28,10 @@ class KernelException implements IException
     public static function MiddlewareNotDefined()
     {
         throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
+    }
+
+    public static function PDO_ERROR($e)
+    {
+        throw new Exception($e);
     }
 }
