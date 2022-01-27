@@ -23,12 +23,15 @@ class Kernel implements IKernel
         $dotenv = Dotenv::createImmutable($_ENV['ROOT_PROJECT']);
         $dotenv->load();
 
-        Middleware::Provide()->Run('runtime');
 
         if (preg_match($accessregex, $_SERVER["REQUEST_URI"])) {
             return false;
         } else {
+            Middleware::Provide()->Run('runtime');
+
             Route::define("{$_ENV['APP_DIR']}\\route\web.php")->Redirect(Request::URI(), Request::Method());
+
+            Middleware::Provide()->Run('runtime');
         }
 
         return $App;
