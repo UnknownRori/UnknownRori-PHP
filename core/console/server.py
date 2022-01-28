@@ -10,7 +10,8 @@ class Server:
         router = './public/index.php'
         
         print(f"Server is running at {host} in port {port} with router path {router} and serving at path {public}")
-        print("To shutdown development server press control + c and please ignore the error")
+        print("To shutdown development server press control + c")
+        print("If you don't see the development server running then there is something wrong")
 
         system(f'php -S {host}:{port} -t {public} {router}')
     pass
