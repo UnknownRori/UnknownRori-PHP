@@ -39,7 +39,7 @@
 
 `Rori-PHP` is custom non production web application framework with inspired with [Laravel](https://laravel.com/) syntax. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
 
-`Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori CLI`
+`Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori BASIC PHP CLI`
 
 # Lifecycle Overview
 
@@ -47,7 +47,7 @@
 
 ### First Step
 
-The entry point for all request to Rori-PHP Application is in public/index.php, this file does not have a lot of code, but rather loading starting point for framework. file will load server.php, and the server.php will load composer autoload.php and bootstrap.php in app and `Core` directory.
+The entry point for all request to Rori-PHP Application is in public/index.php, this file does not contain a lot of code, but rather loading a starting point for framework. this file will load server.php to load composer, autoload.php and bootstrap.php in `app`, `core` and `vendor` directory.
 
 ### Kernel
 
@@ -59,8 +59,6 @@ Next, the request will be sent to Route to depending on type of the request, the
 
 ### Finishing
 Lastly, after the client get the response the `Runtime Middleware` will fired for the second time, and we finished the request lifecycle!
-### WIP
-
 
 # Installation
 
@@ -70,19 +68,28 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 - run `composer dump-autoload`.
 - create something amazing
 
+OR using UnknownRori PHP CLI
+
+- Clone this repository.
+- enter the clone directory.
+- enter `python .` in terminal.
+- type `install`.
+- create something amazing
+
 ---
 
 ### Requirement
 
 > #### Minimum
 
-- `PHP : 8`.
+- `PHP : 7.3`.
 - `Dependecy Manager : Composer`.
-- `Database : Yes`.
 
 > #### Recommended
 
+- `PHP : 8+`.
 - `Python : 3 (For CLI)`.
+- `Database : Yes`.
 
 > #### Tested Database
 
@@ -100,7 +107,19 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 
 # Roadmap
 
-## WIP
+- ~~Basic CLI~~
+- ~~Basic Route~~
+- ~~Simple Controller~~
+- ~~Middleware~~
+- ~~Basic Database~~
+- ~~Basic Framework Custom Exception~~
+- Namespace Overhaul
+- Session
+- Pre-defined Database Function
+- Controller Overhaul
+- Collection
+- User Authentication
+- Storage
 
 # Note
 
