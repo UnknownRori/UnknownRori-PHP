@@ -15,8 +15,10 @@ class Route implements IRoute
         "DELETE" => [],
     ];
 
+    private $temp = [];
+
     /**
-     * Register URI to route
+     * Starting Point of Route class to Register URI to route
      * Route->get|post|patch|delete('uri', [controller::class, 'method'])
      */
     public static function define($configRoute)
@@ -27,7 +29,7 @@ class Route implements IRoute
     }
 
     /**
-     * Register the uri in http get
+     * Register the uri in http get request
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
@@ -38,11 +40,13 @@ class Route implements IRoute
             "action" => $controller[1]
         ];
 
+        $this->temp($uri, 'GET');
+
         return $this;
     }
 
     /**
-     * Register the uri in http post
+     * Register the uri in http post request
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
@@ -58,7 +62,7 @@ class Route implements IRoute
 
 
     /**
-     * Register the uri in http patch
+     * Register the uri in http patch request
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
@@ -73,7 +77,7 @@ class Route implements IRoute
     }
 
     /**
-     * Register the uri in http delete
+     * Register the uri in http delete request
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
@@ -87,7 +91,43 @@ class Route implements IRoute
         return $this;
     }
 
-    public function Redirect($uri, $requestType)
+    /**
+     * TODO! for easier redirect
+     */
+    public function name()
+    {
+        return $this;
+    }
+
+    /**
+     * TODO! for future SEO friendly URI
+     */
+    public function whereNumber($parameter)
+    {
+        return $this;
+    }
+
+    /**
+     * Register middleware that can be called
+     * @param string $middleware MiddlewareName
+     */
+    public function middleware($middleware)
+    {
+        // TODO! MAKE THIS SYNTAX MORE ELEGANT!
+        $this->route[$this->temp['method']][$this->temp['uri']] = array_merge(
+            ["middleware" => $middleware],
+            $this->route[$this->temp['method']][$this->temp['uri']]
+        );
+
+        return $this;
+    }
+
+    /**
+     * Run the specific route register
+     * @param string $uri
+     * @param string $requestType
+     */
+    public function Run($uri, $requestType)
     {
         if (!array_key_exists($uri, $this->route[$requestType])) {
             return KernelException::RouteNotDefined();
@@ -107,6 +147,8 @@ class Route implements IRoute
         $controller = new $namespacedController;
         $action = $route['action'];
 
+        Middleware::RunSingle($route['middleware']);
+
         if (!method_exists($controller, $action)) {
             KernelException::ClassMethod($route['controller'], $action);
         }
@@ -115,11 +157,28 @@ class Route implements IRoute
     }
 
     /**
-     * Calling Middleware
-     * @param string $middleware MiddlewareName
+     * Create Temporary Object Property
      */
-    public function middleware($middleware)
+    protected function temp($uri, $requestType)
     {
-        Middleware::RunSingle($middleware);
+        $this->temp = [
+            "method" => $requestType,
+            "uri" => $uri
+        ];
+    }
+
+    /**
+     * Commented because, it might be needed later
+     */
+    // protected function get_route($uri, $requestType, $target = '')
+    // {
+    //     return $this->route[$requestType][$uri][$target];
+    // }
+
+    /**
+     * TODO! for future SEO friendly URI
+     */
+    protected function URIGenerator($route)
+    {
     }
 }
