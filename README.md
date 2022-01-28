@@ -83,7 +83,7 @@ OR using UnknownRori PHP CLI
 > #### Minimum
 
 - `PHP : 7.3`.
-- `Dependecy Manager : Composer`.
+- `Dependency Manager : Composer`.
 
 > #### Recommended
 
@@ -116,8 +116,8 @@ OR using UnknownRori PHP CLI
 - Namespace Overhaul
 - Session
 - Pre-defined Database Function
-- Controller Overhaul
 - Collection
+- Controller Overhaul
 - User Authentication
 - Storage
 
