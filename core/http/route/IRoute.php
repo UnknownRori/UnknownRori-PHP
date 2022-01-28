@@ -9,6 +9,6 @@ interface IRoute
     public function post($uri, $controller);
     public function delete($uri, $controller);
     public function patch($uri, $controller);
-    public function Redirect($uri, $requestType);
+    public function Run($uri, $requestType);
     public function middleware($middleware);
 }
