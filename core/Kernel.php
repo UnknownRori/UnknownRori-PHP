@@ -29,7 +29,7 @@ class Kernel implements IKernel
         } else {
             Middleware::Provide()->Run('runtime');
 
-            Route::define("{$_ENV['APP_DIR']}\\route\web.php")->Redirect(Request::URI(), Request::Method());
+            Route::define("{$_ENV['APP_DIR']}\\route\web.php")->Run("/" . Request::URI(), Request::Method());
 
             Middleware::Provide()->Run('runtime');
         }

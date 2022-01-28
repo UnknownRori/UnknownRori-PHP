@@ -1,2 +1,2 @@
 <?php
-$route->get('', [Welcome::class, 'index'])->middleware('test');
+$route->get('/', [Welcome::class, 'index'])->middleware('test');
