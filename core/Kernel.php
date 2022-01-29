@@ -2,9 +2,9 @@
 
 namespace Core;
 
-use Core\Http\Middleware\Middleware;
-use Core\Http\Request\Request;
-use Core\Http\Route\Route;
+use Core\Support\Http\Middleware;
+use Core\Support\Http\Route;
+use Core\Support\Http\Request;
 use Dotenv\Dotenv;
 
 /**
@@ -20,18 +20,17 @@ class Kernel implements IKernel
     public static function Start($accessregex = "/\.(?:png|jpg|jpeg|gif|css|js|ico)$/")
     {
         $App = new static;
-        $dotenv = Dotenv::createImmutable($_ENV['ROOT_PROJECT']);
-        $dotenv->load();
 
+        Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
 
         if (preg_match($accessregex, $_SERVER["REQUEST_URI"])) {
             return false;
         } else {
-            Middleware::Provide()->Run('runtime');
+            Middleware::Run('runtime');
 
             Route::define("{$_ENV['APP_DIR']}\\route\web.php")->Run("/" . Request::URI(), Request::Method());
 
-            Middleware::Provide()->Run('runtime');
+            Middleware::Run('runtime');
         }
 
         return $App;

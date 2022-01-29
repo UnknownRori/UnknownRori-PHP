@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Http\Request;
+namespace Core\Support\Http;
 
 interface IRequest
 {

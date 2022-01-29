@@ -1,7 +1,7 @@
 <?php
 
-namespace Core\Controller;
+namespace Core;
 
-class Controller implements IController
+abstract class Controller implements IController
 {
 }

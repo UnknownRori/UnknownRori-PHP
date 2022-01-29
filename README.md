@@ -39,7 +39,7 @@
 
 `Rori-PHP` is custom non production web application framework with inspired with [Laravel](https://laravel.com/) syntax. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
 
-`Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori BASIC PHP CLI`
+`Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori PHP CLI`
 
 # Lifecycle Overview
 
@@ -55,7 +55,7 @@ Next, the incoming request will be sent to `Core\Kernel` to check http request i
 
 ### HTTP Request & Route
 
-Next, the request will be sent to Route to depending on type of the request, these Route serve as central location that all request will flow through, `Runtime Middleware` will be fired via `Core\Http\Middleware\Middleware` if the request is not a resource, if the request available in Routing, then `Core\Http\Route\Route` will fired the Controller Method.
+Next, the request will be sent to Route to depending on type of the request, these Route serve as central location that all request will flow through, `Runtime Middleware` will be fired via `Core\Support\Http\Middleware` if the request is not a resource, if the request available in Routing, then `Core\Support\Http\Route` will fired the Controller Method.
 
 ### Finishing
 Lastly, after the client get the response the `Runtime Middleware` will fired for the second time, and we finished the request lifecycle!
@@ -66,7 +66,7 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 - enter the cloned directory.
 - run `composer install`
 - run `composer dump-autoload`.
-- create something amazing
+- create something amazing!
 
 OR using UnknownRori PHP CLI
 
@@ -74,7 +74,7 @@ OR using UnknownRori PHP CLI
 - enter the clone directory.
 - enter `python .` in terminal.
 - type `install`.
-- create something amazing
+- create something amazing!
 
 ---
 
@@ -103,7 +103,9 @@ OR using UnknownRori PHP CLI
 
 # Usage
 
-## WIP
+### WIP
+
+For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information
 
 # Roadmap
 
@@ -113,10 +115,13 @@ OR using UnknownRori PHP CLI
 - ~~Middleware~~
 - ~~Basic Database~~
 - ~~Basic Framework Custom Exception~~
-- Namespace Overhaul
+- ~~Namespace Overhaul~~
 - Session
+- CLI Overhaul
 - Pre-defined Database Function
 - Collection
+- Model
+- SEO Friendly URI
 - Controller Overhaul
 - User Authentication
 - Storage
@@ -133,3 +138,9 @@ OR using UnknownRori PHP CLI
 `Q : Is this can be used in production.`
 
 `A : Short answer no, Why? because i cannot guarantee the security, unless you modify some of the source code.`
+
+---
+
+`Q : Can i use this for future my project?`
+
+`A : Yea sure.`

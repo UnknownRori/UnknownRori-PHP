@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Http\Route;
+namespace Core\Support\Http;
 
 interface IRoute
 {

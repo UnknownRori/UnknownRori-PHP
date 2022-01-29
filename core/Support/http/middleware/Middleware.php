@@ -1,18 +1,18 @@
 <?php
 
-namespace Core\Http\Middleware;
+namespace Core\Support\Http;
 
-use Core\Exception\KernelException;
+use Core\KernelException;
 use Exception;
 
-class Middleware
+class Middleware implements IMiddleware
 {
     protected $middleware = [];
 
     /**
      * Initialize Middleware instance
      */
-    public static function Provide()
+    protected static function Provide()
     {
         $class = new static();
         $class->middleware = require("{$_ENV['APP_DIR']}\\config\middleware.php");
@@ -21,17 +21,21 @@ class Middleware
 
     /**
      * Run all middleware with specific type
+     * can be configured in app/config/middleware.php
      */
-    public function Run($type)
+    public static function Run(string $type)
     {
+        $self = Middleware::Provide();
+
         array_map(function ($namespace) {
             $middleware = new $namespace;
             $middleware->Run();
-        }, $this->middleware[$type]);
+        }, $self->middleware[$type]);
     }
 
     /**
-     * Run specific named middleware
+     * Run specific named middleware,
+     * can be configured in app/config/middleware.php
      */
     public static function RunSingle(array | string $middleware)
     {

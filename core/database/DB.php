@@ -2,7 +2,7 @@
 
 namespace Core\Database;
 
-use Core\Exception\KernelException;
+use Core\KernelException;
 use Exception;
 use PDO;
 

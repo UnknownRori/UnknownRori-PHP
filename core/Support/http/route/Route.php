@@ -1,10 +1,9 @@
 <?php
 
-namespace Core\Http\Route;
+namespace Core\Support\Http;
 
-use Core\Exception\KernelException;
-use Core\Http\Middleware\Middleware;
-use Exception;
+use Core\KernelException;
+use Core\Support\Http\Middleware;
 
 class Route implements IRoute
 {
