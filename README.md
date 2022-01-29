@@ -113,7 +113,8 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 - ~~Basic Framework Custom Exception~~
 - ~~Namespace Overhaul~~
 - ~~Session~~
-- Cache
+- ~~Cookie~~
+- ~~Cache~~
 - CLI Overhaul
 - Pre-defined Database Function
 - Collection
