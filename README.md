@@ -2,38 +2,36 @@
 
 ## Table of Contents
 
-- Overview
+- [Overview](https://github.com/UnknownRori/UnknownRori-PHP#overview)
 
-- Lifecycle Overview
+- [Request Lifecycle Overview](https://github.com/UnknownRori/UnknownRori-PHP#request-lifecycle-overview)
 
-    - HTTP Request Lifecycle
+    - [First Step](https://github.com/UnknownRori/UnknownRori-PHP#first-step)
 
-        - First Step
+    - [Kernel](https://github.com/UnknownRori/UnknownRori-PHP#kernel)
 
-        - Kernel
+    - [HTTP Request & Route](https://github.com/UnknownRori/UnknownRori-PHP#http-request--route)
 
-        - HTTP Request & Route
-
-        - Finishing
+    - [Finishing](https://github.com/UnknownRori/UnknownRori-PHP#finishing)
 
 
-- Installation
+- [Installation](https://github.com/UnknownRori/UnknownRori-PHP#installation)
 
-    - Requirement
+    - [Requirement](https://github.com/UnknownRori/UnknownRori-PHP#requirement)
 
-        - Minimum
+        - [Minimum](https://github.com/UnknownRori/UnknownRori-PHP#minimum)
 
-        - Recommended
+        - [Recommended](https://github.com/UnknownRori/UnknownRori-PHP#recommended)
 
-        - Tested Database
+        - [Tested Database](https://github.com/UnknownRori/UnknownRori-PHP#tested-database)
 
-    - Dependency
+    - [Dependency](https://github.com/UnknownRori/UnknownRori-PHP#dependency)
 
-- Usage
+- [Usage](https://github.com/UnknownRori/UnknownRori-PHP#usage)
 
-- Roadmap
+- [Roadmap](https://github.com/UnknownRori/UnknownRori-PHP#roadmap)
 
-- Note
+- [Note](https://github.com/UnknownRori/UnknownRori-PHP#note)
 
 # Overview
 
