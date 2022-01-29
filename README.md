@@ -35,9 +35,9 @@
 
 # Overview
 
-`Rori-PHP` is custom non production web application framework with inspired with [Laravel](https://laravel.com/) syntax. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
+`Rori-PHP` is custom non production web application framework inspired by [Laravel](https://laravel.com/) syntax. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
 
-`Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori PHP CLI`
+`Rori-PHP` also come with `CLI`, type in terminal `php cli`.
 
 # Request Lifecycle Overview
 
@@ -84,7 +84,6 @@ OR using UnknownRori PHP CLI
 > #### Recommended
 
 - `PHP : 8+`.
-- `Python : 3 (For CLI)`.
 - `Database : Yes`.
 
 > #### Tested Database
