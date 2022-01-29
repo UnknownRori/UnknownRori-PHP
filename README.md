@@ -39,23 +39,21 @@
 
 `Rori-PHP` also come with `CLI`, type in terminal `python3 .` it will bring out `UnknownRori PHP CLI`
 
-# Lifecycle Overview
+# Request Lifecycle Overview
 
-## Request Lifecycle
-
-### First Step
+## First Step
 
 The entry point for all request to Rori-PHP Application is in public/index.php, this file does not contain a lot of code, but rather loading a starting point for framework. this file will load server.php to load composer, autoload.php and bootstrap.php in `app`, `core` and `vendor` directory.
 
-### Kernel
+## Kernel
 
 Next, the incoming request will be sent to `Core\Kernel` to check http request is requesting a web page or a resource.
 
-### HTTP Request & Route
+## HTTP Request & Route
 
 Next, the request will be sent to Route to depending on type of the request, these Route serve as central location that all request will flow through, `Runtime Middleware` will be fired via `Core\Support\Http\Middleware` if the request is not a resource, if the request available in Routing, then `Core\Support\Http\Route` will fired the Controller Method.
 
-### Finishing
+## Finishing
 Lastly, after the client get the response the `Runtime Middleware` will fired for the second time, and we finished the request lifecycle!
 
 # Installation
