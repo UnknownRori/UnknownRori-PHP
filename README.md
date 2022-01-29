@@ -112,7 +112,8 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 - ~~Basic Database~~
 - ~~Basic Framework Custom Exception~~
 - ~~Namespace Overhaul~~
-- Session
+- ~~Session~~
+- Cache
 - CLI Overhaul
 - Pre-defined Database Function
 - Collection
@@ -140,3 +141,9 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 `Q : Can i use this for future my project?`
 
 `A : Yea sure.`
+
+---
+
+`Q : Why you create CLI using python why not php.`
+
+`A : Actually after a lot of thought it will be probably good idea to seperate the Application and the CLI.`
