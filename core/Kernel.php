@@ -5,6 +5,7 @@ namespace Core;
 use Core\Support\Http\Middleware;
 use Core\Support\Http\Route;
 use Core\Support\Http\Request;
+use Core\Support\Http\Session;
 use Dotenv\Dotenv;
 
 /**
@@ -12,25 +13,34 @@ use Dotenv\Dotenv;
  */
 class Kernel implements IKernel
 {
+    protected $option = [];
+
+    public function __construct()
+    {
+        $this->option = require("{$_ENV['APP_DIR']}/config/kernel.php");
+    }
+
     /**
      * Starting point of the entire framework,
      * Request will be sent to this method and then to Route
      * @return Static|False
      */
-    public static function Start($accessregex = "/\.(?:png|jpg|jpeg|gif|css|js|ico)$/")
+    public static function Start()
     {
-        $App = new static;
-
         Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
 
-        if (preg_match($accessregex, $_SERVER["REQUEST_URI"])) {
+        $App = new static;
+
+        Session::start($App->option['session']);
+
+        if (preg_match($App->option['regex'], $_SERVER["REQUEST_URI"])) {
             return false;
         } else {
-            Middleware::Run('runtime');
+            Middleware::RunAll('runtime');
 
             Route::define("{$_ENV['APP_DIR']}\\route\web.php")->Run("/" . Request::URI(), Request::Method());
 
-            Middleware::Run('runtime');
+            Middleware::RunAll('runtime');
         }
 
         return $App;
