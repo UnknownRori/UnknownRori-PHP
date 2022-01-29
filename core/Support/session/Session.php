@@ -5,6 +5,11 @@ namespace Core\Support\Http;
 class Session implements ISession
 {
 
+    public static function Start($option = [])
+    {
+        return session_start($option);
+    }
+
     /**
      * Get Session Data
      */
@@ -16,7 +21,7 @@ class Session implements ISession
     /**
      * Set Session Data
      */
-    public static function Set($name, string | array | int $value)
+    public static function Set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
