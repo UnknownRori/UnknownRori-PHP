@@ -1,5 +1,6 @@
 from json import dumps
 from os import system, name
+import time
 from core.console.server import Server
 # from server import Server
 
@@ -60,3 +61,7 @@ class Console:
 
     def verify(input:str, id:str) -> bool:
         return input == str(id) or input == Console.menu[str(id)]
+    
+    def Input():
+        result = input(f"{time.strftime('%X')} >> ").title()
+        Console.execute(Console, result)

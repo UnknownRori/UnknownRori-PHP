@@ -4,16 +4,14 @@
 # command : php -S localhost:8080 -t ./public ./public/index.php
 # Note this project is licensed using MIT, Recommended Python 3!
 
-from core.console.input import Input
+# from core.console.input import Input
 from core.console.console import Console
 
 def main():
     Console.clear()
     print(Console.title)
-    command = ''
     while True:
-        command = Input()
-        Console.execute(Console, command)
+        Console.Input()
 
 if __name__ == '__main__':
     main()
