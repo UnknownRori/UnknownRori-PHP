@@ -4,6 +4,6 @@ namespace Core\Support\Http;
 
 interface IMiddleware
 {
-    public static function Run(string $type);
-    public static function RunSingle(array | string $middleware);
+    public static function RunAll(string $type);
+    public static function Run(array | string $middleware);
 }

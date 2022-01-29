@@ -146,7 +146,7 @@ class Route implements IRoute
         $controller = new $namespacedController;
         $action = $route['action'];
 
-        Middleware::RunSingle($route['middleware']);
+        Middleware::Run($route['middleware']);
 
         if (!method_exists($controller, $action)) {
             KernelException::ClassMethod($route['controller'], $action);

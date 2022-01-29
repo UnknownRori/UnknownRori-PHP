@@ -23,7 +23,7 @@ class Middleware implements IMiddleware
      * Run all middleware with specific type
      * can be configured in app/config/middleware.php
      */
-    public static function Run(string $type)
+    public static function RunAll(string $type)
     {
         $self = Middleware::Provide();
 
@@ -37,7 +37,7 @@ class Middleware implements IMiddleware
      * Run specific named middleware,
      * can be configured in app/config/middleware.php
      */
-    public static function RunSingle(array | string $middleware)
+    public static function Run(array | string $middleware)
     {
         $self = Middleware::Provide();
         if (is_array($middleware)) {
