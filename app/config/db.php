@@ -1,6 +1,6 @@
 <?php
 
 /**
- * This is for Database PDO setting
+ * PDO ERROR Attribute
  */
-return [PDO::ERRMODE_EXCEPTION];
+return PDO::ERRMODE_EXCEPTION;

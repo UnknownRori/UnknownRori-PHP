@@ -15,13 +15,19 @@ class DB implements IDB
 
     public function __construct()
     {
+        // $host = isset($_ENV['DB_HOST']) ? ":host={$_ENV['DB_HOST']}" : ':host=';
+        // $database = isset($_ENV['DB_DATABASE']) ? ";dbname={$_ENV['DB_DATABASE']}" : '';
+        // $username = isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : '';
+        // $password = isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : '';
+        // $dns = $_ENV['DB_CONNECTION'] . $host . $database;
+
         try {
             $this->connect = new PDO(
                 "{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_DATABASE']}",
                 $_ENV['DB_USERNAME'],
-                $_ENV['DB_PASSWORD'],
-                require("{$_ENV['APP_DIR']}/config/db.php")
+                $_ENV['DB_PASSWORD']
             );
+            $this->connect->setAttribute(PDO::ATTR_ERRMODE, require("{$_ENV['APP_DIR']}/config/db.php"));
         } catch (Exception $e) {
             KernelException::PDO_ERROR($e);
         }
@@ -107,7 +113,8 @@ class DB implements IDB
     }
 
     /**
-     * Predefined DB function, by using predefined DB function it will automaticaly close the connection
+     * Predefined DB function, Use Prepared Statement,
+     * by using predefined DB function it will automaticaly close the connection
      */
 
     /**
