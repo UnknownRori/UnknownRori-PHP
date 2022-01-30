@@ -13,4 +13,19 @@ class Request implements IRequest
     {
         return $_SERVER['REQUEST_METHOD'];
     }
+
+    public static function Request()
+    {
+        return $_REQUEST;
+    }
+
+    public static function Get()
+    {
+        return $_GET;
+    }
+
+    public static function Post()
+    {
+        return $_POST;
+    }
 }
