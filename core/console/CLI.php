@@ -57,5 +57,6 @@ class CLI
         $txt = "{$content}";
         fwrite($template, $txt);
         fclose($template);
+        echo (shell_exec("composer dump-autoload"));
     }
 }
