@@ -12,8 +12,8 @@ class Collection implements ICollection
      */
     public function __construct(array $data)
     {
-        $this->original = $data;
-        $this->data = $data;
+        $this->original = array_unique($data);
+        $this->data = array_unique($data);
     }
 
     /**
@@ -121,7 +121,22 @@ class Collection implements ICollection
     public function merge(array $array)
     {
         $this->data = array_merge_recursive($this->data, $array);
-        dd($this->data);
+        return $this;
+    }
+
+    public function fill(array $array)
+    {
+        $data_key = array_keys($this->data);
+        $array_keys = array_keys($array);
+
+        for ($i = 0; $i < count($this->data); $i++) {
+            for ($j = 0; $j < count($array); $j++) {
+                if ($data_key[$i] == $array_keys[$j]) {
+                    $this->data[$data_key[$i]] = $array[$array_keys[$j]];
+                }
+            }
+        }
+
         return $this;
     }
 
