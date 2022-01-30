@@ -1,11 +1,11 @@
 <?php
 
-namespace Core\Support\Http;
+namespace Core\Support;
 
 class Session implements ISession
 {
 
-    public static function Start($option = [])
+    public static function start($option = [])
     {
         return session_start($option);
     }
@@ -13,7 +13,7 @@ class Session implements ISession
     /**
      * Get Session Data
      */
-    public static function Get($name)
+    public static function get($name)
     {
         return $_SESSION[$name];
     }
@@ -21,7 +21,7 @@ class Session implements ISession
     /**
      * Set Session Data
      */
-    public static function Set($name, $value)
+    public static function set($name, $value)
     {
         $_SESSION[$name] = $value;
     }
@@ -29,7 +29,7 @@ class Session implements ISession
     /**
      * Destroy Current Session
      */
-    public static function Destroy()
+    public static function destroy()
     {
         return session_destroy();
     }
@@ -37,7 +37,7 @@ class Session implements ISession
     /**
      * Unset Session Data
      */
-    public static function Unset($name)
+    public static function unset($name)
     {
         $_SESSION[$name] = null;
     }

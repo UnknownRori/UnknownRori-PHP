@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Support\Http;
+namespace Core\Support;
 
 class Cookie implements ICookie
 {
