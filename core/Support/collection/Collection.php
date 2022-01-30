@@ -21,33 +21,48 @@ class Collection implements ICollection
      */
 
     /**
-     * Get the first value
+     * Get the first original collection value
      */
     public function first()
     {
         return $this->original[0];
     }
 
+    /**
+     * Get the last original collection value
+     */
     public function last()
     {
         return $this->original[count($this->original) - 1];
     }
 
+    /**
+     * Find value in the collection and return the key
+     */
     public function find($needle)
     {
         return array_search($needle, $this->original);
     }
 
+    /**
+     * Fetch the Collection Original Data
+     */
     public function fetch()
     {
         return $this->original;
     }
 
+    /**
+     * Fetch the specific Collection Original Data
+     */
     public function get($key)
     {
         return $this->original[$key];
     }
 
+    /**
+     * Fetch the key inside the Collection Original Data
+     */
     public function key()
     {
         return array_keys($this->original);
@@ -69,7 +84,7 @@ class Collection implements ICollection
     /**
      * Split the Original Value of Collection into smaller array
      */
-    public function split($length)
+    public function split(int $length)
     {
         $this->data = array_chunk($this->original, $length);
         return $this;
