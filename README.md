@@ -43,7 +43,7 @@
 
 ## First Step
 
-The entry point for all request to Rori-PHP Application is in public/index.php, this file does not contain a lot of code, but rather loading a starting point for framework. this file will load server.php to load composer, autoload.php and bootstrap.php in `app`, `core` and `vendor` directory.
+The entry point for all request to Rori-PHP Application is in public/index.php, this file does not contain a lot of code, but rather loading a starting point for framework. this file will load server.php to load composer autoload.php and bootstrap.php in `app`, `core` and `vendor` directory.
 
 ## Kernel
 
@@ -68,7 +68,7 @@ OR using UnknownRori PHP CLI
 
 - Clone this repository.
 - enter the clone directory.
-- enter `python .` in terminal.
+- enter `php cli` in terminal.
 - type `install`.
 - create something amazing!
 
@@ -79,7 +79,7 @@ OR using UnknownRori PHP CLI
 > #### Minimum
 
 - `PHP : 7.3`.
-- `Dependency Manager : Composer`.
+- `Composer`.
 
 > #### Recommended
 
@@ -100,7 +100,7 @@ OR using UnknownRori PHP CLI
 
 ### WIP
 
-For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information
+For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
 
 # Roadmap
 
