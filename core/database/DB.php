@@ -3,10 +3,11 @@
 namespace Core\Database;
 
 use Core\KernelException;
+use Core\Support\Collection;
 use Exception;
 use PDO;
 
-class DB
+class DB implements IDB
 {
     protected $connect;
     protected $query;
@@ -26,54 +27,103 @@ class DB
         }
     }
 
-    public static function query($query)
+    /**
+     * Basic DB Function
+     */
+
+    /**
+     * Doing raw query
+     */
+    public static function query(string $query)
     {
         $DB = new static;
         $DB->query = $DB->connect->query($query);
         return $DB;
     }
 
-    public static function prepare($query)
+    /**
+     * Doing prepared statement query
+     */
+    public static function prepare(string $query)
     {
         $DB = new static;
         $DB->query = $DB->connect->prepare($query);
         return $DB;
     }
 
-    public function execute($value = [])
+    /**
+     * Execute current query,
+     * can passed argumment for prepared statement
+     */
+    public function execute(array $value = [])
     {
         $this->query->execute($value);
         return $this;
     }
 
-    public function fetchAll()
+    /**
+     * Execute current query and close the connection,
+     * can passed argumment for prepared statement
+     */
+    public function executeclose(array $value = [])
     {
+        $return = $this->query->execute($value);
+        $this->close();
+        return $return;
+    }
+
+    /**
+     * Fetch all data
+     */
+    public function fetchAll(array $value = [])
+    {
+        $this->execute($value);
         $data = $this->query->fetchAll();
-        $this->query = null;
+        $data = new Collection($data);
+        $this->close();
         return $data;
     }
 
-    public function fetch()
+    /**
+     * Fetch single data
+     */
+    public function fetch(array $value = [])
     {
+        $this->execute($value);
         $data = $this->query->fetch();
-        $this->query = null;
+        $data = new Collection($data);
+        $this->close();
         return $data;
     }
 
+    /**
+     * Close the Connection
+     */
     public function close()
     {
+        $this->query = null;
         $this->connect = null;
+        $this->table = null;
     }
 
+    /**
+     * Predefined DB function, by using predefined DB function it will automaticaly close the connection
+     */
 
-    public static function table($table)
+    /**
+     * Selecting Table to interact with
+     */
+    public static function table(string $table)
     {
         $DB = new static;
         $DB->table = $table;
         return $DB;
     }
 
-    public function insert($value = [])
+    /**
+     * Insert data into table
+     */
+    public function insert(array $value = [])
     {
         $key = array_keys($value);
         $parameter = array_map(function ($val) {
@@ -82,22 +132,63 @@ class DB
 
         $key = implode(", ", $key);
         $parameter = implode(", ", $parameter);
-
-        return self::prepare("INSERT INTO {$this->table} ({$key}) VALUES({$parameter})")->execute($value);
+        $return = self::prepare("INSERT INTO {$this->table} ({$key}) VALUES({$parameter})")->executeclose($value);
+        $this->close();
+        return $return;
     }
 
-    public function delete($id)
+    /**
+     * Deleting data in the table
+     */
+    public function delete(int $id)
     {
-        return self::prepare("DELETE FROM `users` WHERE id=?")->execute([$id]);
+        $return = self::prepare("DELETE FROM `users` WHERE id=?")->executeclose([$id]);
+        $this->close();
+        return $return;
     }
 
-    public function find($id)
+    /**
+     * Fetch specific data in table
+     */
+    public function find(int $id)
     {
-        return self::prepare("SELECT * FROM {$this->table} WHERE id=?")->execute([$id])->fetch();
+        $data = self::prepare("SELECT * FROM {$this->table} WHERE id=?")->fetch([$id]);
+        $this->close();
+        return $data;
     }
 
-    public function where($column, $logic = '=', $value)
+    /**
+     * Doing 'where' sql command
+     */
+    public function where(string $column, string $value, string $logic = '=')
     {
-        return self::prepare("SELECT * FROM {$this->table} WHERE {$column}{$logic}?")->execute([$value]);
+        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}{$logic}?")->fetchAll([$value]);
+        return $data;
+    }
+
+    /**
+     * Selecting entire table
+     */
+    public function select()
+    {
+        $data = self::prepare("SELECT * FROM {$this->table}")->fetchAll();
+        return $data;
+    }
+
+    /**
+     * Doing automatic paginate thing
+     */
+    public function paginate(int $perPage)
+    {
+        if (!empty($_GET['page'])) {
+            $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+        } else {
+            $page = 1;
+        }
+
+        $offset = ($page - 1) * $perPage;
+
+        $data = self::prepare("SELECT * FROM {$this->table} LIMIT {$offset}, $perPage")->fetchAll();
+        return $data;
     }
 }
