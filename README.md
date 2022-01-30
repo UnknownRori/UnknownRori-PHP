@@ -117,11 +117,12 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 - ~~CLI Overhaul~~
 - ~~Pre-defined Database Function~~
 - ~~Collection~~
-- Model
-- SEO Friendly URI
-- Controller Overhaul
+- ~~Model~~
 - User Authentication
 - Storage
+- SEO Friendly URI
+- Model Overhaul
+- Controller Overhaul
 
 # Note
 
@@ -134,7 +135,7 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 
 `Q : Is this can be used in production.`
 
-`A : Short answer no, Why? because i cannot guarantee the security, unless you modify some of the source code.`
+`A : You can use it but i cannot guarantee the security.`
 
 ---
 
