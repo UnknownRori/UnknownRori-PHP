@@ -115,7 +115,7 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 - ~~Cookie~~
 - ~~Cache~~
 - ~~CLI Overhaul~~
-- Pre-defined Database Function
+- ~~Pre-defined Database Function~~
 - Collection
 - Model
 - SEO Friendly URI

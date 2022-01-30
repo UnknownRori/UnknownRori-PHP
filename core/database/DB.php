@@ -10,6 +10,7 @@ class DB
 {
     protected $connect;
     protected $query;
+    protected $table;
 
     public function __construct()
     {
@@ -62,5 +63,41 @@ class DB
     public function close()
     {
         $this->connect = null;
+    }
+
+
+    public static function table($table)
+    {
+        $DB = new static;
+        $DB->table = $table;
+        return $DB;
+    }
+
+    public function insert($value = [])
+    {
+        $key = array_keys($value);
+        $parameter = array_map(function ($val) {
+            return ":{$val}";
+        }, $key);
+
+        $key = implode(", ", $key);
+        $parameter = implode(", ", $parameter);
+
+        return self::prepare("INSERT INTO {$this->table} ({$key}) VALUES({$parameter})")->execute($value);
+    }
+
+    public function delete($id)
+    {
+        return self::prepare("DELETE FROM `users` WHERE id=?")->execute([$id]);
+    }
+
+    public function find($id)
+    {
+        return self::prepare("SELECT * FROM {$this->table} WHERE id=?")->execute([$id])->fetch();
+    }
+
+    public function where($column, $logic = '=', $value)
+    {
+        return self::prepare("SELECT * FROM {$this->table} WHERE {$column}{$logic}?")->execute([$value]);
     }
 }
