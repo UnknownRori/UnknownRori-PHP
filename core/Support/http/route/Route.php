@@ -56,6 +56,8 @@ class Route implements IRoute
             "action" => $controller[1]
         ];
 
+        $this->temp($uri, 'POST');
+
         return $this;
     }
 
@@ -72,6 +74,8 @@ class Route implements IRoute
             "action" => $controller[1]
         ];
 
+        $this->temp($uri, 'PATCH');
+
         return $this;
     }
 
@@ -86,6 +90,8 @@ class Route implements IRoute
             "controller" => $controller[0],
             "action" => $controller[1]
         ];
+
+        $this->temp($uri, 'DELETE');
 
         return $this;
     }
@@ -117,7 +123,6 @@ class Route implements IRoute
             ["middleware" => $middleware],
             $this->route[$this->temp['method']][$this->temp['uri']]
         );
-
         return $this;
     }
 
