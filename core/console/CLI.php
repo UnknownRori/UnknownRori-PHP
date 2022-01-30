@@ -27,12 +27,12 @@ class CLI
         if (self::$argumments[0] == "help") {
             echo " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
         } else if (self::$argumments[0] == "serve") {
-            shell_exec("php -S localhost:8080 -t ./public ./public/index.php");
+            echo (shell_exec("php -S localhost:8080 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
-            shell_exec("composer dump-autoload");
+            echo (shell_exec("composer dump-autoload"));
         } else if (self::$argumments[0] == "install") {
-            shell_exec("composer install");
-            shell_exec("composer dump-autoload");
+            echo (shell_exec("composer install"));
+            echo (shell_exec("composer dump-autoload"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
             if (count(self::$argumments) < 2) return;
             require('template/controller.php');
