@@ -22,6 +22,6 @@ interface IDB
     public function delete(int $id);
     public function find(int $id);
     public function where(string $column, string $value, string $logic = '=');
-    public function select();
+    public function all();
     public function paginate(int $perPage);
 }

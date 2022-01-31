@@ -174,9 +174,9 @@ class DB implements IDB
     }
 
     /**
-     * Selecting entire table
+     * Get all values inside table
      */
-    public function select()
+    public function all()
     {
         $data = self::prepare("SELECT * FROM {$this->table}")->fetchAll();
         return $data;
