@@ -2,12 +2,12 @@
 
 function controller($name)
 {
-    return "
-<?php
+    return "<?php
 
 namespace App\Models;
+use Core\Model;
 
-class {$name} extends
+class {$name} extends Model
 {
     // Code Here
 }
