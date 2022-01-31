@@ -6,26 +6,25 @@
 
 - [Request Lifecycle Overview](https://github.com/UnknownRori/UnknownRori-PHP#request-lifecycle-overview)
 
-    - [First Step](https://github.com/UnknownRori/UnknownRori-PHP#first-step)
+  - [First Step](https://github.com/UnknownRori/UnknownRori-PHP#first-step)
 
-    - [Kernel](https://github.com/UnknownRori/UnknownRori-PHP#kernel)
+  - [Kernel](https://github.com/UnknownRori/UnknownRori-PHP#kernel)
 
-    - [HTTP Request & Route](https://github.com/UnknownRori/UnknownRori-PHP#http-request--route)
+  - [HTTP Request & Route](https://github.com/UnknownRori/UnknownRori-PHP#http-request--route)
 
-    - [Finishing](https://github.com/UnknownRori/UnknownRori-PHP#finishing)
-
+  - [Finishing](https://github.com/UnknownRori/UnknownRori-PHP#finishing)
 
 - [Installation](https://github.com/UnknownRori/UnknownRori-PHP#installation)
 
-    - [Requirement](https://github.com/UnknownRori/UnknownRori-PHP#requirement)
+  - [Requirement](https://github.com/UnknownRori/UnknownRori-PHP#requirement)
 
-        - [Minimum](https://github.com/UnknownRori/UnknownRori-PHP#minimum)
+    - [Minimum](https://github.com/UnknownRori/UnknownRori-PHP#minimum)
 
-        - [Recommended](https://github.com/UnknownRori/UnknownRori-PHP#recommended)
+    - [Recommended](https://github.com/UnknownRori/UnknownRori-PHP#recommended)
 
-        - [Tested Database](https://github.com/UnknownRori/UnknownRori-PHP#tested-database)
+    - [Tested Database](https://github.com/UnknownRori/UnknownRori-PHP#tested-database)
 
-    - [Dependency](https://github.com/UnknownRori/UnknownRori-PHP#dependency)
+  - [Dependency](https://github.com/UnknownRori/UnknownRori-PHP#dependency)
 
 - [Usage](https://github.com/UnknownRori/UnknownRori-PHP#usage)
 
@@ -35,7 +34,7 @@
 
 # Overview
 
-`Rori-PHP` is custom non production web application framework inspired by [Laravel](https://laravel.com/) syntax. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
+`Rori-PHP` is custom non production web application framework inspired by [Laravel](https://laravel.com/) syntax and elegantness. A web framework provides a structure  and starting point for your application allowing you to focus on creating something amazing.
 
 `Rori-PHP` also come with `CLI`, type in terminal `php cli`.
 
@@ -54,6 +53,7 @@ Next, the incoming request will be sent to `Core\Kernel` to check http request i
 Next, the request will be sent to Route to depending on type of the request, these Route serve as central location that all request will flow through, `Runtime Middleware` will be fired via `Core\Support\Http\Middleware` if the request is not a resource, if the request available in Routing, then `Core\Support\Http\Route` will fired the Controller Method.
 
 ## Finishing
+
 Lastly, after the client get the response the `Runtime Middleware` will fired for the second time, and we finished the request lifecycle!
 
 # Installation
@@ -92,15 +92,14 @@ OR using UnknownRori PHP CLI
 - `Sqlite`
 
 ---
+
 ### Dependency
 
 - `vlucas/phpdotenv`.
 
 # Usage
 
-### WIP
-
-For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
+`WIP` For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
 
 # Roadmap
 
@@ -118,14 +117,13 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 - ~~Pre-defined Database Function~~
 - ~~Collection~~
 - ~~Model~~
-- User Authentication
+- ~~User Authentication~~
 - Storage
-- SEO Friendly URI
 - Model Overhaul
-- Controller Overhaul
+- SEO Friendly URI
+- Middleware Group
 
 # Note
-
 
 `Q : Why you create this custom non production framework?`
 
@@ -135,10 +133,16 @@ For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob
 
 `Q : Is this can be used in production.`
 
-`A : You can use it but i cannot guarantee the security.`
+`A : You can use it, but i cannot guarantee the security.`
 
 ---
 
 `Q : Can i use this for future my project?`
 
 `A : Yea sure, if something goes wrong you can create issues, feedback encouraged.`
+
+---
+
+`Q : The framework name is so funny`
+
+`A : Yea i am out of name idea.`
