@@ -6,8 +6,8 @@ use Exception;
 
 class Collection implements ICollection
 {
-    protected $original = [];
-    public $data = [];
+    protected $original;
+    public $data;
 
     /**
      * Initialize Collection Instance
@@ -79,6 +79,11 @@ class Collection implements ICollection
         return array_keys($this->original);
     }
 
+    public function is_null()
+    {
+        return is_null($this->original);
+    }
+
     /**
      * Collection Manipulation
      */
@@ -98,6 +103,19 @@ class Collection implements ICollection
     public function split(int $length)
     {
         $this->data = array_chunk($this->original, $length);
+        return $this;
+    }
+
+    /**
+     * Remove specific key in the collection
+     */
+    public function remove(array $key)
+    {
+        for ($j = 0; $j < count($key); $j++) {
+            if (array_key_exists($key[$j], $this->original)) {
+                unset($this->data[$key[$j]]);
+            }
+        }
         return $this;
     }
 
@@ -135,6 +153,9 @@ class Collection implements ICollection
         return $this;
     }
 
+    /**
+     * Fill the collection key
+     */
     public function fill(array $array)
     {
         $data_key = array_keys($this->data);
@@ -149,6 +170,14 @@ class Collection implements ICollection
         }
 
         return $this;
+    }
+
+    /**
+     * Destroy collection
+     */
+    public static function destroy($collection)
+    {
+        unset($collection);
     }
 
     /**
