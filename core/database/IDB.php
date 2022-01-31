@@ -20,7 +20,7 @@ interface IDB
     public static function table(string $table);
     public function insert(array $value = []);
     public function delete(int $id);
-    public function find(int $id);
+    public function find($value, string $column);
     public function where(string $column, string $value, string $logic = '=');
     public function all();
     public function paginate(int $perPage);

@@ -15,12 +15,6 @@ class DB implements IDB
 
     public function __construct()
     {
-        // $host = isset($_ENV['DB_HOST']) ? ":host={$_ENV['DB_HOST']}" : ':host=';
-        // $database = isset($_ENV['DB_DATABASE']) ? ";dbname={$_ENV['DB_DATABASE']}" : '';
-        // $username = isset($_ENV['DB_USERNAME']) ? $_ENV['DB_USERNAME'] : '';
-        // $password = isset($_ENV['DB_PASSWORD']) ? $_ENV['DB_PASSWORD'] : '';
-        // $dns = $_ENV['DB_CONNECTION'] . $host . $database;
-
         try {
             $this->connect = new PDO(
                 "{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_DATABASE']}",
@@ -157,19 +151,23 @@ class DB implements IDB
     /**
      * Fetch specific data in table
      */
-    public function find(int $id)
+    public function find($value, string $column = 'id')
     {
-        $data = self::prepare("SELECT * FROM {$this->table} WHERE id=?")->fetch([$id]);
+        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}=?")->fetch([$value]);
         $this->close();
         return $data;
     }
 
     /**
      * Doing 'where' sql command
+     * @param $column string is target column
+     * @param $value string is search value
+     * @param $method string is method used for getting data
+     * @param $logic string is logic '<', '>', '=', '>=', '<=', '<>', 'LIKE', 'BETWEEN', 'IN'
      */
-    public function where(string $column, string $value, string $logic = '=')
+    public function where(string $column, string $value, string $method = 'fetchAll', string $logic = '=')
     {
-        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}{$logic}?")->fetchAll([$value]);
+        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}{$logic}?")->$method([$value]);
         return $data;
     }
 
