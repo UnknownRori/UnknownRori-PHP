@@ -23,7 +23,7 @@ class Model implements IModel
     public static function all()
     {
         $self = new static;
-        return DB::table($self->table)->select();
+        return DB::table($self->table)->all();
     }
 
     /**
