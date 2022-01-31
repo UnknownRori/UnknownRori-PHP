@@ -2,6 +2,8 @@
 
 namespace Core\Support;
 
+use Exception;
+
 class Collection implements ICollection
 {
     protected $original = [];
@@ -12,8 +14,15 @@ class Collection implements ICollection
      */
     public function __construct(array $data)
     {
-        $this->original = array_unique($data);
-        $this->data = array_unique($data);
+        try {
+            $this->original = array_map(function ($data) {
+                return array_unique($data);
+            }, $data);
+            $this->data = $this->original;
+        } catch (Exception $e) {
+            $this->original = array_unique($data);
+            $this->data = $this->original;
+        }
     }
 
     /**
