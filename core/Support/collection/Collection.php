@@ -12,16 +12,18 @@ class Collection implements ICollection
     /**
      * Initialize Collection Instance
      */
-    public function __construct(array $data)
+    public function __construct($data)
     {
-        try {
-            $this->original = array_map(function ($data) {
-                return array_unique($data);
-            }, $data);
-            $this->data = $this->original;
-        } catch (Exception $e) {
-            $this->original = array_unique($data);
-            $this->data = $this->original;
+        if (is_array($data)) {
+            if (is_array($data[0])) {
+                $this->original = array_map(function ($data) {
+                    return array_unique($data);
+                }, $data);
+                $this->data = $this->original;
+            } else {
+                $this->original = array_unique($data);
+                $this->data = $this->original;
+            }
         }
     }
 
