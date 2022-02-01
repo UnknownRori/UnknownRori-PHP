@@ -6,7 +6,7 @@ use Core\Support\Collection;
 
 class Storage
 {
-    protected static $uploadDir = './public/storage';
+    protected static $uploadDir;
     protected static $option = [
         'overwrite' => false,
         'max-size' => 500000,
@@ -15,7 +15,7 @@ class Storage
 
     public static function upload($file, array $option = null)
     {
-        // self::$uploadDir = $_ENV['ROOT_PROJECT'] . '/public/storage'; // uncomment this for using web server
+        self::$uploadDir = $_ENV['ROOT_PROJECT'] . '/public/storage'; // uncomment this for using web server
         self::$option = new Collection(self::$option);
         if (!is_null($option)) {
             self::$option->fill($option);
