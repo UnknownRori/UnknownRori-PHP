@@ -1,5 +1,7 @@
 # UnknownRori PHP (WIP)
 
+[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
+
 ## Table of Contents
 
 - [Overview](https://github.com/UnknownRori/UnknownRori-PHP#overview)
