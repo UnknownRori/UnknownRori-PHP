@@ -2,12 +2,14 @@
 
 namespace Core\Support;
 
+use Core\Support\Http\Request;
 use Exception;
 
 class Collection implements ICollection
 {
     protected $original;
     public $data;
+    public $pagination;
 
     /**
      * Initialize Collection Instance
@@ -191,5 +193,52 @@ class Collection implements ICollection
     public function save()
     {
         $this->original = $this->data;
+    }
+
+    /**
+     * Database Pagination
+     */
+
+    /**
+     * Setting up pagination object property per page item inside collection
+     */
+    public function set_perPage(int $perPage)
+    {
+        $this->pagination['per-page'] = $perPage;
+        return $this;
+    }
+
+    /**
+     * Setting up pagination object property total item inside collection
+     */
+    public function set_total(int $total)
+    {
+        $this->pagination['total'] = $total;
+        return $this;
+    }
+
+    /**
+     * Next Page
+     */
+    public function nextPageUrl()
+    {
+        // $displayed = $this->pagination['per-page'] * Request::Get()['page'];
+        if ($this->pagination['total'] > ($this->pagination['per-page'] * Request::Get()['page'])) {
+            return Request::URI() . '?page=' . Request::Get()['page'] + 1;
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * Previous Page
+     */
+    public function previousPageUrl()
+    {
+        if ($this->pagination['total'] < ($this->pagination['per-page'] * Request::Get()['page'])) {
+            return Request::URI() . '?page=' . Request::Get()['page'] - 1;
+        } else {
+            return;
+        }
     }
 }

@@ -193,7 +193,12 @@ class DB implements IDB
 
         $offset = ($page - 1) * $perPage;
 
-        $data = self::prepare("SELECT * FROM {$this->table} LIMIT {$offset}, $perPage")->fetchAll();
+        $data = self::prepare("SELECT * FROM {$this->table} LIMIT {$offset}, {$perPage}")->fetchAll();
+        $total = self::prepare("SELECT count(id) as total FROM {$this->table}")->fetch();
+
+        $data->set_total(intval($total->get('total')));
+        $data->set_perPage($perPage);
+
         return $data;
     }
 }

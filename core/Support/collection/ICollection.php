@@ -22,4 +22,12 @@ interface ICollection
     public function push(string|int $val);
     public function merge(array $array);
     public function save();
+
+    /**
+     * DB Collection Pagination
+     */
+    public function set_perPage(int $perPage);
+    public function set_total(int $total);
+    public function nextPageUrl();
+    public function previousPageUrl();
 }
