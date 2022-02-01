@@ -103,7 +103,6 @@ class DB implements IDB
     {
         $this->query = null;
         $this->connect = null;
-        $this->table = null;
     }
 
     /**
@@ -134,7 +133,6 @@ class DB implements IDB
         $key = implode(", ", $key);
         $parameter = implode(", ", $parameter);
         $return = self::prepare("INSERT INTO {$this->table} ({$key}) VALUES({$parameter})")->executeclose($value);
-        $this->close();
         return $return;
     }
 
@@ -144,7 +142,6 @@ class DB implements IDB
     public function delete(int $id)
     {
         $return = self::prepare("DELETE FROM `users` WHERE id=?")->executeclose([$id]);
-        $this->close();
         return $return;
     }
 
@@ -154,7 +151,7 @@ class DB implements IDB
     public function find($value, string $column = 'id')
     {
         $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}=?")->fetch([$value]);
-        $this->close();
+        $data->set_table($this->table);
         return $data;
     }
 
@@ -178,6 +175,22 @@ class DB implements IDB
     {
         $data = self::prepare("SELECT * FROM {$this->table}")->fetchAll();
         return $data;
+    }
+
+    /**
+     * Update specific primary key in table
+     */
+    public function update(array $value)
+    {
+        $key = array_keys($value);
+        unset($value[0]);
+        $parameter = array_map(function ($key) {
+            return "{$key}=:{$key}";
+        }, $key);
+
+        $parameter = implode(", ", $parameter);
+        $return = self::prepare("UPDATE {$this->table} SET {$parameter} WHERE id=:id")->executeclose($value);
+        return $return;
     }
 
     /**
