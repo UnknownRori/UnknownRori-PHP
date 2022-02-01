@@ -118,7 +118,7 @@ OR using UnknownRori PHP CLI
 - ~~Collection~~
 - ~~Model~~
 - ~~User Authentication~~
-- Storage
+- ~~Storage~~
 - Model Overhaul
 - SEO Friendly URI
 - Middleware Group
