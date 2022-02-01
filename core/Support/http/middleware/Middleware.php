@@ -15,7 +15,7 @@ class Middleware implements IMiddleware
     protected static function Provide()
     {
         $class = new static();
-        $class->middleware = require("{$_ENV['APP_DIR']}\\config\middleware.php");
+        $class->middleware = require("{$_ENV['APP_DIR']}/config/middleware.php");
         return $class;
     }
 
