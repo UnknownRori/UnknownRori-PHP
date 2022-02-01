@@ -15,6 +15,7 @@ class Storage
 
     public static function upload($file, array $option = null)
     {
+        // self::$uploadDir = $_ENV['ROOT_PROJECT'] . '/public/storage'; // uncomment this for using web server
         self::$option = new Collection(self::$option);
         if (!is_null($option)) {
             self::$option->fill($option);
