@@ -1,6 +1,8 @@
 # UnknownRori PHP (WIP)
 
 [![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub repo size](https://img.shields.io/github/repo-size/UnknownRori/UnknownRori-PHP)[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
 
 ## Table of Contents
 
@@ -121,9 +123,9 @@ OR using UnknownRori PHP CLI
 - ~~Model~~
 - ~~User Authentication~~
 - ~~Storage~~
-- Model Overhaul
-- SEO Friendly URI
+- ~~Model Overhaul~~
 - Middleware Group
+- SEO Friendly URI
 
 # Note
 
