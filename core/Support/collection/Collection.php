@@ -18,22 +18,8 @@ class Collection implements ICollection
      */
     public function __construct($data)
     {
-        if (is_array($data)) {
-            if (isset($data[0])) {
-                if (is_array($data[0])) {
-                    $this->original = array_map(function ($data) {
-                        return array_unique($data);
-                    }, $data);
-                    $this->data = $this->original;
-                } else {
-                    $this->original = array_unique($data);
-                    $this->data = $this->original;
-                }
-            } else {
-                $this->original = array_unique($data);
-                $this->data = $this->original;
-            }
-        }
+        $this->original = $data;
+        $this->data = $data;
     }
 
     /**
@@ -190,15 +176,31 @@ class Collection implements ICollection
     }
 
     /**
+     * Filter original data collection
+     */
+    public function filter($callback, $mode = ARRAY_FILTER_USE_KEY)
+    {
+        $this->data = array_filter($this->original, $callback, $mode);
+        return $this;
+    }
+
+    /**
      * Persist the change
      * if the collection has table object property it will try to persist on database
      */
     public function save()
     {
+        $this->original = $this->data;
         if (!is_null($this->table)) {
+            $this->filter(function ($key) {
+                if (is_int($key)) {
+                    return false;
+                }
+                return true;
+            });
+
             return DB::table($this->table)->update($this->data);
         }
-        $this->original = $this->data;
     }
 
     /**
