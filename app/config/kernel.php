@@ -16,4 +16,11 @@ return [
      * set allowed request resource
      */
     "regex" => "/\.(?:png|jpg|jpeg|gif|css|js|ico)$/",
+
+    /**
+     * This is used to set additional ENV variable
+     */
+    "ENV" => [
+        'ERROR_STYLE' => "background:#f00; color:white; max-width: 100vw; white-space: pre-wrap; padding: 2rem; line-height: 1.5rem",
+    ]
 ];
