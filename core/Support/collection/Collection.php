@@ -15,7 +15,7 @@ class Collection implements ICollection
     public function __construct($data)
     {
         if (is_array($data)) {
-            if (is_array($data[0])) {
+            if (isset($data[0])) {
                 $this->original = array_map(function ($data) {
                     return array_unique($data);
                 }, $data);
