@@ -7,5 +7,5 @@ function view($view, $data = [])
 {
     extract($data);
 
-    require("{$_ENV['APP_DIR']}\\views\\{$view}.php");
+    require("{$_ENV['APP_DIR']}/views/{$view}.php");
 }
