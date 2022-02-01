@@ -16,10 +16,15 @@ class Collection implements ICollection
     {
         if (is_array($data)) {
             if (isset($data[0])) {
-                $this->original = array_map(function ($data) {
-                    return array_unique($data);
-                }, $data);
-                $this->data = $this->original;
+                if (is_array($data[0])) {
+                    $this->original = array_map(function ($data) {
+                        return array_unique($data);
+                    }, $data);
+                    $this->data = $this->original;
+                } else {
+                    $this->original = array_unique($data);
+                    $this->data = $this->original;
+                }
             } else {
                 $this->original = array_unique($data);
                 $this->data = $this->original;
