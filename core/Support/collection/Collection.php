@@ -2,11 +2,13 @@
 
 namespace Core\Support;
 
+use Core\Database\DB;
 use Core\Support\Http\Request;
 use Exception;
 
 class Collection implements ICollection
 {
+    protected $table;
     protected $original;
     public $data;
     public $pagination;
@@ -189,16 +191,29 @@ class Collection implements ICollection
 
     /**
      * Persist the change
+     * if the collection has table object property it will try to persist on database
      */
     public function save()
     {
+        if (!is_null($this->table)) {
+            return DB::table($this->table)->update($this->data);
+        }
         $this->original = $this->data;
+    }
+
+    /**
+     * Integrate Collection into Database Collection
+     */
+
+    public function set_table($table)
+    {
+        $this->table = $table;
+        return $this;
     }
 
     /**
      * Database Pagination
      */
-
     /**
      * Setting up pagination object property per page item inside collection
      */
