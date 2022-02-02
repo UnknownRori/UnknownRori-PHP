@@ -1,8 +1,8 @@
 # UnknownRori PHP (WIP)
 
-[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![GitHub repo size](https://img.shields.io/github/repo-size/UnknownRori/UnknownRori-PHP)[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
+[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
+![GitHub repo size](https://img.shields.io/github/repo-size/UnknownRori/UnknownRori-PHP)
 
 ## Table of Contents
 
