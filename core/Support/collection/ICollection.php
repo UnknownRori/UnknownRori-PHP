@@ -16,11 +16,14 @@ interface ICollection
     // Collection Manipulation
 
     public function map($callback);
+    public function filter($callback, $mode = ARRAY_FILTER_USE_KEY);
     public function split(int $length);
     public function fetchData();
     public function getData($key);
     public function push(string|int $val);
     public function merge(array $array);
+    public function remove(array $key);
+    public static function destroy($collection);
     public function save();
 
     /**
