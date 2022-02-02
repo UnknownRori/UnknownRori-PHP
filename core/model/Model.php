@@ -3,42 +3,117 @@
 namespace Core;
 
 use Core\Database\DB;
+use Exception;
 
 class Model implements IModel
 {
     protected $table;
-    protected $hasMany;
-    protected $belongsTo;
 
     /**
      * Find specific id value inside the model table
+     * can get value in other table using relation but only once
      */
-    public static function find($id)
+    public static function find($id, $relation = null)
     {
         $self = new static;
+
+        if ($relation != null) {
+            if (property_exists($self, $relation)) {
+                $data = $self->$relation();
+                $foreign_model = new $data[0]();
+                if ($relation == 'hasMany') {
+                    $query = "SELECT 
+                    {$self->table}.id as {$self->table}_id, {$self->table}.*,
+                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*
+                    FROM users 
+                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.id
+                    WHERE {$self->table}.id=?";
+                    $method = 'fetchAll';
+                } else if ($relation == 'belongsTo') {
+                    $query = "SELECT {$self->table}.id as {$self->table}_id, {$self->table}.*, 
+                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.* 
+                    FROM users LEFT JOIN post ON {$foreign_model->table}.id = {$self->table}.{$data[1]} 
+                    WHERE {$self->table}.id=?";
+                    $method = 'fetch';
+                }
+                $result = DB::prepare($query)->$method([$id]);
+
+                // Filter the result and remove all number
+
+                if (is_array($result->fetch()[0])) {
+                    $result->map(function ($data) {
+                        return array_filter($data, function ($key) {
+                            if (is_int($key)) return false;
+                            return true;
+                        }, ARRAY_FILTER_USE_KEY);
+                    });
+                } else {
+                    $result->filter(function ($key) {
+                        if (is_int($key)) return false;
+                        return true;
+                    });
+                }
+                $result->save();
+
+                return $result;
+            } else {
+                throw new Exception("Undefined {$relation}, did you forget to attach these property in Model?");
+            }
+        }
+
+
         return DB::table($self->table)->find($id);
     }
 
     /**
      * Get all value inside the model table
+     * can get value in other table using relation but only once
+     * @param $relation string belongsTo, hasMany
      */
-    public static function all()
+    public static function all($relation = null)
     {
         $self = new static;
-        if ($self->belongsTo()) {
-            $data = $self->belongsTo();
-            $foreign_model = new $data[0]();
-            $query = "SELECT * FROM {$self->table} LEFT JOIN {$foreign_model->table} ON {$self->table}.{$data[1]} = {$foreign_model->table}.id";
-            return DB::prepare($query)->fetchAll();
-        } else if ($self->hasMany()) {
-            $data = $self->hasMany();
-            $foreign_model = new $data[0]();
-            $query = "SELECT * FROM {$self->table} LEFT OUTER JOIN {$foreign_model->table} ON {$self->table}.id = {$foreign_model->table}.{$data[1]}";
-            // dd($query);
-            return DB::prepare($query)->fetchAll();
-        } else {
-            return DB::table($self->table)->all();
+
+        if (!is_null($relation)) {
+            if (property_exists($self, $relation)) {
+                $data = $self->$relation();
+                $foreign_model = new $data[0]();
+
+                if ($relation == 'hasMany') {
+                    $query = "SELECT 
+                    {$self->table}.id as {$self->table}_id, {$self->table}.*,
+                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*, 
+                    {$self->table}.id as {$foreign_model->table}_{$self->table}_id
+                    FROM users 
+                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.id";
+                } else if ($relation == 'belongsTo') {
+                    $query = "SELECT 
+                    {$self->table}.id as {$self->table}_id, {$self->table}.*,
+                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*, 
+                    {$self->table}.{$foreign_model->table}_id as {$foreign_model->table}_{$self->table}_id
+                    FROM users 
+                    LEFT JOIN post ON {$foreign_model->table}.id = {$self->table}.{$data[1]}";
+                }
+
+                // Filter the result and remove all number
+
+                $result = DB::prepare($query)->fetchAll();
+                $result->map(function ($data) {
+                    return array_filter($data, function ($key) {
+                        if (is_int($key)) return false;
+                        return true;
+                    }, ARRAY_FILTER_USE_KEY);
+                });
+
+                $result->save();
+
+                return $result;
+            } else {
+                throw new Exception("Undefined {$relation}, did you forget to attach these property in Model??");
+            }
         }
+
+        return DB::table($self->table)->all();
     }
 
     /**
