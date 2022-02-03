@@ -17,9 +17,10 @@ class DB implements IDB
     {
         try {
             $this->connect = new PDO(
-                "{$_ENV['DB_CONNECTION']}:host={$_ENV['DB_HOST']};dbname={$_ENV['DB_DATABASE']}",
-                $_ENV['DB_USERNAME'],
-                $_ENV['DB_PASSWORD']
+                env('DB_CONNECTION', 'mysql') . ":host=" . env('DB_HOST', 'localhost') .
+                ";dbname=" . env('DB_DATABASE', 'unknownrori'),
+                env('DB_USERNAME', 'root'),
+                env('DB_PASSWORD')
             );
             $this->connect->setAttribute(PDO::ATTR_ERRMODE, require("{$_ENV['APP_DIR']}/config/db.php"));
         } catch (Exception $e) {
