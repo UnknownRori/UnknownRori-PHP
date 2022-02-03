@@ -29,8 +29,9 @@ class Kernel implements IKernel
     public static function Start()
     {
         $App = new static;
-
-        Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
+        if (file_exists($_ENV['ROOT_PROJECT'] . '/.env')) {
+            Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
+        }
 
         array_filter($App->option['ENV'], function ($value, $key) {
             $_ENV[$key] = $value;
