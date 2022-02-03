@@ -20,7 +20,6 @@ class CLI
         /**
          * php cli [command] [type] [name]  | php cli make controller CatController
          * php cli [command] [type]         | php cli help make
-         * php cli [command]                | php cli install
          * [command] [type] [name]
          *      ^
          */
@@ -29,9 +28,6 @@ class CLI
         } else if (self::$argumments[0] == "serve") {
             echo (shell_exec("php -S localhost:8080 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
-            echo (shell_exec("composer dump-autoload"));
-        } else if (self::$argumments[0] == "install") {
-            echo (shell_exec("composer install"));
             echo (shell_exec("composer dump-autoload"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
             if (count(self::$argumments) < 2) return;
