@@ -68,14 +68,6 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 - run `composer dump-autoload`.
 - create something amazing!
 
-OR using UnknownRori PHP CLI
-
-- Clone this repository.
-- enter the clone directory.
-- enter `php cli` in terminal.
-- type `install`.
-- create something amazing!
-
 ---
 
 ### Requirement
@@ -100,6 +92,7 @@ OR using UnknownRori PHP CLI
 ### Dependency
 
 - `vlucas/phpdotenv`.
+- `symfony/var-dumper`.
 
 # Usage
 
@@ -124,7 +117,8 @@ OR using UnknownRori PHP CLI
 - ~~User Authentication~~
 - ~~Storage~~
 - ~~Model Overhaul~~
-- Middleware Group
+- ~~Middleware Group~~
+- Route prefix name
 - SEO Friendly URI
 
 # Note
