@@ -9,8 +9,7 @@ interface ICollection
     public function first();
     public function last();
     public function find($needle);
-    public function fetch();
-    public function get($key);
+    public function get($key = null);
     public function key();
 
     // Collection Manipulation
@@ -18,8 +17,7 @@ interface ICollection
     public function map($callback);
     public function filter($callback, $mode = ARRAY_FILTER_USE_KEY);
     public function split(int $length);
-    public function fetchData();
-    public function getData($key);
+    public function getData($key = null);
     public function push(string|int $val);
     public function merge(array $array);
     public function remove(array $key);

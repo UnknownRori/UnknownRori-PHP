@@ -4,7 +4,6 @@ namespace Core\Support;
 
 use Core\Database\DB;
 use Core\Support\Http\Request;
-use Exception;
 
 class Collection implements ICollection
 {
@@ -53,17 +52,11 @@ class Collection implements ICollection
     /**
      * Fetch the Collection Original Data
      */
-    public function fetch()
+    public function get($key = null)
     {
-        return $this->original;
-    }
+        if (!is_null($key)) return $this->original[$key];
 
-    /**
-     * Fetch the specific Collection Original Data
-     */
-    public function get($key)
-    {
-        return $this->original[$key];
+        return $this->original;
     }
 
     /**
@@ -117,17 +110,10 @@ class Collection implements ICollection
     /**
      * Fetch current manipulated data
      */
-    public function fetchData()
+    public function getData($key = null)
     {
+        if (!is_null($key)) return $this->data[$key];
         return $this->data;
-    }
-
-    /**
-     * Fetch specific key in current manipulated data
-     */
-    public function getData($key)
-    {
-        return $this->data[$key];
     }
 
     /**
