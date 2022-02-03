@@ -6,10 +6,21 @@
         "classmap": [
             "core/",
             "app/"
+        ],
+        "files": ["core/utils/helpers.php"]
+    },
+    "autoload-dev": {
+        "files": [
+            "app/bootstrap.php",
+            "core/bootstrap.php"
         ]
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "vlucas/phpdotenv": "5.4.x-dev"
+        "vlucas/phpdotenv": "5.4.x-dev",
+        "symfony/var-dumper": "6.1.x-dev"
+    },
+    "scripts": {
+        "test": "phpunit tests --colors"
     }
 }
