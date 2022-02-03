@@ -97,9 +97,52 @@ class Route implements IRoute
     }
 
     /**
+     * Assign middleware inside group of route
+     */
+    public function group(string | array $middleware, array $route)
+    {
+        if (array_key_exists('get', $route)) {
+            array_map(function ($data) use ($middleware) {
+                if (array_key_exists(2, $data)) {
+                    $this->get($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
+                } else {
+                    $this->get($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
+                }
+            }, $route['get']);
+        }
+        if (array_key_exists('post', $route)) {
+            array_map(function ($data)  use ($middleware) {
+                if (array_key_exists(2, $data)) {
+                    $this->post($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
+                } else {
+                    $this->post($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
+                }
+            }, $route['post']);
+        }
+        if (array_key_exists('patch', $route)) {
+            array_map(function ($data) use ($middleware) {
+                if (array_key_exists(2, $data)) {
+                    $this->patch($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
+                } else {
+                    $this->patch($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
+                }
+            }, $route['patch']);
+        }
+        if (array_key_exists('delete', $route)) {
+            array_map(function ($data) use ($middleware) {
+                if (array_key_exists(2, $data)) {
+                    $this->delete($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
+                } else {
+                    $this->delete($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
+                }
+            }, $route['delete']);
+        }
+    }
+
+    /**
      * TODO! for easier redirect
      */
-    public function name()
+    public function name($name)
     {
         return $this;
     }
@@ -123,6 +166,7 @@ class Route implements IRoute
             ["middleware" => $middleware],
             $this->route[$this->temp['method']][$this->temp['uri']]
         );
+
         return $this;
     }
 
@@ -151,7 +195,9 @@ class Route implements IRoute
         $controller = new $namespacedController;
         $action = $route['action'];
 
-        Middleware::Run($route['middleware']);
+        if (array_key_exists('middleware', $route)) {
+            Middleware::Run($route['middleware']);
+        }
 
         if (!method_exists($controller, $action)) {
             KernelException::ClassMethod($route['controller'], $action);
