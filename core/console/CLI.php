@@ -26,7 +26,7 @@ class CLI
         if (self::$argumments[0] == "help") {
             echo " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
         } else if (self::$argumments[0] == "serve") {
-            echo (shell_exec("php -S localhost:8080 -t ./public ./public/index.php"));
+            echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
             echo (shell_exec("composer dump-autoload"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
