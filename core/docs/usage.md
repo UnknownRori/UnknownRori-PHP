@@ -80,7 +80,7 @@
 
 The most basic UnknownRori-PHP route is accept URI and Controller Class and it's method, very simple and OOP behavior without complicated configuration.
 
-`$route->get('/', [Home::class, 'index']);`
+    Route::get('/', [Home::class, 'index']);
 
 ### Default Route Files
 
@@ -88,14 +88,14 @@ All UnknownRori-PHP routes are defined in route file, which is located in `app/r
 
 For most application, you will begin by defining routes inside `app/route/web.php` file, these defined route URL can be accessed using your browser, for example `localhost:8080/user` in your browser
 
-`$route->get('/user', [User::class, 'index']);`
+    Route::get('/user', [User::class, 'index']);
 
 The router allows you to register routes that respond to any HTTP verb
 
-    $route->get('/', [ControllerName::class, 'method']);
-    $route->post('/', [ControllerName::class, 'method']);
-    $route->delete('/', [ControllerName::class, 'method']);
-    $route->patch('/', [ControllerName::class, 'method']);
+    Route::get('/', [Welcome::class, 'index']);
+    Route::post('/', [Welcome::class, 'index']);
+    Route::delete('/', [Welcome::class, 'index']);
+    Route::patch('/', [Welcome::class, 'index']);
 
 ### Route Name prefix
 
@@ -109,21 +109,10 @@ Route groups allow you to share route attributes, such as middleware across a la
 
 To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
 
-    $route->group(['test'], [
-        'get' => [
-            ['/example1', [Welcome::class, 'group'], 'route_name_prefix'],
-            ['/example2', [Welcome::class, 'group']],
-        ],
-        'post' => [
-            ['/example1', [Welcome::class, 'group']],
-        ],
-        'patch' => [
-            ['/example1', [Welcome::class, 'group']],
-        ],
-        'delete' => [
-            ['/example1', [Welcome::class, 'group']],
-        ],
-    ]);
+    Route::middleware('test')->group(function () {
+        Route::get('/group/1', [Group::class, 'index']);
+        Route::get('/group/2', [Group::class, 'index']);
+    });
 
 ## Middleware
 
@@ -181,11 +170,11 @@ application's `app/config/middleware.php` file by default the array key `named`,
 
 Once the middleware has been defined in middleware config, you may use the middleware method to assign middleware to route.
 
-    $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
+    Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware);
 
 You may assign multiple middleware to the route by passing an array of middleware names to middleware method.
 
-    $route->get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
+    Route::get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
 
 ## Controller
 
@@ -309,3 +298,9 @@ To store data in the session, you will typically use `Session` helper class meth
 To delete data in the session you can use the Session helper class method called `unset`
 
     Session::unset('name');
+
+### Destroying Current Session
+
+To destroy the current session you can use these method.
+
+    Session::destroy();

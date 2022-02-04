@@ -7,14 +7,16 @@ use Core\Support\Http\Middleware;
 
 class Route implements IRoute
 {
-    protected $route = [
+    protected static $route = [
         "GET" => [],
         "POST" => [],
         "PATCH" => [],
         "DELETE" => [],
     ];
 
-    private $temp = [];
+    protected static $nameRoute = [];
+
+    private static $temp = [];
 
     /**
      * Starting Point of Route class to Register URI to route
@@ -32,16 +34,16 @@ class Route implements IRoute
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
-    public function get($uri, $controller = [])
+    public static function get($uri, $controller = [])
     {
-        $this->route['GET'][$uri] = [
-            "controller" => $controller[0],
-            "action" => $controller[1]
-        ];
+        $self = new static;
 
-        $this->temp($uri, 'GET');
+        self::setRoute('GET', $uri, $controller);
 
-        return $this;
+        self::temp('uri', $uri);
+        self::temp('method', 'GET');
+
+        return $self;
     }
 
     /**
@@ -49,16 +51,16 @@ class Route implements IRoute
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
-    public function post($uri, $controller = [])
+    public static function post($uri, $controller = [])
     {
-        $this->route['POST'][$uri] = [
-            "controller" => $controller[0],
-            "action" => $controller[1]
-        ];
+        $self = new static;
 
-        $this->temp($uri, 'POST');
+        self::setRoute('POST', $uri, $controller);
 
-        return $this;
+        self::temp('uri', $uri);
+        self::temp('method', 'POST');
+
+        return $self;
     }
 
 
@@ -67,16 +69,16 @@ class Route implements IRoute
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
-    public function patch($uri, $controller = [])
+    public static function patch($uri, $controller = [])
     {
-        $this->route['PATCH'][$uri] = [
-            "controller" => $controller[0],
-            "action" => $controller[1]
-        ];
+        $self = new static;
 
-        $this->temp($uri, 'PATCH');
+        self::setRoute('PATCH', $uri, $controller);
 
-        return $this;
+        self::temp('uri', $uri);
+        self::temp('method', 'PATCH');
+
+        return $self;
     }
 
     /**
@@ -84,59 +86,35 @@ class Route implements IRoute
      * @param string $uri that you want to register
      * @param array $controller [controllername::class, 'method']
      */
-    public function delete($uri, $controller = [])
+    public static function delete($uri, $controller = [])
     {
-        $this->route['DELETE'][$uri] = [
-            "controller" => $controller[0],
-            "action" => $controller[1]
-        ];
+        $self = new static;
 
-        $this->temp($uri, 'DELETE');
+        self::setRoute('DELETE', $uri, $controller);
 
-        return $this;
+        self::temp('uri', $uri);
+        self::temp('method', 'DELETE');
+
+        return $self;
+    }
+
+    public static function group(callable $callback)
+    {
+        call_user_func($callback);
     }
 
     /**
-     * Assign middleware inside group of route
+     * This method is used to automatic register the route
+     * @param string $method Route HTTP Request Type
+     * @param string $uri Route URI
+     * @param array $controller Route Controller
      */
-    public function group(string | array $middleware, array $route)
+    protected static function setRoute(string $method, string $uri, array $controller)
     {
-        if (array_key_exists('get', $route)) {
-            array_map(function ($data) use ($middleware) {
-                if (array_key_exists(2, $data)) {
-                    $this->get($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
-                } else {
-                    $this->get($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
-                }
-            }, $route['get']);
-        }
-        if (array_key_exists('post', $route)) {
-            array_map(function ($data)  use ($middleware) {
-                if (array_key_exists(2, $data)) {
-                    $this->post($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
-                } else {
-                    $this->post($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
-                }
-            }, $route['post']);
-        }
-        if (array_key_exists('patch', $route)) {
-            array_map(function ($data) use ($middleware) {
-                if (array_key_exists(2, $data)) {
-                    $this->patch($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
-                } else {
-                    $this->patch($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
-                }
-            }, $route['patch']);
-        }
-        if (array_key_exists('delete', $route)) {
-            array_map(function ($data) use ($middleware) {
-                if (array_key_exists(2, $data)) {
-                    $this->delete($data[0], [$data[1][0], $data[1][1]])->middleware($middleware)->name($data[2]);
-                } else {
-                    $this->delete($data[0], [$data[1][0], $data[1][1]])->middleware($middleware);
-                }
-            }, $route['delete']);
-        }
+        self::$route[$method][$uri] = [
+            "controller" => $controller[0],
+            "action" => $controller[1],
+        ];
     }
 
     /**
@@ -144,6 +122,12 @@ class Route implements IRoute
      */
     public function name($name)
     {
+        if (!array_key_exists($name, self::$nameRoute)) {
+            self::$nameRoute[$name] = self::$temp['uri'];
+        } else {
+            KernelException::KeyExists($name, 'Name Route');
+        }
+
         return $this;
     }
 
@@ -159,15 +143,28 @@ class Route implements IRoute
      * Register middleware that can be called
      * @param string $middleware MiddlewareName
      */
-    public function middleware($middleware)
+    public static function middleware($middleware)
     {
-        // TODO! MAKE THIS SYNTAX MORE ELEGANT!
-        $this->route[$this->temp['method']][$this->temp['uri']] = array_merge(
-            ["middleware" => $middleware],
-            $this->route[$this->temp['method']][$this->temp['uri']]
+        $self = new static;
+
+        self::temp('middleware', $middleware);
+
+        self::setMiddleware();
+
+        return $self;
+    }
+
+    /**
+     * This method used to register the temp uri with the temp middleware
+     */
+    protected static function setMiddleware()
+    {
+        self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
+            ["middleware" => self::$temp['middleware']],
+            self::$route[self::$temp['method']][self::$temp['uri']]
         );
 
-        return $this;
+        unset(self::$temp['middleware']);
     }
 
     /**
@@ -177,11 +174,11 @@ class Route implements IRoute
      */
     public function Run($uri, $requestType)
     {
-        if (!array_key_exists($uri, $this->route[$requestType])) {
+        if (!array_key_exists($uri, self::$route[$requestType])) {
             return KernelException::RouteNotDefined();
         }
 
-        return $this->call($this->route[$requestType][$uri]);
+        return $this->call(self::$route[$requestType][$uri]);
     }
 
     /**
@@ -209,12 +206,16 @@ class Route implements IRoute
     /**
      * Create Temporary Object Property
      */
-    protected function temp($uri, $requestType)
+    protected static function temp($key, $value = '')
     {
-        $this->temp = [
-            "method" => $requestType,
-            "uri" => $uri
-        ];
+        if (is_null($value)) {
+            if (array_key_exists($key, self::$temp)) {
+                return self::$temp[$key];
+            }
+            return false;
+        }
+
+        self::$temp[$key] = $value;
     }
 
     /**
@@ -230,5 +231,13 @@ class Route implements IRoute
      */
     protected function URIGenerator($route)
     {
+    }
+
+    /**
+     * This is to dump out all the current static property
+     */
+    public static function dump()
+    {
+        return ['temp' => self::$temp, 'route' => self::$route, 'nameRoute' => self::$nameRoute];
     }
 }

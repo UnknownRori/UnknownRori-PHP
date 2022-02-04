@@ -25,18 +25,35 @@ class KernelException implements IException
         throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
 
+    /**
+     * Throw Middleware not found
+     */
     public static function MiddlewareNotDefined()
     {
         throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
     }
 
+    /**
+     * Throw PDO Error
+     */
     public static function PDO_ERROR($e)
     {
         throw new Exception("{$e} | ");
     }
 
+    /**
+     * Throw Hash Algorithm not found
+     */
     public static function Hash($algo)
     {
         throw new Exception("There is no supported algo called {$algo} in this framework | ");
+    }
+
+    /**
+     * Throw an error if key already exists inside the array
+     */
+    public static function KeyExists($key, $array)
+    {
+        throw new Exception("Key {$key} already exist inside {$array}");
     }
 }
