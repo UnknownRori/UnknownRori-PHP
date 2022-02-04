@@ -20,5 +20,6 @@ return [
      */
     'named' => [
         'test' => App\Http\Middleware\test::class, // This is still for testing purposes
+        'auth' => App\Http\Middleware\auth::class
     ]
 ];
