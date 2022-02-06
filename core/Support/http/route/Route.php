@@ -233,7 +233,7 @@ class Route implements IRoute
     /**
      * Create Temporary Object Property
      */
-    protected static function temp($key, $value = '')
+    protected static function temp($key, $value = null)
     {
         if (is_null($value)) {
             if (array_key_exists($key, self::$temp)) {
