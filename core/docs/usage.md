@@ -10,6 +10,8 @@
 
     - Route Name prefix
 
+      - Generating URI to Named Routes
+
     - Route Group
 
       - Middleware
@@ -42,7 +44,7 @@
 
       - Retrieve Data
 
-            - Retrieve All Session Data
+        - Retrieve All Session Data
 
       - Storing Data
 
@@ -99,7 +101,23 @@ The router allows you to register routes that respond to any HTTP verb
 
 ### Route Name prefix
 
-#### WIP
+Named routes allow the convenient generation of URI or redirect for specific routes. You may specify a name for route by chaining `name` method onto route definition
+
+    Route::get('/user', [UserController::class, 'index'])->name('user');
+
+#### Generating URI to Named Routes
+
+Once you assigned a name on given route, you may use the route's name when generating URI or `redirect` helper method
+
+    // Generating URI
+    $uri = Route::GetRoute('user');
+
+    // Generating Redirect
+    Route::Redirect('user');
+
+If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
+
+    $url = route('profile', ['id' => 1]);
 
 ### Route Group
 

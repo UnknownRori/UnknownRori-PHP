@@ -132,6 +132,33 @@ class Route implements IRoute
     }
 
     /**
+     * Get named uri
+     */
+    public static function GetRoute($name)
+    {
+        return self::$nameRoute[$name];
+    }
+
+    /**
+     * Redirect to desired named uri
+     */
+    public static function Redirect($name, array $data = null)
+    {
+        if (is_null($data)) {
+            $uri = self::GetRoute($name);
+        } else {
+            $uri = self::GetRoute($name) . '?';
+            $value = array_values($data);
+            $key = array_keys($data);
+            for ($i = 0; $i < count($data); $i++) {
+                $uri = $uri . "{$key[$i]}={$value[$i]}&";
+            }
+        }
+
+        return header("Location: {$uri}");
+    }
+
+    /**
      * TODO! for future SEO friendly URI
      */
     public function whereNumber($parameter)
