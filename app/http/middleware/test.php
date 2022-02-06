@@ -6,6 +6,6 @@ class test
 {
     public function Run()
     {
-        echo 'YEET!';
+        // echo 'YEET!';
     }
 }
