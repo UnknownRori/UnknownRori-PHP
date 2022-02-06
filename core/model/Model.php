@@ -9,6 +9,8 @@ class Model implements IModel
 {
     protected $table;
 
+    protected $primary_key = 'id';
+
     /**
      * Find specific id value inside the model table
      * can get value in other table using relation but only once
@@ -21,26 +23,27 @@ class Model implements IModel
             if (property_exists($self, $relation)) {
                 $data = $self->$relation();
                 $foreign_model = new $data[0]();
+
                 if ($relation == 'hasMany') {
                     $query = "SELECT 
-                    {$self->table}.id as {$self->table}_id, {$self->table}.*,
-                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*
+                    {$self->table}.{$self->primary_key} as {$self->table}_id, {$self->table}.*,
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.*
                     FROM users 
-                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.id
-                    WHERE {$self->table}.id=?";
+                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.{$self->primary_key}
+                    WHERE {$self->table}.{$self->primary_key}=?";
                     $method = 'fetchAll';
                 } else if ($relation == 'belongsTo') {
-                    $query = "SELECT {$self->table}.id as {$self->table}_id, {$self->table}.*, 
-                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.* 
-                    FROM users LEFT JOIN post ON {$foreign_model->table}.id = {$self->table}.{$data[1]} 
-                    WHERE {$self->table}.id=?";
+                    $query = "SELECT {$self->table}.{$self->primary_key} as {$self->table}_id, {$self->table}.*, 
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.* 
+                    FROM users LEFT JOIN post ON {$foreign_model->table}.{$foreign_model->primary_key} = {$self->table}.{$data[1]} 
+                    WHERE {$self->table}.{$self->primary_key}=?";
                     $method = 'fetch';
                 }
                 $result = DB::prepare($query)->$method([$id]);
 
                 // Filter the result and remove all number
 
-                if (is_array($result->fetch()[0])) {
+                if (is_array($result->get()[0])) {
                     $result->map(function ($data) {
                         return array_filter($data, function ($key) {
                             if (is_int($key)) return false;
@@ -81,15 +84,15 @@ class Model implements IModel
 
                 if ($relation == 'hasMany') {
                     $query = "SELECT 
-                    {$self->table}.id as {$self->table}_id, {$self->table}.*,
-                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*, 
-                    {$self->table}.id as {$foreign_model->table}_{$self->table}_id
+                    {$self->table}.{$self->primary_key} as {$self->table}_id, {$self->table}.*,
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.*, 
+                    {$self->table}.{$self->primary_key} as {$foreign_model->table}_{$self->table}_id
                     FROM users 
-                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.id";
+                    LEFT JOIN post ON {$foreign_model->table}.{$data[1]} = {$self->table}.{$self->primary_key}";
                 } else if ($relation == 'belongsTo') {
                     $query = "SELECT 
                     {$self->table}.id as {$self->table}_id, {$self->table}.*,
-                    {$foreign_model->table}.id as {$foreign_model->table}_id, {$foreign_model->table}.*, 
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.*, 
                     {$self->table}.{$foreign_model->table}_id as {$foreign_model->table}_{$self->table}_id
                     FROM users 
                     LEFT JOIN post ON {$foreign_model->table}.id = {$self->table}.{$data[1]}";
@@ -123,6 +126,15 @@ class Model implements IModel
     {
         $self = new static;
         return DB::table($self->table)->where($column, $value, $logic);
+    }
+
+    /**
+     * Run sql insert inside model table
+     */
+    public static function insert(array $data)
+    {
+        $self = new static;
+        return DB::table($self->table)->insert($data);
     }
 
     /**
