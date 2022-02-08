@@ -24,7 +24,7 @@
                         <p>Rori-PHP is custom non production web application framework inspired by Laravel syntax and elegantness. A web framework provides a structure and starting point for your application allowing you to focus on creating something amazing.</p>
                     </div>
                     <div class="pt-8 text-base leading-7 font-semibold">
-                        <p class="text-gray-900">Want to dig deeper into Roir-PHP?</p>
+                        <p class="text-gray-900">Want to dig deeper into Rori-PHP?</p>
                         <p>
                             <a href="https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md" class="text-sky-500 hover:text-sky-600">Read the docs &rarr;</a>
                         </p>
