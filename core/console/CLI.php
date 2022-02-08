@@ -17,7 +17,12 @@ class CLI
     {
         array_shift($argv);
         self::$argumments = $argv;
-        echo self::Command();
+        if (!$argv) {
+            echo "Welcome to the Rori-PHP CLI\n";
+            echo "type help for more information\n";
+        } else {
+            echo self::Command();
+        }
     }
 
     public static function Command()
@@ -30,9 +35,10 @@ class CLI
          */
 
         $make_warn = "Please add name to the";
+        $list_command = " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
 
         if (self::$argumments[0] == "help") {
-            echo " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
+            echo $list_command;
         } else if (self::$argumments[0] == "serve") {
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
@@ -52,6 +58,8 @@ class CLI
             require('template/middleware.php');
             $name = self::$argumments[1];
             self::write(controller($name), "/http/middleware/{$name}.php");
+        } else {
+            echo $list_command;
         }
     }
 
