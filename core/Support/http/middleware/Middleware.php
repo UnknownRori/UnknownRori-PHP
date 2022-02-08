@@ -11,6 +11,7 @@ class Middleware implements IMiddleware
 
     /**
      * Initialize Middleware instance
+     * @return static
      */
     protected static function Provide()
     {
@@ -22,6 +23,8 @@ class Middleware implements IMiddleware
     /**
      * Run all middleware with specific type
      * can be configured in app/config/middleware.php
+     * @param  string $type
+     * @return void
      */
     public static function RunAll(string $type)
     {
@@ -36,6 +39,8 @@ class Middleware implements IMiddleware
     /**
      * Run specific named middleware,
      * can be configured in app/config/middleware.php
+     * @param  string|array $middleware
+     * @return void
      */
     public static function Run(array | string $middleware)
     {

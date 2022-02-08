@@ -14,6 +14,8 @@ class Model implements IModel
     /**
      * Find specific id value inside the model table
      * can get value in other table using relation but only once
+     * @param  string $relation belongsTo, hasMany
+     * @return \Core\Support\Collection
      */
     public static function find($id, $relation = null)
     {
@@ -65,13 +67,14 @@ class Model implements IModel
         }
 
 
-        return DB::table($self->table)->find($id);
+        return DB::prepare("SELECT * FROM {$self->table} WHERE {$self->primary_key}=?")->fetch([$id]);
     }
 
     /**
      * Get all value inside the model table
      * can get value in other table using relation but only once
-     * @param $relation string belongsTo, hasMany
+     * @param  string $relation belongsTo, hasMany
+     * @return \Core\Support\Collection
      */
     public static function all($relation = null)
     {
@@ -121,6 +124,10 @@ class Model implements IModel
 
     /**
      * Run sql where command inside the model table
+     * @param  string $column
+     * @param  mixed  $value
+     * @param  string $logic
+     * @return \Core\Support\Collection
      */
     public static function where($column, $value, $logic = '=')
     {
@@ -130,6 +137,8 @@ class Model implements IModel
 
     /**
      * Run sql insert inside model table
+     * @param  array $data
+     * @return \Core\Support\Collection
      */
     public static function insert(array $data)
     {
@@ -138,7 +147,20 @@ class Model implements IModel
     }
 
     /**
-     * Just like all this one do paginate thing inside the model table
+     * Delete specific data inside model table
+     * @param  int|string $id
+     * @return boolean
+     */
+    public static function delete($id)
+    {
+        $self = new static;
+        return DB::prepare("DELETE FROM {$self->table} WHERE {$self->primary_key}=?")->executeclose([$id]);
+    }
+
+    /**
+     * Just like `all` method this one do paginate thing inside the model table
+     * @param  int $perPage
+     * @return \Core\Support\Collection
      */
     public static function paginate($perPage)
     {

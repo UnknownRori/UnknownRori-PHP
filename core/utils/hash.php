@@ -2,7 +2,7 @@
 
 namespace Core\Utils;
 
-use Core\Exception\KernelException;
+use Core\KernelException;
 
 class Hash
 {

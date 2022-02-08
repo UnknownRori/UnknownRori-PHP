@@ -7,6 +7,7 @@ class Session implements ISession
     /**
      * Initialize Session data and should be used in Kernel.php,
      * this method can be passed with an array of option which can be modified in `app/config/kernel.php`
+     * @return boolean
      */
     public static function start($option = [])
     {
@@ -15,16 +16,21 @@ class Session implements ISession
 
     /**
      * Get Session Data
+     * @param  string $key
+     * @return mixed
      */
     public static function get($key = null)
     {
-        if (!is_null($key)) return $_SESSION;
+        if (!is_null($key)) return $_SESSION[$key];
 
         return $_SESSION;
     }
 
     /**
      * Set Session Data
+     * @param  string $name
+     * @param  string $value
+     * @return void
      */
     public static function set($name, $value)
     {
@@ -33,6 +39,7 @@ class Session implements ISession
 
     /**
      * Destroy Current Session
+     * @return boolean
      */
     public static function destroy()
     {
@@ -41,6 +48,7 @@ class Session implements ISession
 
     /**
      * Unset Session Data
+     * @return void
      */
     public static function unset($name)
     {

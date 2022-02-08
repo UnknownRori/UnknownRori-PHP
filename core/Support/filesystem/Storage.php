@@ -8,14 +8,21 @@ class Storage
 {
     protected static $uploadDir;
     protected static $option = [
-        'overwrite' => false,
+        'overwrite' => true,
         'max-size' => 500000,
         'type' => 'image',
     ];
 
+    /**
+     * Upload a file into public/storage directory
+     * @param  file $file
+     * @param  array $option
+     * @return string|void Uploaded path
+     */
     public static function upload($file, array $option = null)
     {
-        self::$uploadDir = $_ENV['ROOT_PROJECT'] . '/public/storage'; // uncomment this for using web server
+        $path = require($_ENV['APP_DIR'] . '/config/storage.php');
+        self::$uploadDir = $_ENV['ROOT_PROJECT'] . $path['path'];
         self::$option = new Collection(self::$option);
         if (!is_null($option)) {
             self::$option->fill($option);

@@ -10,7 +10,7 @@ return [
      * example : Middleware::RunAll('runtime');
      */
     'runtime' => [
-        App\Http\Middleware\test::class, // This is still for testing purposes
+        //
     ],
 
     /**
@@ -19,7 +19,6 @@ return [
      * Middleware::Run('namedMiddleware');
      */
     'named' => [
-        'test' => App\Http\Middleware\test::class, // This is still for testing purposes
         'auth' => App\Http\Middleware\auth::class
     ]
 ];

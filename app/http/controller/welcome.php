@@ -2,9 +2,7 @@
 
 namespace App\Http\Controller;
 
-use Core\Controller;
-
-class Welcome extends Controller
+class Welcome
 {
     function index()
     {

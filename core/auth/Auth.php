@@ -7,7 +7,7 @@ use Core\Support\Collection;
 use Core\Support\Session;
 use Core\Utils\Hash;
 
-class Auth
+class Auth implements IAuth
 {
     protected static $table = 'users';
     protected static $UserSession = 'USER';
@@ -17,6 +17,10 @@ class Auth
     protected static $guarded = ['password', 'email'];
     protected $userData;
 
+    /**
+     * Get UserData from session
+     * @return static
+     */
     public static function User()
     {
         $User = new static;
@@ -24,11 +28,24 @@ class Auth
         return $User;
     }
 
-    public function get($key)
+    /**
+     * Get authenticated user specific data
+     * @param string $key
+     * @return mixed
+     */
+    public function get($key = null)
     {
-        return $this->userData->get($key);
+        if (!is_null($key)) {
+            return $this->userData->get($key);
+        }
+        return $this->userData;
     }
 
+    /**
+     * Try to Authenticate User using passed credentials
+     * @param array $credentials
+     * @return void
+     */
     public static function attempt($credentials)
     {
         $data = DB::table(self::$table)->find($credentials[self::$unique_key], self::$unique_key);
@@ -45,12 +62,20 @@ class Auth
         }
     }
 
+    /**
+     * Check whether user is logged in or not
+     * @return boolean
+     */
     public static function check()
     {
         if (Session::get(self::$UserSession)) return true;
         return false;
     }
 
+    /**
+     * Log out current authenticated user
+     * @return void
+     */
     public static function logout()
     {
         Session::unset(self::$UserSession);

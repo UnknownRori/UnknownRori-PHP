@@ -13,12 +13,16 @@ class DB implements IDB
     protected $query;
     protected $table;
 
+    /**
+     * Initialize Database Connection
+     * @return void
+     */
     public function __construct()
     {
         try {
             $this->connect = new PDO(
                 env('DB_CONNECTION', 'mysql') . ":host=" . env('DB_HOST', 'localhost') .
-                ";dbname=" . env('DB_DATABASE', 'unknownrori'),
+                    ";dbname=" . env('DB_DATABASE', 'unknownrori'),
                 env('DB_USERNAME', 'root'),
                 env('DB_PASSWORD')
             );
@@ -29,11 +33,13 @@ class DB implements IDB
     }
 
     /**
-     * Basic DB Function
+     * Basic DB Method
      */
 
     /**
      * Doing raw query
+     * @param  string $query
+     * @return static
      */
     public static function query(string $query)
     {
@@ -44,6 +50,8 @@ class DB implements IDB
 
     /**
      * Doing prepared statement query
+     * @param  string $query
+     * @return static
      */
     public static function prepare(string $query)
     {
@@ -55,6 +63,8 @@ class DB implements IDB
     /**
      * Execute current query,
      * can passed argumment for prepared statement
+     * @param  array $value
+     * @return boolean
      */
     public function execute(array $value = [])
     {
@@ -65,6 +75,8 @@ class DB implements IDB
     /**
      * Execute current query and close the connection,
      * can passed argumment for prepared statement
+     * @param  array $value
+     * @return boolean
      */
     public function executeclose(array $value = [])
     {
@@ -75,6 +87,8 @@ class DB implements IDB
 
     /**
      * Fetch all data
+     * @param  array $value
+     * @return \Core\Support\Collection
      */
     public function fetchAll(array $value = [])
     {
@@ -87,6 +101,8 @@ class DB implements IDB
 
     /**
      * Fetch single data
+     * @param  array $value
+     * @return \Core\Support\Collection
      */
     public function fetch(array $value = [])
     {
@@ -99,6 +115,7 @@ class DB implements IDB
 
     /**
      * Close the Connection
+     * @return void
      */
     public function close()
     {
@@ -107,12 +124,14 @@ class DB implements IDB
     }
 
     /**
-     * Predefined DB function, Use Prepared Statement,
-     * by using predefined DB function it will automaticaly close the connection
+     * Built in DB method, Use Prepared Statement,
+     * by using built in DB method it will automaticaly close the connection
      */
 
     /**
      * Selecting Table to interact with
+     * @param  string $table
+     * @return static
      */
     public static function table(string $table)
     {
@@ -123,6 +142,8 @@ class DB implements IDB
 
     /**
      * Insert data into table
+     * @param  array $value
+     * @return boolean
      */
     public function insert(array $value = [])
     {
@@ -139,19 +160,23 @@ class DB implements IDB
 
     /**
      * Deleting data in the table
+     * @param  int $id
+     * @return boolean
      */
     public function delete(int $id)
     {
-        $return = self::prepare("DELETE FROM `users` WHERE id=?")->executeclose([$id]);
+        $return = self::prepare("DELETE FROM {$this->table} WHERE id=?")->executeclose([$id]);
         return $return;
     }
 
     /**
      * Fetch specific data in table
+     * @param string|int $id
+     * @return \Core\Support\Collection
      */
-    public function find($value, string $column = 'id')
+    public function find($id, string $column = 'id')
     {
-        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}=?")->fetch([$value]);
+        $data = self::prepare("SELECT * FROM {$this->table} WHERE {$column}=?")->fetch([$id]);
         $data->set_table($this->table);
         return $data;
     }
@@ -162,6 +187,7 @@ class DB implements IDB
      * @param $value string is search value
      * @param $method string is method used for getting data
      * @param $logic string is logic '<', '>', '=', '>=', '<=', '<>', 'LIKE', 'BETWEEN', 'IN'
+     * @return \Core\Support\Collection
      */
     public function where(string $column, string $value, string $method = 'fetchAll', string $logic = '=')
     {
@@ -180,6 +206,8 @@ class DB implements IDB
 
     /**
      * Update specific primary key in table
+     * @param  array $value
+     * @return boolean
      */
     public function update(array $value)
     {
@@ -196,6 +224,8 @@ class DB implements IDB
 
     /**
      * Doing automatic paginate thing
+     * @param  int $perPage
+     * @return \Core\Support\Collection
      */
     public function paginate(int $perPage)
     {

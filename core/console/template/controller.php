@@ -6,9 +6,7 @@ function controller($name)
 
 namespace App\Http\Controller;
 
-use Core\Controller;
-
-class {$name} extends Controller
+class {$name}
 {
     // Code Here
 }

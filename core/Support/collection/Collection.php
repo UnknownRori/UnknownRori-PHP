@@ -27,6 +27,7 @@ class Collection implements ICollection
 
     /**
      * Get the first original collection value
+     * @return mixed
      */
     public function first()
     {
@@ -35,6 +36,7 @@ class Collection implements ICollection
 
     /**
      * Get the last original collection value
+     * @return mixed
      */
     public function last()
     {
@@ -43,6 +45,7 @@ class Collection implements ICollection
 
     /**
      * Find value in the collection and return the key
+     * @return int|string|false
      */
     public function find($needle)
     {
@@ -51,22 +54,37 @@ class Collection implements ICollection
 
     /**
      * Fetch the Collection Original Data
+     * @param  string|array $key
+     * @return mixed
      */
     public function get($key = null)
     {
-        if (!is_null($key)) return $this->original[$key];
+        if (!is_null($key)) {
+            if (is_array($key)) {
+                return array_map(function ($key) {
+                    return $this->original[$key];
+                }, $key);
+            } else {
+                return $this->original[$key];
+            }
+        };
 
         return $this->original;
     }
 
     /**
      * Fetch the key inside the Collection Original Data
+     * @return array
      */
     public function key()
     {
         return array_keys($this->original);
     }
 
+    /**
+     * Check if original collection is null or not
+     * @return boolean
+     */
     public function is_null()
     {
         return is_null($this->original);
@@ -78,6 +96,8 @@ class Collection implements ICollection
 
     /**
      * Map the Original Value of Collection
+     * @param  callable @callback
+     * @return array
      */
     public function map($callback)
     {
@@ -87,6 +107,8 @@ class Collection implements ICollection
 
     /**
      * Split the Original Value of Collection into smaller array
+     * @param  int $length
+     * @return array
      */
     public function split(int $length)
     {
@@ -96,6 +118,8 @@ class Collection implements ICollection
 
     /**
      * Remove specific key in the collection
+     * @param  array $key
+     * @return this
      */
     public function remove(array $key)
     {
@@ -109,15 +133,28 @@ class Collection implements ICollection
 
     /**
      * Fetch current manipulated data
+     * @param  string|array $key
+     * @return mixed
      */
-    public function getData($key = null)
+    public function getData(array|string $key = null)
     {
-        if (!is_null($key)) return $this->data[$key];
+        if (!is_null($key)) {
+            if (is_array($key)) {
+                return array_map(function ($key) {
+                    return $this->data[$key];
+                }, $key);
+            } else {
+                return $this->data[$key];
+            }
+        };
+
         return $this->data;
     }
 
     /**
      * Push the value inside the collection
+     * @param  string|int $val
+     * @return this
      */
     public function push(string|int $val)
     {
@@ -127,6 +164,8 @@ class Collection implements ICollection
 
     /** 
      * Merge the input array into Collection
+     * @param  array $array
+     * @return this
      */
     public function merge(array $array)
     {
@@ -136,6 +175,8 @@ class Collection implements ICollection
 
     /**
      * Fill the collection key
+     * @param  array $array
+     * @return this
      */
     public function fill(array $array)
     {
@@ -155,6 +196,8 @@ class Collection implements ICollection
 
     /**
      * Destroy collection
+     * @param Core\Support\Collection $collection
+     * @return void
      */
     public static function destroy($collection)
     {
@@ -163,6 +206,9 @@ class Collection implements ICollection
 
     /**
      * Filter original data collection
+     * @param  callable $callback
+     * @param  int      $mode
+     * @return this
      */
     public function filter($callback, $mode = ARRAY_FILTER_USE_KEY)
     {
@@ -173,6 +219,7 @@ class Collection implements ICollection
     /**
      * Persist the change
      * if the collection has table object property it will try to persist on database
+     * @return boolean|void
      */
     public function save()
     {
@@ -191,8 +238,9 @@ class Collection implements ICollection
 
     /**
      * Integrate Collection into Database Collection
+     * @param  string $table
+     * @return this
      */
-
     public function set_table($table)
     {
         $this->table = $table;
@@ -202,8 +250,11 @@ class Collection implements ICollection
     /**
      * Database Pagination
      */
+
     /**
      * Setting up pagination object property per page item inside collection
+     * @param  int $perPage
+     * @return this
      */
     public function set_perPage(int $perPage)
     {
@@ -213,6 +264,8 @@ class Collection implements ICollection
 
     /**
      * Setting up pagination object property total item inside collection
+     * @param  int $total
+     * @return $this
      */
     public function set_total(int $total)
     {
@@ -222,10 +275,10 @@ class Collection implements ICollection
 
     /**
      * Next Page
+     * @return string|void
      */
     public function nextPageUrl()
     {
-        // $displayed = $this->pagination['per-page'] * Request::Get()['page'];
         if ($this->pagination['total'] > ($this->pagination['per-page'] * Request::Get()['page'])) {
             return Request::URI() . '?page=' . Request::Get()['page'] + 1;
         } else {
@@ -235,6 +288,7 @@ class Collection implements ICollection
 
     /**
      * Previous Page
+     * @return string|void
      */
     public function previousPageUrl()
     {

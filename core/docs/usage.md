@@ -58,23 +58,61 @@
 
   - Collection
 
+    - Creating Collection
+
+    - Available Method
+
   - File Storage
+
+    - File Upload
 
 - Security
 
   - Authentication
 
+    - Authenticating Users
+
+    - Protecting Route
+
+    - Logging out the users
+
   - Hashing
+
+    - Configuration
+
+    - Basic Usage
+
+    - Verify
 
 - Database
 
   - Overview
 
+  - Configuration
+
   - Query
 
-  - Prepared Statement
+    - Raw Query
 
-  - Pre-Defined Database Function
+    - Prepared Statement
+
+    - List Method
+
+  - Built in Database Method
+
+    - Overview
+
+    - List Method
+
+  - Database Collection
+
+  - Database Model
+
+    - Generating Model Class
+
+    - Table Name
+
+    - List Method
 
 # The Basic
 
@@ -112,7 +150,7 @@ Once you assigned a name on given route, you may use the route's name when gener
     // Generating URI
     $uri = Route::GetRoute('user');
 
-    // Generating Redirect
+    // Redirect
     Route::Redirect('user');
 
 If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
@@ -322,3 +360,345 @@ To delete data in the session you can use the Session helper class method called
 To destroy the current session you can use these method.
 
     Session::destroy();
+
+# Digging Deeper
+
+## CLI
+
+CLI is Command Line Interface included in this framework, CLI exists at the root of your application and provide you helpful command that can assist you while building application, you may use `help` command to list all available command.
+
+    php cli help
+
+## Collection
+
+The `Core\Support\Collection` class provide simple and yet convinient wrapper with array of data, for example
+
+    $article = new Collection([
+        'title' => 'Lorem',
+        'content' => 'Lorem ipsum',
+        'author' => 'John',
+    ]);
+
+    $article->map(function ($name) {
+        return strtoupper($name);
+    });
+
+    $modifiedArticle = $article->getData(['username', 'email'])
+
+### Creating Collection
+
+As mentioned above the `Collection` class helper return collection instance for the given array.
+
+    $collection = new Collection([1, 2, 3])
+
+### Available Method
+
+- first
+- last
+- find
+- get
+- key
+- map
+- filter
+- split
+- getData
+- push
+- merge
+- remove
+- save
+
+## File Storage
+
+In this framework provide basic and yet very elegants, thanks to the `Core\Support\Filesystem\Storage` class, all the configuration on the filesystem can be located in `app/config/filesystem.php`.
+
+## Storing Files
+
+### File Uploads
+
+In web application, one of the most common use cases for storing files is storing user uploaded files such as photos or documents, in this framework makes relative easy to store uploaded file using `upload` method
+
+    use Core\Support\Filesystem\Storage;
+    use Core\Support\Http\Request;
+
+    Storage::upload(Request::File('image'));
+
+# Security
+
+## Authentication
+
+Many web application provide a way for users to authenticate with the application and login. Implementing these feature in the web application can be complex and risky, but in this framework also include buit in very basic authentication system.
+
+### Authenticating Users
+
+We will access authentication in this framework via `Core\Auth` class, now let's check out the `attempt` method, the attempt method is normaly used to handle authentication attempt from your application login form, if the authentication successfully, it will use `session` to keep the user logged in.
+
+    use Core\Auth;
+
+    Auth::attempt([
+        'username' => 'John',
+        'password' => 'John_Password'
+    ]);
+
+### Protecting Route
+
+Theres are time that the route needed to be protected for example the `/dasbhoard` should be accessible on logged in users, these route protection use middleware that can be define in route
+
+    Route::get('/dashboard', [Dashboard::class, 'index'])->middleware('auth');
+
+You can create your own middleware for security purposes and added in the `app/config/middleware.php` to register middleware for route.
+
+### Logging out the users
+
+Logging out the users using the built in authentication is very easy we can use `logout` method to log the users out.
+
+    Auth::logout();
+
+## Hashing
+
+In this framework `Core\Utils\Hash` class can provide secure Bcrpyt and Argon hashing for storing user password, by default the hashing algorithm used is `PASSWORD_DEFAULT`.
+
+Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases. When hashing passwords, slow is good. The longer an algorithm takes to hash a password, the longer it takes malicious users to generate "rainbow tables" of all possible string hash values that may be used in brute force attacks against applications.
+
+### Configuration
+
+The default hashing driver for your application can be configured in `.env` file while the hashing option can be found in `app/config/hash.php`
+
+### Basic Usage
+
+To hash a password you can call `make` method on `Core\Utils\Hash`:
+
+    use Core\Utils\Hash;
+
+    Hash::make("Something");
+
+### Verify
+
+The `check` method provided by `Hash` helper class allows you to verify that given plain-text string corresponds to given hash.
+
+    if(Hash::verify($plaintext, $hash))
+    {
+        // Do something.
+    }
+
+# Database
+
+## Overview
+
+Almost every modern web application interact with a database, in this framework interacting with database relative simple across a variety of supported databases using raw sql because it use `PDO`, while the predefined database function and Database Model currently supported in `Mysql`.
+
+## Configuration
+
+In this framework database configuration can be found inside `app/config/db.php` while the driver you wanted to use can be modified inside `.env`
+
+## Query
+
+### Raw Query
+
+Once you have configured your database connection,  you may run query using `Core\Database\DB` class, in this class it provide wide variety method to do, example doing raw query or prepared statement query and more!
+
+### `Important Note` : All the returning value from all these query is a `Core\Support\Collection`
+
+In this example we are doing raw query:
+
+Note : Since we running a raw query there is possibilty that we might run into sql injection attack.
+
+    // Selecting all data inside a table using raw sql
+    use Core\Database\DB;
+
+    $users = DB::query("SELECT * FROM users")->fetchAll();
+
+---
+
+    // Selecting specific data inside a table using raw sql
+    use Core\Database\DB;
+
+    $id = 1;
+
+    $users = DB::query("SELECT * FROM users WHERE id={$id}")->fetch();
+
+In the example above, `query` method is used to put all our sql query while the `fetchAll` method is used to fetch all the selected data, while fetch will only return one data, after that it will store inside users variable.
+
+    // Inserting data inside a table using raw sql
+    use Core\Database\DB;
+    $boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeclose();
+
+So in the example above is an simple example how to put a thing inside database's table, and there are 2 method for executing query `execute` method and `executeclose` method, these two method are slightly bit different, the diffrence is `executeclose` is executing the sql query and then close the connection, same as `fetch` and `fetchAll` method these will always close the connection.
+
+### Prepared Statement
+
+Since doing raw query is vulnerable with sql injection attack, there are available method that use prepared statement, let's do same example but using prepared statement
+
+    // Selecting all data inside a table using prepared statement
+    use Core\Database\DB;
+
+    $users_collection = DB::prepare("SELECT * FROM users")->fetchAll();
+
+---
+
+    // Selecting specific data inside a table using prepared statement
+    use Core\Database\DB;
+
+    $id = 1;
+
+    $user_collection = DB::prepare("SELECT * FROM users WHERE id=?")->fetch([$id]);
+
+---
+
+    // Inserting data inside a table using prepared statement
+    use Core\Database\DB;
+    
+    $data = ["John", "John@mail.com", "HashedPassword"];
+    $boolean  = DB::prepare("INSERT INTO users (name, email, password) VALUES(?, ?, ?)")->executeclose($data);
+
+### List Method
+
+- query
+- prepare
+- execute
+- executeclose
+- fetchAll
+- fetch
+- close
+
+## Built in Database Method
+
+### Overview
+
+Built in database method is available in `Core\Database\DB` classes, these method will help speed up development since these method just extended version of basic `DB` method.
+
+Theres are few built in database method, for example we will use the example above for demonstration:
+
+    // Selecting all data inside a table using Built in
+    use Core\Database\DB;
+
+    $users_collection = DB::table('users')->all();
+
+---
+
+    // Selecting specific data inside a table using prepared statement
+    use Core\Database\DB;
+
+    $user_collection = DB::table('users')->find(1);
+
+---
+
+    // Inserting data inside a table using prepared statement
+    use Core\Database\DB;
+
+    $data = [
+        'name' => "John",
+        'email' => "John@mail.com",
+        'password' => "hashed password"
+    ];
+
+    $boolean = DB::table('users')->insert($data);
+
+Note : to use insert method you should passed associative array instead of normal array
+
+---
+
+    // Updating data in database
+    use Core\Database\DB;
+
+    $data = [
+        'id' => 1,
+        'name' => "John Smith",
+        'email' => "John@mail.com",
+        'password' => "hashed password"
+    ];
+    
+    $boolean = DB::table('users')->update($data);
+
+---
+
+    // Deleting data in database
+    use Core\Database\DB;
+
+    $id = 1;
+
+    $boolean = DB::table('users')->delete($id);
+
+### List Method
+
+- table
+- find
+- insert
+- delete
+- update
+
+## Database Collection
+
+Since all the database returning value is in `Core\Support\Collection`, you can edit the value and save it to persist in database, for example:
+
+Note : This feature only work using `find` method
+
+        use Core\Database\DB;
+
+        $user = DB::table('users')->find(2);
+        
+        $user->fill([
+            "name" => "John Smith",
+            "email" => "John@mail.com",
+            "password" => "hashedpassword"
+        ]);
+
+        $boolean = $user->save();
+
+Or maybe you `fill` half of the data it will work regardless as long you use `fill` method.
+
+        use Core\Database\DB;
+
+        $user = DB::table('users')->find(2);
+
+        $user->fill([
+            "email" => "JohnSmith@mail.com",
+        ]);
+
+        $boolean = $user->save();
+
+## Database Model
+
+In this framework included very basic database model, this makes little bit easier when interacting with database, when using this feature each database table corresponding with `Model` that used to interact with that table, in this feature allows you to insert, update, delete record from the table.
+
+### Generating Model Class
+
+To get started, let's create model. Model typically live in the `app/model` and extends `Core\Model` class. You may use the `make:model` in CLI to generate a new model.
+
+    php cli make:model Posts
+
+After generating the class the file will looks like this
+
+    <?php
+
+    namespace App\Models;
+    use Core\Model;
+
+    class Posts extends Model
+    {
+        // Code Here
+    }
+
+### Table Name
+
+After glancing on the file above, you may noticed that we did not tell the model which database table correspond to this Posts Model, so let's add this object property inside `Posts` class
+
+    protected $table = 'post';
+
+After we add this we now have the basic CRUD using model, we can use the same name convention method in `Core\Database\DB`, like find, where, insert, delete, all.
+
+    // Selecting all data using database model
+    use App\Models\Posts;
+    
+    $posts = Posts::all();
+
+Database model will always assume that database table has primary key `id`. If necessarry, you may define `protected $primary_key` property on your model to specify a different column that serves as your model's primary key.
+
+    protected $primary_key = 'posts_id';
+
+### List Method
+
+- all
+- find
+- insert
+- delete
+- paginate

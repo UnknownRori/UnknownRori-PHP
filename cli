@@ -2,7 +2,6 @@
 <?php
 
 use Core\Console\CLI;
-use Dotenv\Dotenv;
 
 require_once('server.php');
 

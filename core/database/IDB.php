@@ -5,7 +5,7 @@ namespace Core\Database;
 interface IDB
 {
     /**
-     * Basic DB function
+     * Basic DB method
      */
     public static function query(string $query);
     public static function prepare(string $query);
@@ -16,7 +16,7 @@ interface IDB
     public function close();
 
     /**
-     * Pre Defined DB function
+     * Built in DB method
      */
     public static function table(string $table);
     public function insert(array $value = []);

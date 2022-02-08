@@ -20,7 +20,9 @@ class Route implements IRoute
 
     /**
      * Starting Point of Route class to Register URI to route
-     * Route->get|post|patch|delete('uri', [controller::class, 'method'])
+     * Route::get|post|patch|delete('uri', [controller::class, 'method'])
+     * @param  string $configRoute Configuration File
+     * @return this
      */
     public static function define($configRoute)
     {
@@ -98,6 +100,11 @@ class Route implements IRoute
         return $self;
     }
 
+    /**
+     * Register multiple route into same middleware
+     * @param  callable $callback
+     * @return void
+     */
     public static function group(callable $callback)
     {
         call_user_func($callback);
@@ -107,7 +114,7 @@ class Route implements IRoute
      * This method is used to automatic register the route
      * @param string $method Route HTTP Request Type
      * @param string $uri Route URI
-     * @param array $controller Route Controller
+     * @param array  $controller Route Controller
      */
     protected static function setRoute(string $method, string $uri, array $controller)
     {
@@ -118,7 +125,9 @@ class Route implements IRoute
     }
 
     /**
-     * TODO! for easier redirect
+     * Register route into named route
+     * @param  string $name
+     * @return this
      */
     public function name($name)
     {
@@ -133,6 +142,8 @@ class Route implements IRoute
 
     /**
      * Get named uri
+     * @param  string $name
+     * @return string uri
      */
     public static function GetRoute($name)
     {
@@ -141,6 +152,9 @@ class Route implements IRoute
 
     /**
      * Redirect to desired named uri
+     * @param  string $name route name
+     * @param  array  $data passed argumment to include on redirect
+     * @return void
      */
     public static function Redirect($name, array $data = null)
     {
@@ -159,16 +173,9 @@ class Route implements IRoute
     }
 
     /**
-     * TODO! for future SEO friendly URI
-     */
-    public function whereNumber($parameter)
-    {
-        return $this;
-    }
-
-    /**
      * Register middleware that can be called
-     * @param string $middleware MiddlewareName
+     * @param  string $middleware MiddlewareName
+     * @return this
      */
     public static function middleware($middleware)
     {
@@ -183,6 +190,7 @@ class Route implements IRoute
 
     /**
      * This method used to register the temp uri with the temp middleware
+     * @return void
      */
     protected static function setMiddleware()
     {
@@ -198,6 +206,7 @@ class Route implements IRoute
      * Run the specific route register
      * @param string $uri
      * @param string $requestType
+     * @return mixed
      */
     public function Run($uri, $requestType)
     {
@@ -211,6 +220,7 @@ class Route implements IRoute
     /**
      * Calling method in the controller
      * @param string route
+     * @return void
      */
     protected function call($route)
     {
@@ -243,21 +253,6 @@ class Route implements IRoute
         }
 
         self::$temp[$key] = $value;
-    }
-
-    /**
-     * Commented because, it might be needed later
-     */
-    // protected function get_route($uri, $requestType, $target = '')
-    // {
-    //     return $this->route[$requestType][$uri][$target];
-    // }
-
-    /**
-     * TODO! for future SEO friendly URI
-     */
-    protected function URIGenerator($route)
-    {
     }
 
     /**

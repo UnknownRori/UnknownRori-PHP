@@ -1,4 +1,4 @@
-# UnknownRori PHP (WIP)
+# UnknownRori PHP
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
@@ -119,7 +119,6 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 - ~~Model Overhaul~~
 - ~~Middleware Group~~
 - ~~Route prefix name~~
-- SEO Friendly URI
 
 # Note
 

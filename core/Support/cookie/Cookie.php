@@ -7,6 +7,7 @@ class Cookie implements ICookie
 
     /**
      * To check if the user enabled cookie
+     * @return boolean
      */
     public static function check()
     {
@@ -20,6 +21,7 @@ class Cookie implements ICookie
 
     /**
      * Set cookie
+     * @return boolean
      */
     public static function set($name, $value, $time, $path = '/')
     {
@@ -28,6 +30,7 @@ class Cookie implements ICookie
 
     /**
      * Unset cookie
+     * @return bool
      */
     public static function unset($name)
     {
@@ -36,14 +39,17 @@ class Cookie implements ICookie
 
     /**
      * Get cookie
+     * @return mixed
      */
-    public static function get($name)
+    public static function get($key = null)
     {
-        return $_COOKIE[$name];
+        if (!is_null($key)) return $_COOKIE[$key];
+        return $_COOKIE;
     }
 
     /**
      * Destroy all cookie based storage
+     * @return void
      */
     public static function destroy()
     {
