@@ -1,8 +1,8 @@
-# Usage Documentation(WIP)
+# Usage Documentation
 
 ## Table of Content
 
-- The Basic
+- The Basi
 
   - Routing
 
@@ -112,13 +112,29 @@
 
     - Table Name
 
+    - Model Relationship
+
+      - Defining Relationship
+
+        - Has Many
+
+        - Belongs To
+
     - List Method
 
 # The Basic
 
 ## Routing
 
-The most basic UnknownRori-PHP route is accept URI and Controller Class and it's method, very simple and OOP behavior without complicated configuration.
+The most basic Rori-PHP routes accept a URI and a closure, provide a simple and expressive method of defining routes and behavior without complicated routing configuration files:
+
+    Route::get('/', function () {
+        return view("welcome");
+    });
+
+Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using `controller` classes. Controllers can group related request handling logic into a single class. For example, a UserController class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/http/controller` directory.
+
+You can define a route to this controller method like so:
 
     Route::get('/', [Home::class, 'index']);
 
@@ -175,8 +191,6 @@ To assign middleware to all route inside the group, you may used group method to
 Middleware provide a convenient mechanism for inspecting and filtering HTTP requests entering your application, Additional middleware can be written to perform a variety of tasks besides authentication, All of these middleware are located in the `app/config/middleware.php`.
 
 ### Defining Middleware
-
-#### WIP
 
 To create new middleware, use `make:middleware` cli command
 
@@ -694,6 +708,57 @@ After we add this we now have the basic CRUD using model, we can use the same na
 Database model will always assume that database table has primary key `id`. If necessarry, you may define `protected $primary_key` property on your model to specify a different column that serves as your model's primary key.
 
     protected $primary_key = 'posts_id';
+
+### Model Relationship
+
+Database table are often related to one another, for example blog post may have many comments or and order could be related to to the user who place it
+
+#### Defining Relationship
+
+Defining the relationship inside your model is very simple, by using protected object called hasMany or belongsTo
+
+##### Has Many
+
+A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a user may have an infinite number of posts.
+
+    <?php
+
+    namespace App\Model;
+
+    use App\Models\Posts;
+    use Core\Model;
+
+
+    class Users extends Model
+    {
+        protected $table = "users";
+        protected $hasMany = [Posts::class, 'users_id'];
+    }
+
+To use the relationship that we already define:
+
+    Users::find(1, 'hasMany');
+
+##### Belongs To
+
+Now that we can access all of a user's posts, let's define a relationship to allow a posts to access its parent user. To define the inverse of a hasMany relationship, define a relationship method on the child model which calls the belongsTo method:
+
+    <?php
+
+    namespace App\Models;
+
+    use App\Model\Users;
+    use Core\Model;
+
+    class Posts extends Model
+    {
+        protected $table = 'post';
+        protected $belongsTo = [Users::class, 'users_id'];
+    }
+
+To use the relationship that we already define:
+
+    Posts::find(1, 'belongsTo');
 
 ### List Method
 

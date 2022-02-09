@@ -96,7 +96,7 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 
 # Usage
 
-`WIP` For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
+For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
 
 # Roadmap
 

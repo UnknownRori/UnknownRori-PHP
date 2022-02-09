@@ -114,14 +114,20 @@ class Route implements IRoute
      * This method is used to automatic register the route
      * @param string $method Route HTTP Request Type
      * @param string $uri Route URI
-     * @param array  $controller Route Controller
+     * @param array|callable  $controller Route Controller
      */
-    protected static function setRoute(string $method, string $uri, array $controller)
+    protected static function setRoute(string $method, string $uri, array|callable $controller)
     {
-        self::$route[$method][$uri] = [
-            "controller" => $controller[0],
-            "action" => $controller[1],
-        ];
+        if (is_callable($controller)) {
+            self::$route[$method][$uri] = [
+                "action" => $controller
+            ];
+        } else {
+            self::$route[$method][$uri] = [
+                "controller" => $controller[0],
+                "action" => $controller[1],
+            ];
+        }
     }
 
     /**
@@ -224,20 +230,25 @@ class Route implements IRoute
      */
     protected function call($route)
     {
-        $namespacedController = "App\Http\Controller\\{$route['controller']}";
-
-        $controller = new $namespacedController;
-        $action = $route['action'];
-
         if (array_key_exists('middleware', $route)) {
             Middleware::Run($route['middleware']);
         }
 
-        if (!method_exists($controller, $action)) {
-            KernelException::ClassMethod($route['controller'], $action);
-        }
+        if (is_callable($route['action'])) {
+            return call_user_func($route['action']);
+        } else {
 
-        return $controller->$action();
+            $namespacedController = "App\Http\Controller\\{$route['controller']}";
+            $controller = new $namespacedController;
+            $action = $route['action'];
+
+
+            if (!method_exists($controller, $action)) {
+                KernelException::ClassMethod($route['controller'], $action);
+            }
+
+            return $controller->$action();
+        }
     }
 
     /**
@@ -257,6 +268,7 @@ class Route implements IRoute
 
     /**
      * This is to dump out all the current static property
+     * @return array
      */
     public static function dump()
     {
