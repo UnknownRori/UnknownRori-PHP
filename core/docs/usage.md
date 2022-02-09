@@ -181,7 +181,7 @@ Route groups allow you to share route attributes, such as middleware across a la
 
 To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
 
-    Route::middleware('test')->group(function () {
+    Route::group('test')->by(function () {
         Route::get('/group/1', [Group::class, 'index']);
         Route::get('/group/2', [Group::class, 'index']);
     });

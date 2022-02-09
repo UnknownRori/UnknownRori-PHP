@@ -19,6 +19,16 @@ class Route implements IRoute
     private static $temp = [];
 
     /**
+     * Destroy all the temporary
+     * @param void
+     */
+    public function __destruct()
+    {
+        unset(self::$temp['uri']);
+        unset(self::$temp['method']);
+    }
+
+    /**
      * Starting Point of Route class to Register URI to route
      * Route::get|post|patch|delete('uri', [controller::class, 'method'])
      * @param  string $configRoute Configuration File
@@ -40,10 +50,10 @@ class Route implements IRoute
     {
         $self = new static;
 
-        self::setRoute('GET', $uri, $controller);
-
         self::temp('uri', $uri);
         self::temp('method', 'GET');
+
+        self::setRoute('GET', $uri, $controller);
 
         return $self;
     }
@@ -57,10 +67,10 @@ class Route implements IRoute
     {
         $self = new static;
 
-        self::setRoute('POST', $uri, $controller);
-
         self::temp('uri', $uri);
         self::temp('method', 'POST');
+
+        self::setRoute('POST', $uri, $controller);
 
         return $self;
     }
@@ -75,10 +85,10 @@ class Route implements IRoute
     {
         $self = new static;
 
-        self::setRoute('PATCH', $uri, $controller);
-
         self::temp('uri', $uri);
         self::temp('method', 'PATCH');
+
+        self::setRoute('PATCH', $uri, $controller);
 
         return $self;
     }
@@ -92,22 +102,35 @@ class Route implements IRoute
     {
         $self = new static;
 
-        self::setRoute('DELETE', $uri, $controller);
-
         self::temp('uri', $uri);
         self::temp('method', 'DELETE');
+
+        self::setRoute('DELETE', $uri, $controller);
 
         return $self;
     }
 
     /**
-     * Register multiple route into same middleware
+     * Starting point to register multiple routes into same middleware
      * @param  callable $callback
-     * @return void
+     * @return self
      */
-    public static function group(callable $callback)
+    public static function group($middleware)
     {
+        $self = new static;
+        self::temp('middleware', $middleware);
+        return $self;
+    }
+
+    /**
+     * Register multiple routes into same middleware
+     */
+    public function by(callable $callback)
+    {
+        self::temp('group_middleware', self::temp('middleware'));
         call_user_func($callback);
+        unset(self::$temp['group_middleware']);
+        unset(self::$temp['middleware']);
     }
 
     /**
@@ -127,6 +150,9 @@ class Route implements IRoute
                 "controller" => $controller[0],
                 "action" => $controller[1],
             ];
+        }
+        if (self::temp('middleware') || self::temp('group_middleware')) {
+            self::setMiddleware();
         }
     }
 
@@ -183,15 +209,15 @@ class Route implements IRoute
      * @param  string $middleware MiddlewareName
      * @return this
      */
-    public static function middleware($middleware)
+    public function middleware($middleware)
     {
-        $self = new static;
-
         self::temp('middleware', $middleware);
 
-        self::setMiddleware();
+        if (self::temp('uri')) {
+            self::setMiddleware();
+        }
 
-        return $self;
+        return $this;
     }
 
     /**
@@ -200,12 +226,18 @@ class Route implements IRoute
      */
     protected static function setMiddleware()
     {
-        self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
-            ["middleware" => self::$temp['middleware']],
-            self::$route[self::$temp['method']][self::$temp['uri']]
-        );
-
-        unset(self::$temp['middleware']);
+        if (self::temp('group_middleware')) {
+            self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
+                ["middleware" => self::$temp['group_middleware']],
+                self::$route[self::$temp['method']][self::$temp['uri']]
+            );
+        } else {
+            self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
+                ["middleware" => self::$temp['middleware']],
+                self::$route[self::$temp['method']][self::$temp['uri']]
+            );
+            unset(self::$temp['middleware']);
+        }
     }
 
     /**
