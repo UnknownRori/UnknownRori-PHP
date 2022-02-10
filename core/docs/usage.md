@@ -2,7 +2,7 @@
 
 ## Table of Content
 
-- The Basi
+- The Basic
 
   - Routing
 
@@ -397,7 +397,7 @@ The `Core\Support\Collection` class provide simple and yet convinient wrapper wi
         return strtoupper($name);
     });
 
-    $modifiedArticle = $article->getData(['username', 'email'])
+    $modifiedArticle = $article->getData();
 
 ### Creating Collection
 
