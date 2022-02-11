@@ -164,10 +164,20 @@ Named routes allow the convenient generation of URI or redirect for specific rou
 Once you assigned a name on given route, you may use the route's name when generating URI or `redirect` helper method
 
     // Generating URI
-    $uri = Route::GetRoute('user');
+    $uri = Route::GetRoute('user', ['id' => 1]);
 
     // Redirect
-    Route::Redirect('user');
+    Route::Redirect('user', ['id' => 1]);
+
+Or you can use the `route` & `redirect` helper function.
+
+    // Generate URI
+
+    $uri = route('user', ['id' => 1]);
+
+    // Redirect
+
+    $uri = redirect('user', ['id' => 1]);
 
 If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
@@ -385,9 +395,9 @@ CLI is Command Line Interface included in this framework, CLI exists at the root
 
 ## Collection
 
-The `Core\Support\Collection` class provide simple and yet convinient wrapper with array of data, for example
+The `Core\Support\Collection` class provide simple and yet convinient wrapper with array of data, to make even more convinient is using the `collect` helper function but the effect is exactly the same, for example:
 
-    $article = new Collection([
+    $article = collect([
         'title' => 'Lorem',
         'content' => 'Lorem ipsum',
         'author' => 'John',
@@ -403,7 +413,7 @@ The `Core\Support\Collection` class provide simple and yet convinient wrapper wi
 
 As mentioned above the `Collection` class helper return collection instance for the given array.
 
-    $collection = new Collection([1, 2, 3])
+    $collection = collect([1, 2, 3])
 
 ### Available Method
 
