@@ -15,7 +15,7 @@ return [
     /**
      * set allowed request resource
      */
-    "regex" => "/\.(?:png|jpg|jpeg|gif|css|js|ico)$/",
+    "regex" => "/\.(?:png|jpg|jpeg|gif|css|js|ico|svg)$/",
 
     /**
      * This is used to set additional ENV variable
