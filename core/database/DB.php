@@ -94,7 +94,7 @@ class DB implements IDB
     {
         $this->execute($value);
         $data = $this->query->fetchAll();
-        $data = new Collection($data);
+        $data = collect($data);
         $this->close();
         return $data;
     }
@@ -108,7 +108,7 @@ class DB implements IDB
     {
         $this->execute($value);
         $data = $this->query->fetch();
-        $data = new Collection($data);
+        $data = collect($data);
         $this->close();
         return $data;
     }
@@ -197,10 +197,12 @@ class DB implements IDB
 
     /**
      * Get all values inside table
+     * @param   string $column
+     * @return  \Core\Support\Collection
      */
-    public function all()
+    public function all($column = '*')
     {
-        $data = self::prepare("SELECT * FROM {$this->table}")->fetchAll();
+        $data = self::prepare("SELECT {$column} FROM {$this->table}")->fetchAll();
         return $data;
     }
 

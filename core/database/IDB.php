@@ -24,6 +24,6 @@ interface IDB
     public function update(array $value);
     public function find($value, string $column);
     public function where(string $column, string $value, string $logic = '=');
-    public function all();
+    public function all($column);
     public function paginate(int $perPage);
 }
