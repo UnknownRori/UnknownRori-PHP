@@ -162,6 +162,16 @@ class Collection implements ICollection
         return $this;
     }
 
+    /**
+     * Pop the current collection data
+     * @return  this
+     */
+    public function pop()
+    {
+        array_pop($this->data);
+        return $this;
+    }
+
     /** 
      * Merge the input array into Collection
      * @param  array $array
@@ -234,6 +244,16 @@ class Collection implements ICollection
 
             return DB::table($this->table)->update($this->data);
         }
+    }
+
+    /**
+     * Replace all the data property in collection using original property
+     * @return  this
+     */
+    public function revert()
+    {
+        $this->data = $this->original;
+        return $this;
     }
 
     /**
