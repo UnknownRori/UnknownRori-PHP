@@ -10,8 +10,8 @@ interface IRoute
     public static function delete($uri, $controller);
     public static function patch($uri, $controller);
     public function middleware($middleware);
-    public static function GetRoute($name);
-    public static function Redirect($name);
+    public static function GetRoute($name, $data);
+    public static function Redirect($name, $data);
     public function Run($uri, $requestType);
     public function name($name);
 }

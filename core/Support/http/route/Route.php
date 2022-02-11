@@ -177,9 +177,18 @@ class Route implements IRoute
      * @param  string $name
      * @return string uri
      */
-    public static function GetRoute($name)
+    public static function GetRoute($name, $data = [])
     {
-        return self::$nameRoute[$name];
+        $uri = self::$nameRoute[$name];
+
+        $value = array_values($data);
+        $key = array_keys($data);
+
+        for ($i = 0; $i < count($data); $i++) {
+            $uri = $uri . "{$key[$i]}={$value[$i]}&";
+        }
+
+        return $uri;
     }
 
     /**
@@ -188,18 +197,9 @@ class Route implements IRoute
      * @param  array  $data passed argumment to include on redirect
      * @return void
      */
-    public static function Redirect($name, array $data = null)
+    public static function Redirect($name, $data = [])
     {
-        if (is_null($data)) {
-            $uri = self::GetRoute($name);
-        } else {
-            $uri = self::GetRoute($name) . '?';
-            $value = array_values($data);
-            $key = array_keys($data);
-            for ($i = 0; $i < count($data); $i++) {
-                $uri = $uri . "{$key[$i]}={$value[$i]}&";
-            }
-        }
+        $uri = self::GetRoute($name, $data);
 
         return header("Location: {$uri}");
     }
