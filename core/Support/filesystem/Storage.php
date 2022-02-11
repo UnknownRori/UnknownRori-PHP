@@ -23,7 +23,7 @@ class Storage
     {
         $path = require($_ENV['APP_DIR'] . '/config/storage.php');
         self::$uploadDir = $_ENV['ROOT_PROJECT'] . $path['path'];
-        self::$option = new Collection(self::$option);
+        self::$option = collect(self::$option);
         if (!is_null($option)) {
             self::$option->fill($option);
             self::$option->save();
