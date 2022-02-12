@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Core\Auth as CoreAuth;
+use UnknownRori\UnknownRoriPHPCore\Auth\Auth as AuthAuth;
 
 class auth
 {
     public function Run()
     {
-        if (!CoreAuth::check()) header("Location: /login");
+        if (!AuthAuth::check()) header("Location: /login");
     }
 }

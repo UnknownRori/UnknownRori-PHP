@@ -1,6 +1,6 @@
 <?php
 
-use Core\Support\Http\Route;
+use UnknownRori\UnknownRoriPHPCore\Http\Route;
 
 Route::get('/', function () {
     return view("welcome");
