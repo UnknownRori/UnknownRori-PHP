@@ -19,6 +19,6 @@ return [
      * Middleware::Run('namedMiddleware');
      */
     'named' => [
-        'auth' => App\Http\Middleware\auth::class
+        'auth' => App\Http\Middleware\Authentication::class
     ]
 ];
