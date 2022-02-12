@@ -1,7 +1,8 @@
 # UnknownRori PHP
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![GitHub repo size](https://img.shields.io/github/repo-size/UnknownRori/unknownrori-php-core)
+[![](https://tokei.rs/b1/github/UnknownRori/UnknownRori-PHP)](https://github.com/XAMPPRocky/tokei)
+![GitHub repo size](https://img.shields.io/github/repo-size/UnknownRori/UnknownRori-PHP)
 
 ## Table of Contents
 
@@ -67,6 +68,10 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 - run `composer dump-autoload`.
 - create something amazing!
 
+Or using Composer
+
+`composer create-project unknownrori/unknownrori-php`
+
 ---
 
 ### Requirement
@@ -92,11 +97,10 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 
 - `vlucas/phpdotenv`.
 - `symfony/var-dumper`.
-- `unknownrori/unknownrori-php-core`
 
 # Usage
 
-For usage please read [this](https://github.com/UnknownRori/unknownrori-php-core/blob/master/usage.md) for more information.
+For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
 
 # Roadmap
 

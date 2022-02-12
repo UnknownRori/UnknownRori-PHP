@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use UnknownRori\UnknownRoriPHPCore\Model\Model;
+use Core\Model;
 
 class Users extends Model
 {

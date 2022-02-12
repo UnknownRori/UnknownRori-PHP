@@ -3,13 +3,17 @@
     "description": "The Rori-PHP Framework",
     "type": "project",
     "require-dev": {
-        "unknownrori/unknownrori-php-core": "^0.9.2",
-        "symfony/var-dumper": "^6.0"
+        "symfony/var-dumper": "^6.0",
+        "vlucas/phpdotenv": "^5.4"
     },
     "license": "MIT",
     "autoload": {
         "classmap": [
-            "app/"
+            "app/",
+            "core/"
+        ],
+        "files": [
+            "core/utils/helpers.php"
         ]
     }
 }

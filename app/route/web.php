@@ -1,7 +1,7 @@
 <?php
 
-use UnknownRori\UnknownRoriPHPCore\Http\Route;
+use Core\Support\Http\Route;
 
 Route::get('/', function () {
     return view("welcome");
-})->name('home');
+})->name('home')->middleware('auth');

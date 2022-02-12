@@ -1,6 +1,6 @@
 <?php
 
-use UnknownRori\UnknownRoriPHPCore\Kernel;
+use Core\Kernel;
 
 require_once(__DIR__ . '/../server.php');
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use UnknownRori\UnknownRoriPHPCore\Auth\Auth;
+use Core\Auth;
 
 class Authentication
 {
