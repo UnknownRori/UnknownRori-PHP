@@ -52,6 +52,16 @@ class Session implements ISession
      */
     public static function unset($name)
     {
-        $_SESSION[$name] = null;
+        unset($_SESSION[$name]);
+    }
+
+    /**
+     * Check the data inside the session if exist return true if doesn't exist return false
+     * @return boolean
+     */
+    public static function check($name)
+    {
+        if (array_key_exists($name, Session::get())) return true;
+        return false;
     }
 }
