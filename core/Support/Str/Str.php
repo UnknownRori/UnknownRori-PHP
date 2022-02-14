@@ -118,6 +118,6 @@ class Str
      */
     public function substr(int $offset, int $length)
     {
-        return substr($this->data, $offset, $length);
+        return $this->data = substr($this->data, $offset, $length);
     }
 }
