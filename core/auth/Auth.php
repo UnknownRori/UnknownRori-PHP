@@ -52,6 +52,12 @@ class Auth implements IAuth
         if (!$data->is_null()) {
             if (Hash::verify($credentials[self::$verify_key], $data->get(self::$verify_key))) {
                 $data->remove(self::$guarded);
+
+                $data->filter(function ($key) {
+                    if (is_int($key)) return false;
+                    return true;
+                });
+
                 $data->save();
                 Session::set(self::$UserSession, $data);
             } else {
@@ -68,7 +74,7 @@ class Auth implements IAuth
      */
     public static function check()
     {
-        if (Session::get(self::$UserSession)) return true;
+        if (Session::check(self::$UserSession)) return true;
         return false;
     }
 
