@@ -1,5 +1,6 @@
 <?php
 
+use Core\Auth;
 use eftec\bladeone\BladeOne;
 
 /**
@@ -26,6 +27,11 @@ function view($view, $data = [])
     if (file_exists("{$_ENV['views']}/{$view}.blade.php")) {
         $blade = new BladeOne($_ENV['views'], $_ENV['cache'], BladeOne::MODE_DEBUG);
 
+        if (Auth::check()) {
+            $blade->setAuth(Auth::User()->get('name'));
+        }
+
+        // $blade->pipeEnable = true;
         echo $blade->run($view, $data);
     } else {
         extract($data);
