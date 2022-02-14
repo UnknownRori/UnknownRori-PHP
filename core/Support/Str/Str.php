@@ -109,4 +109,15 @@ class Str
     {
         return $this->data;
     }
+
+    /**
+     * Return Part of the string
+     * @param  int $offset
+     * @param  int $length
+     * @return string
+     */
+    public function substr(int $offset, int $length)
+    {
+        return substr($this->data, $offset, $length);
+    }
 }
