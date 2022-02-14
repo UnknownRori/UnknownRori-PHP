@@ -29,13 +29,9 @@ class Kernel implements IKernel
     public static function Start()
     {
         $App = new static;
-        if (file_exists($_ENV['ROOT_PROJECT'] . '/.env')) {
-            Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
-        }
 
-        array_filter($App->option['ENV'], function ($value, $key) {
-            $_ENV[$key] = $value;
-        }, ARRAY_FILTER_USE_BOTH);
+        $App->loadEnv();
+        $App->loadConfig();
 
         set_exception_handler(function ($e) {
             echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
@@ -57,5 +53,19 @@ class Kernel implements IKernel
         }
 
         return $App;
+    }
+
+    public function loadEnv()
+    {
+        if (file_exists($_ENV['ROOT_PROJECT'] . '/.env')) {
+            Dotenv::createImmutable($_ENV['ROOT_PROJECT'])->load();
+        }
+    }
+
+    public function loadConfig()
+    {
+        array_filter($this->option['ENV'], function ($value, $key) {
+            $_ENV[$key] = $value;
+        }, ARRAY_FILTER_USE_BOTH);
     }
 }

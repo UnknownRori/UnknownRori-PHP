@@ -15,5 +15,8 @@
         "files": [
             "core/utils/helpers.php"
         ]
+    },
+    "require": {
+        "eftec/bladeone": "^4.4"
     }
 }

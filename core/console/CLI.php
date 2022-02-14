@@ -2,6 +2,7 @@
 
 namespace Core\Console;
 
+use Core\Kernel;
 use Exception;
 
 class CLI
@@ -27,6 +28,9 @@ class CLI
 
     public static function Command()
     {
+        $app = new Kernel();
+        $app->loadConfig();
+
         /**
          * php cli [command] [type] [name]  | php cli make controller CatController
          * php cli [command] [type]         | php cli help make
@@ -43,6 +47,8 @@ class CLI
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
             echo (shell_exec("composer dump-autoload"));
+        } else if (self::$argumments[0] == "cache:clear") {
+            echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['cache']}"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
             if (count(self::$argumments) < 2) return "{$make_warn} controller";
             require('template/controller.php');
