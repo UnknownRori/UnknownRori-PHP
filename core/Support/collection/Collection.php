@@ -87,7 +87,7 @@ class Collection implements ICollection
      */
     public function is_null()
     {
-        return is_null($this->original);
+        return is_null($this->data);
     }
 
     /**
@@ -95,24 +95,24 @@ class Collection implements ICollection
      */
 
     /**
-     * Map the Original Value of Collection
+     * Map the Data Value of Collection
      * @param  callable @callback
      * @return array
      */
     public function map($callback)
     {
-        $this->data = array_map($callback, $this->original);
+        $this->data = array_map($callback, $this->data);
         return $this;
     }
 
     /**
-     * Split the Original Value of Collection into smaller array
+     * Split the Data Value of Collection into smaller array
      * @param  int $length
      * @return array
      */
     public function split(int $length)
     {
-        $this->data = array_chunk($this->original, $length);
+        $this->data = array_chunk($this->data, $length);
         return $this;
     }
 
@@ -124,7 +124,7 @@ class Collection implements ICollection
     public function remove(array $key)
     {
         for ($j = 0; $j < count($key); $j++) {
-            if (array_key_exists($key[$j], $this->original)) {
+            if (array_key_exists($key[$j], $this->data)) {
                 unset($this->data[$key[$j]]);
             }
         }
@@ -222,7 +222,7 @@ class Collection implements ICollection
      */
     public function filter($callback, $mode = ARRAY_FILTER_USE_KEY)
     {
-        $this->data = array_filter($this->original, $callback, $mode);
+        $this->data = array_filter($this->data, $callback, $mode);
         return $this;
     }
 
