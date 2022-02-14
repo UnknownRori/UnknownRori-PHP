@@ -27,7 +27,13 @@ class Hash
         }
     }
 
-    public static function verify($value, $hash)
+    /**
+     * Check the given string match with the hash
+     * @param  string  $value
+     * @param  string  $hash
+     * @return boolean
+     */
+    public static function check($value, $hash)
     {
         return password_verify($value, $hash);
     }
