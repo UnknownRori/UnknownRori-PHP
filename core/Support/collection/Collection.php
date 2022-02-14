@@ -106,6 +106,27 @@ class Collection implements ICollection
     }
 
     /**
+     * Remove Integer Key inside the collection
+     */
+    public function removeKeyInt()
+    {
+        if (is_array($this->first())) {
+            $this->map(function ($data) {
+                return array_filter($data, function ($key) {
+                    if (is_int($key)) return false;
+                    return true;
+                }, ARRAY_FILTER_USE_KEY);
+            });
+        } else {
+            $this->filter(function ($key) {
+                if (is_int($key)) return false;
+                return true;
+            });
+        }
+        $this->update();
+    }
+
+    /**
      * Split the Data Value of Collection into smaller array
      * @param  int $length
      * @return array
@@ -233,7 +254,7 @@ class Collection implements ICollection
      */
     public function save()
     {
-        $this->original = $this->data;
+        $this->update();
         if (!is_null($this->table)) {
             $this->filter(function ($key) {
                 if (is_int($key)) {
@@ -244,6 +265,14 @@ class Collection implements ICollection
 
             return DB::table($this->table)->update($this->data);
         }
+    }
+
+    /**
+     * 
+     */
+    protected function update()
+    {
+        $this->original = $this->data;
     }
 
     /**

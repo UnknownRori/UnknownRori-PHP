@@ -446,11 +446,13 @@ As mentioned above the `Collection` class helper return collection instance for 
 - filter
 - split
 - getData
+- removeKeyInt
 - push
 - pop
 - merge
 - remove
 - save
+- revert
 
 ## Str
 

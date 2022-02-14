@@ -94,7 +94,10 @@ class DB implements IDB
     {
         $this->execute($value);
         $data = $this->query->fetchAll();
+
         $data = collect($data);
+        $data->removeKeyInt();
+
         $this->close();
         return $data;
     }
@@ -108,7 +111,10 @@ class DB implements IDB
     {
         $this->execute($value);
         $data = $this->query->fetch();
+
         $data = collect($data);
+        $data->removeKeyInt();
+
         $this->close();
         return $data;
     }
