@@ -1,1 +1,4 @@
 *.php linguist-language=PHP
+*.blade.php linguist-language=blade
+*.css linguist-language=css
+*.js linguist-language=javascript
