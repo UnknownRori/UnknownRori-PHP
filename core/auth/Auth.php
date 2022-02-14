@@ -50,7 +50,7 @@ class Auth implements IAuth
     {
         $data = DB::table(self::$table)->find($credentials[self::$unique_key], self::$unique_key);
         if (!$data->is_null()) {
-            if (Hash::verify($credentials[self::$verify_key], $data->get(self::$verify_key))) {
+            if (Hash::check($credentials[self::$verify_key], $data->get(self::$verify_key))) {
                 $data->remove(self::$guarded);
 
                 $data->filter(function ($key) {
