@@ -78,12 +78,13 @@ Or using Composer
 
 > #### Minimum
 
-- `PHP : 7.3`.
+- `PHP : 7.4`.
 - `Composer`.
 
 > #### Recommended
 
 - `PHP : 8+`.
+- `Npm`
 - `Database : Yes`.
 
 > #### Tested Database
@@ -97,6 +98,7 @@ Or using Composer
 
 - `vlucas/phpdotenv`.
 - `symfony/var-dumper`.
+- `eftec/bladeone`
 
 # Usage
 

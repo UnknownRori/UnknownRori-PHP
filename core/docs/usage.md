@@ -38,6 +38,8 @@
 
     - Passing Data to Views
 
+    - Blade One
+
   - Session
 
     - Interacting with the Session
@@ -59,6 +61,12 @@
   - Collection
 
     - Creating Collection
+
+    - Available Method
+
+  - Str
+
+    - Creating Str
 
     - Available Method
 
@@ -338,6 +346,18 @@ As you saw in the previous example, you may pass an array of data to views to ma
 
 When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
 
+### Blade One
+
+`Blade One` is standalone blade package created by EFTEC to learn more about this click [this](https://github.com/EFTEC/BladeOne), but the package basicaly do this, first you create .blade.php file and the BladeOne will compile it to make it work as php file.
+
+Example :
+
+    {{ $foo }}
+
+it will compiled as
+
+    <?php echo \htmlentities($foo, ENT_QUOTES, 'UTF-8', false); ?>
+
 ## Session
 
 ### Retrieve Data
@@ -427,9 +447,47 @@ As mentioned above the `Collection` class helper return collection instance for 
 - split
 - getData
 - push
+- pop
 - merge
 - remove
 - save
+
+## Str
+
+`\Core\Support\Str` provide simple and yet convinient String function wrapper, it also come with Str helper function to make life even easier.
+
+To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
+
+    // Using helper hunction
+
+    $str = Str('Foo');
+
+    // Using the class itself
+    use Core\Support\Str\Str;
+
+    $str = new Str('Foo');
+
+Example usage
+
+    // Using helper function
+
+    $str = Str('foo')->upper(); // it will return FOO instead of Foo
+
+### Available Method
+
+- upper
+- split
+- explode
+- ltrim
+- upperfirst
+- upperfirstword
+- count
+- length
+- lower
+- get
+- substr
+
+### Creating Str
 
 ## File Storage
 
@@ -499,7 +557,7 @@ To hash a password you can call `make` method on `Core\Utils\Hash`:
 
 The `check` method provided by `Hash` helper class allows you to verify that given plain-text string corresponds to given hash.
 
-    if(Hash::verify($plaintext, $hash))
+    if(Hash::check($plaintext, $hash))
     {
         // Do something.
     }
