@@ -7,7 +7,6 @@ use Core\Support\Http\Route;
 use Core\Support\Http\Request;
 use Core\Support\Session;
 use Dotenv\Dotenv;
-use Exception;
 
 /**
  * Kernel of UnknownRori PHP Framework
@@ -28,17 +27,12 @@ class Kernel implements IKernel
      */
     public static function Start()
     {
+        KernelException::Init();
+
         $App = new static;
 
         $App->loadEnv();
         $App->loadConfig();
-
-        set_exception_handler(function ($e) {
-            echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
-            throw new Exception($e);
-            echo '</pre>';
-            die;
-        });
 
         Session::start($App->option['session']);
 

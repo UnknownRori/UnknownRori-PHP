@@ -9,6 +9,21 @@ use Exception;
  */
 class KernelException implements IException
 {
+
+    /**
+     * Initialize UnknownRori-PHP Custom Exception Handler
+     * @return  void
+     */
+    public static function Init()
+    {
+        set_exception_handler(function ($e) {
+            echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
+            throw new Exception($e);
+            echo '</pre>';
+            die;
+        });
+    }
+
     /**
      * Throw Exception about Route not defined
      */
