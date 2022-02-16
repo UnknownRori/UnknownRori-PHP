@@ -10,7 +10,7 @@ return [
      * example : Middleware::RunAll('runtime');
      */
     'runtime' => [
-        //
+        App\Http\Middleware\TimeExecutionMonitor::class,
     ],
 
     /**
