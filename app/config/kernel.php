@@ -24,5 +24,6 @@ return [
         'ERROR_STYLE' => "background:#f00; color:white; max-width: 100vw; white-space: pre-wrap; padding: 2rem; line-height: 1.5rem",
         'views' => "{$_ENV['APP_DIR']}/views",
         'cache' => "app/cache",
+        'view_cache' => "app/cache/views",
     ]
 ];

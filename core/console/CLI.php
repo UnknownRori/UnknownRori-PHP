@@ -48,7 +48,7 @@ class CLI
         } else if (self::$argumments[0] == "autoload") {
             echo (shell_exec("composer dump-autoload"));
         } else if (self::$argumments[0] == "cache:clear") {
-            echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['cache']}"));
+            echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['view_cache']}"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
             if (count(self::$argumments) < 2) return "{$make_warn} controller";
             require('template/controller.php');
