@@ -25,10 +25,10 @@ use eftec\bladeone\BladeOne;
 function view($view, $data = [])
 {
     if (file_exists("{$_ENV['views']}/{$view}.blade.php")) {
-        $blade = new BladeOne($_ENV['views'], $_ENV['cache'], BladeOne::MODE_DEBUG);
+        $blade = new BladeOne($_ENV['views'], $_ENV['view_cache'], BladeOne::MODE_DEBUG);
 
         if (Auth::check()) {
-            $blade->setAuth(Auth::User()->get('name'));
+            $blade->setAuth(Auth::User()->get(Auth::$unique_key));
         }
 
         // $blade->pipeEnable = true;

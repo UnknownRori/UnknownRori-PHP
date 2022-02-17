@@ -12,7 +12,7 @@ class Auth implements IAuth
     protected static $table = 'users';
     protected static $UserSession = 'USER';
     protected static $primary_key = 'id';
-    protected static $unique_key = 'name';
+    public static $unique_key = 'name';
     protected static $verify_key = 'password';
     protected static $guarded = ['password', 'email'];
     protected $userData;
@@ -52,8 +52,6 @@ class Auth implements IAuth
         if (!$data->is_null()) {
             if (Hash::check($credentials[self::$verify_key], $data->get(self::$verify_key))) {
                 $data->remove(self::$guarded);
-
-                $data->removeKeyInt();
 
                 $data->save();
                 Session::set(self::$UserSession, $data);
