@@ -8,7 +8,7 @@ use Core\Support\Http\Route;
  * @param  array $data
  * @return void
  */
-function redirect($name, $data = null)
+function redirect($name, $data = [])
 {
     return Route::Redirect($name, $data);
 }
@@ -19,7 +19,7 @@ function redirect($name, $data = null)
  * @param  array $data
  * @return string
  */
-function route($name, $data = null)
+function route($name, $data = [])
 {
     return Route::GetRoute($name, $data);
 }
