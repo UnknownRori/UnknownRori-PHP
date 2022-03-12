@@ -33,6 +33,7 @@ class Kernel implements IKernel
 
         $App->loadEnv();
         $App->loadConfig();
+        $App->loadAuth();
 
         Session::start($App->option['session']);
 
@@ -61,5 +62,10 @@ class Kernel implements IKernel
         array_filter($this->option['ENV'], function ($value, $key) {
             $_ENV[$key] = $value;
         }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    public function loadAuth()
+    {
+        return new Auth();
     }
 }

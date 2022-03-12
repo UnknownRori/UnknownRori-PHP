@@ -9,13 +9,14 @@ use Core\Utils\Hash;
 
 class Auth implements IAuth
 {
-    protected static $table = 'users';
-    protected static $UserSession = 'USER';
-    protected static $primary_key = 'id';
-    public static $unique_key = 'name';
-    protected static $verify_key = 'password';
-    protected static $guarded = ['password', 'email'];
+    protected static $option;
     protected $userData;
+
+    public function __construct()
+    {
+        self::$option = require(env('APP_DIR') . '/config/auth.php');
+        return $this;
+    }
 
     /**
      * Get UserData from session
@@ -24,7 +25,7 @@ class Auth implements IAuth
     public static function User()
     {
         $User = new static;
-        $User->userData = Session::get(self::$UserSession);
+        $User->userData = Session::get(self::$option['session_name']);
         return $User;
     }
 
@@ -48,18 +49,18 @@ class Auth implements IAuth
      */
     public static function attempt($credentials)
     {
-        $data = DB::table(self::$table)->find($credentials[self::$unique_key], self::$unique_key);
+        $data = DB::table(self::$option['table'])->find($credentials[self::$option['unique_key']], self::$option['unique_key']);
         if (!$data->is_null()) {
-            if (Hash::check($credentials[self::$verify_key], $data->get(self::$verify_key))) {
-                $data->remove(self::$guarded);
+            if (Hash::check($credentials[self::$option['verify_key']], $data->get(self::$option['verify_key']))) {
+                $data->remove(self::$option['guarded']);
 
                 $data->save();
-                Session::set(self::$UserSession, $data);
+                Session::set(self::$option['session_name'], $data);
             } else {
                 Collection::destroy($data);
             }
         } else {
-            Session::unset(self::$UserSession);
+            Session::unset(self::$option['session_name']);
         }
     }
 
@@ -69,7 +70,7 @@ class Auth implements IAuth
      */
     public static function check()
     {
-        if (Session::check(self::$UserSession)) return true;
+        if (Session::check(self::$option['session_name'])) return true;
         return false;
     }
 
@@ -79,6 +80,6 @@ class Auth implements IAuth
      */
     public static function logout()
     {
-        Session::unset(self::$UserSession);
+        Session::unset(self::$option['session_name']);
     }
 }
