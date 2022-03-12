@@ -5,7 +5,7 @@ namespace Core;
 use Core\Database\DB;
 use Exception;
 
-class Model implements IModel
+class BaseModel implements IBaseModel
 {
     protected $table;
 

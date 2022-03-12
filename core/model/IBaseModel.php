@@ -2,7 +2,7 @@
 
 namespace Core;
 
-interface IModel
+interface IBaseModel
 {
     public static function find($id, $relation = null);
     public static function all($relation = null);

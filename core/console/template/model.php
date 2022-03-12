@@ -5,9 +5,9 @@ function controller($name)
     return "<?php
 
 namespace App\Models;
-use Core\Model;
+use Core\BaseModel;
 
-class {$name} extends Model
+class {$name} extends BaseModel
 {
     // Code Here
 }
