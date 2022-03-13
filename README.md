@@ -105,7 +105,7 @@ Note : Master branch in this repository is used for development do not use this 
 
 # Usage
 
-For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information.
+For usage please read [this](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md) for more information, Or you can use the local documentation inside the `Core/docs/usage.md`.
 
 # Roadmap
 
