@@ -523,6 +523,29 @@ We will access authentication in this framework via `Core\Auth` class, now let's
         'password' => 'John_Password'
     ]);
 
+You can customize `Auth` class behavior inside the `app/config/auth.php`
+
+    return [
+        'table' => 'users',
+        'session_name' => 'USER',
+        'primary_key' => 'id',
+        'unique_key' => 'name',
+        'verify_key' => 'password',
+        'guarded' => ['password', 'email'],
+    ];
+
+`table` key is used for target verification table.
+
+`session_name` key  is used for session name that will be registered inside the server.
+
+`primary_key` key is primary key inside target table.
+
+`unique_key` key is unique key column inside target table, this will be used for verification.
+
+`verify_key` key is password column that will be used for verificate the unique_key (`username` for example).
+
+`guarded` key is used for filtering data that will be retrived when the verification success.
+
 ### Protecting Route
 
 Theres are time that the route needed to be protected for example the `/dasbhoard` should be accessible on logged in users, these route protection use middleware that can be define in route
