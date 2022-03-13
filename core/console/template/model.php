@@ -12,5 +12,5 @@ class {$name} extends BaseModel
     // Code Here
 }
 
-    ";
+";
 }

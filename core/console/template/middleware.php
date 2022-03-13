@@ -13,6 +13,5 @@ class {$name}
         // Code Here
     }
 }
-
-    ";
+";
 }
