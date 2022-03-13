@@ -28,7 +28,7 @@ function view($view, $data = [])
         $blade = new BladeOne($_ENV['views'], $_ENV['view_cache'], BladeOne::MODE_DEBUG);
 
         if (Auth::check()) {
-            $blade->setAuth(Auth::User()->get(Auth::$unique_key));
+            $blade->setAuth(Auth::User()->get(Auth::$option['unique_key']));
         }
 
         // $blade->pipeEnable = true;
