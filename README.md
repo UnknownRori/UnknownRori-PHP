@@ -62,8 +62,9 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 
 # Installation
 
-- Clone this repository.
-- enter the cloned directory.
+- Enter the release page in this repository.
+- Download the latest version.
+- enter the downloaded folder.
 - run `composer install`
 - run `composer dump-autoload`.
 - create something amazing!
@@ -71,6 +72,8 @@ Lastly, after the client get the response the `Runtime Middleware` will fired fo
 Or using Composer
 
 `composer create-project unknownrori/unknownrori-php`
+
+Note : Master branch in this repository is used for development do not use this version for development of new website or something.
 
 ---
 
