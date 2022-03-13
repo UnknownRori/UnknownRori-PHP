@@ -8,6 +8,7 @@ use Exception;
 class CLI
 {
     protected static $argumments = [];
+    public static $version = "2.0 Alpha \n";
 
     /**
      * Initialize CLI
@@ -19,7 +20,7 @@ class CLI
         array_shift($argv);
         self::$argumments = $argv;
         if (!$argv) {
-            echo "Welcome to the Rori-PHP CLI\n";
+            echo "Welcome to the UnknownRori-PHP CLI\n";
             echo "type help for more information\n";
         } else {
             echo self::Command();
@@ -31,19 +32,15 @@ class CLI
         $app = new Kernel();
         $app->loadConfig();
 
-        /**
-         * php cli [command] [type] [name]  | php cli make controller CatController
-         * php cli [command] [type]         | php cli help make
-         * [command] [type] [name]
-         *      ^
-         */
-
         $make_warn = "Please add name to the";
         $list_command = " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
 
         if (self::$argumments[0] == "help") {
             echo $list_command;
+        } else if (self::$argumments[0] == "version") {
+            echo "UnknownRori-PHP " . self::$version;
         } else if (self::$argumments[0] == "serve") {
+            echo "Starting UnknownRori PHP development server : http://127.0.0.1:8000. \n";
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
         } else if (self::$argumments[0] == "autoload") {
             echo (shell_exec("composer dump-autoload"));
@@ -70,11 +67,13 @@ class CLI
     }
 
     /**
-     * 
+     * Create file in desired location using template provided inside console/template directory.
+     * @param  mixed  $content
+     * @param  string $Path
      */
-    protected static function write($content, $appPath)
+    protected static function write($content, $Path)
     {
-        $template = fopen("{$_ENV['APP_DIR']}/{$appPath}", "w");
+        $template = fopen("{$_ENV['APP_DIR']}/{$Path}", "w");
         $txt = "{$content}";
         fwrite($template, $txt);
         fclose($template);
