@@ -9,7 +9,7 @@ use Core\Utils\Hash;
 
 class Auth implements IAuth
 {
-    protected static $option;
+    public static $option;
     protected $userData;
 
     public function __construct()
