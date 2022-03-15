@@ -31,6 +31,7 @@ class Collection implements ICollection
      */
     public function first()
     {
+        if (!$this->is_null()) return False;
         return $this->original[0];
     }
 
@@ -40,6 +41,7 @@ class Collection implements ICollection
      */
     public function last()
     {
+        if (!$this->is_null()) return False;
         return $this->original[count($this->original) - 1];
     }
 
@@ -87,7 +89,7 @@ class Collection implements ICollection
      */
     public function is_null()
     {
-        return is_null($this->data);
+        return count($this->data) > 0;
     }
 
     /**
