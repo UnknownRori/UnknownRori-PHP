@@ -131,10 +131,10 @@ class BaseModel implements IBaseModel
      * @param  string $logic
      * @return \Core\Support\Collection
      */
-    public static function where($column, $value, $logic = '=')
+    public static function where($column, $value, $logic = '=', $method = 'fecthAll')
     {
         $self = new static;
-        return DB::table($self->table)->where($column, $value, $logic);
+        return DB::table($self->table)->where($column, $value, $method, $logic);
     }
 
     /**
