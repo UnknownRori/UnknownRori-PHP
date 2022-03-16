@@ -58,7 +58,9 @@ class BaseModel implements IBaseModel
                         return true;
                     });
                 }
+
                 $result->save();
+                $result->set_table($self->table);
 
                 return $result;
             } else {
@@ -67,7 +69,7 @@ class BaseModel implements IBaseModel
         }
 
 
-        return DB::prepare("SELECT * FROM {$self->table} WHERE {$self->primary_key}=?")->fetch([$id]);
+        return DB::table($self->table)->find($id);
     }
 
     /**
@@ -112,13 +114,13 @@ class BaseModel implements IBaseModel
                 });
 
                 $result->save();
+                $result->set_table($self->table);
 
                 return $result;
             } else {
                 throw new Exception("Undefined {$relation}, did you forget to attach these property in Model??");
             }
         }
-
         return DB::table($self->table)->all();
     }
 

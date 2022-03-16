@@ -17,8 +17,14 @@ class Collection implements ICollection
      */
     public function __construct($data)
     {
-        $this->original = $data;
-        $this->data = $data;
+        if(is_array($data)) {
+            $this->original = $data;
+            $this->data = $data;
+            return;
+        }
+        
+        $this->original = [$data];
+        $this->data = [$data];
     }
 
     /**
@@ -31,8 +37,8 @@ class Collection implements ICollection
      */
     public function first()
     {
-        if (!$this->is_null()) return False;
-        return $this->original[0];
+        if ($this->is_null()) return False;
+        return $this->data[0];
     }
 
     /**
@@ -41,8 +47,8 @@ class Collection implements ICollection
      */
     public function last()
     {
-        if (!$this->is_null()) return False;
-        return $this->original[count($this->original) - 1];
+        if ($this->is_null()) return False;
+        return $this->data[count($this->data) - 1];
     }
 
     /**
@@ -51,7 +57,7 @@ class Collection implements ICollection
      */
     public function find($needle)
     {
-        return array_search($needle, $this->original);
+        return array_search($needle, $this->data);
     }
 
     /**
@@ -61,17 +67,22 @@ class Collection implements ICollection
      */
     public function get($key = null)
     {
-        if (!is_null($key)) {
-            if (is_array($key)) {
-                return array_map(function ($key) {
-                    return $this->original[$key];
-                }, $key);
-            } else {
-                return $this->original[$key];
-            }
-        };
+        if(!$this->is_null()) {
+            if (!is_null($key)) {
+                if (is_array($key)) {
+                    return array_map(function ($key) {
+                        return $this->data[$key];
+                    }, $key);
+                }
+                if(!$this->is_null($key)) {
+                    return $this->data[$key];
+                }
 
-        return $this->original;
+                return "";
+            };
+            return $this->data;
+        }
+        return "";
     }
 
     /**
@@ -80,16 +91,18 @@ class Collection implements ICollection
      */
     public function key()
     {
-        return array_keys($this->original);
+        return array_keys($this->data);
     }
 
     /**
      * Check if original collection is null or not
      * @return boolean
      */
-    public function is_null()
+    public function is_null($key = null)
     {
-        return count($this->data) > 0;
+        if(is_null($key)) return count($this->data) == 0;
+        else return !array_key_exists($key, $this->data);
+        return False;
     }
 
     /**
@@ -152,26 +165,6 @@ class Collection implements ICollection
             }
         }
         return $this;
-    }
-
-    /**
-     * Fetch current manipulated data
-     * @param  string|array $key
-     * @return mixed
-     */
-    public function getData(array|string $key = null)
-    {
-        if (!is_null($key)) {
-            if (is_array($key)) {
-                return array_map(function ($key) {
-                    return $this->data[$key];
-                }, $key);
-            } else {
-                return $this->data[$key];
-            }
-        };
-
-        return $this->data;
     }
 
     /**
@@ -257,24 +250,27 @@ class Collection implements ICollection
     public function save()
     {
         $this->update();
-        if (!is_null($this->table)) {
-            $this->filter(function ($key) {
-                if (is_int($key)) {
-                    return false;
-                }
-                return true;
-            });
-
-            return DB::table($this->table)->update($this->data);
-        }
+        if (!is_null($this->table)) return DB::table($this->table)->update($this->data);
     }
 
     /**
-     * 
+     * Replace all original property with data property
+     * @return void
      */
     protected function update()
     {
         $this->original = $this->data;
+    }
+
+    /**
+     * Replace all the data property in collection using original property and persist to the database
+     * @return  this
+     */
+    public function rollback()
+    {
+        $this->revert();
+        if (!is_null($this->table)) return DB::table($this->table)->update($this->original);
+        return $this;
     }
 
     /**
@@ -284,6 +280,7 @@ class Collection implements ICollection
     public function revert()
     {
         $this->data = $this->original;
+        if (!is_null($this->table)) return DB::table($this->table)->update($this->original);
         return $this;
     }
 

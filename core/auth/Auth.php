@@ -24,6 +24,7 @@ class Auth implements IAuth
      */
     public static function User()
     {
+        if(!Auth::check()) return;
         $User = new static;
         $User->userData = Session::get(self::$option['session_name']);
         return $User;

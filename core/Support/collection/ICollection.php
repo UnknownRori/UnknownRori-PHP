@@ -17,7 +17,6 @@ interface ICollection
     public function map($callback);
     public function filter($callback, $mode = ARRAY_FILTER_USE_KEY);
     public function split(int $length);
-    public function getData(array|string $key = null);
     public function push(string|int $val);
     public function merge(array $array);
     public function remove(array $key);
