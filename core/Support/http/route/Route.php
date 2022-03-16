@@ -190,7 +190,7 @@ class Route implements IRoute
         $key = array_keys($data);
 
         for ($i = 0; $i < count($data); $i++) {
-            $uri = $uri . "{$key[$i]}={$value[$i]}&";
+            $uri = $uri . "?{$key[$i]}={$value[$i]}&";
         }
 
         return $uri;
