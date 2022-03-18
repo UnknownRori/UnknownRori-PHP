@@ -33,18 +33,16 @@ class CLI
         $app->loadConfig();
 
         $make_warn = "Please add name to the";
-        $list_command = " >> install \n >> serve \n >> autoload \n >> make:controller|model|middleware\n";
+        $list_command = " >> install \n >> serve \n >> cache:clear \n >> make:controller|model|middleware\n";
 
-        if (self::$argumments[0] == "help") {
+        if (self::$argumments[0] == "help") { // help
             echo $list_command;
-        } else if (self::$argumments[0] == "version") {
+        } else if (self::$argumments[0] == "version") { // version
             echo "UnknownRori-PHP " . self::$version;
-        } else if (self::$argumments[0] == "serve") {
+        } else if (self::$argumments[0] == "serve") { // serve
             echo "Starting UnknownRori PHP development server : http://127.0.0.1:8000. \n";
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
-        } else if (self::$argumments[0] == "autoload") {
-            echo (shell_exec("composer dump-autoload"));
-        } else if (self::$argumments[0] == "cache:clear") {
+        }else if (self::$argumments[0] == "cache:clear") { // clear cache
             echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['view_cache']}"));
         } else if (self::$argumments[0] == "make:controller") { // Make:Controller
             if (count(self::$argumments) < 2) return "{$make_warn} controller";
@@ -62,7 +60,7 @@ class CLI
             $name = self::$argumments[1];
             self::write(controller($name), "/http/middleware/{$name}.php");
         } else {
-            echo $list_command;
+            echo "Theres is no such a command \n";
         }
     }
 
