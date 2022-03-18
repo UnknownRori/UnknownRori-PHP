@@ -5,6 +5,17 @@ namespace Core\Support;
 class Session implements ISession
 {
     /**
+     * Create Session Instance
+     * @return  $this;
+     */
+    public function __construct($key = null, $value = null)
+    {
+        if($key && is_null($value)) return Session::get($key);
+        if($key && $value) return Session::set($key, $value);
+        return $this;
+    }
+
+    /**
      * Initialize Session data and should be used in Kernel.php,
      * this method can be passed with an array of option which can be modified in `app/config/kernel.php`
      * @return boolean
@@ -21,9 +32,8 @@ class Session implements ISession
      */
     public static function get($key = null)
     {
-        if (!is_null($key)) return $_SESSION[$key];
-
-        return $_SESSION;
+        if (is_null($key)) return $_SESSION;
+        if (array_key_exists($key, $_SESSION)) return $_SESSION[$key];
     }
 
     /**
