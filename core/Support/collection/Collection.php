@@ -77,12 +77,9 @@ class Collection implements ICollection
                 if(!$this->is_null($key)) {
                     return $this->data[$key];
                 }
-
-                return "";
             };
-            return $this->data;
         }
-        return "";
+        return $this->data;
     }
 
     /**
