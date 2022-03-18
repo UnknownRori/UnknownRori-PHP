@@ -151,7 +151,7 @@ class DB implements IDB
      * @param  array $value
      * @return boolean
      */
-    public function insert(array $value = [])
+    public function create(array $value = [])
     {
         $key = array_keys($value);
         $parameter = array_map(function ($val) {
@@ -169,7 +169,7 @@ class DB implements IDB
      * @param  int $id
      * @return boolean
      */
-    public function delete(int $id)
+    public function destroy(int $id)
     {
         $return = self::prepare("DELETE FROM {$this->table} WHERE id=?")->executeclose([$id]);
         return $return;

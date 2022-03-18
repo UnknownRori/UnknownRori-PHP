@@ -129,6 +129,7 @@ class BaseModel implements IBaseModel
      * @param  string $column
      * @param  mixed  $value
      * @param  string $logic
+     * @param  string $method
      * @return \Core\Support\Collection
      */
     public static function where($column, $value, $logic = '=', $method = 'fecthAll')
@@ -142,18 +143,18 @@ class BaseModel implements IBaseModel
      * @param  array $data
      * @return \Core\Support\Collection
      */
-    public static function insert(array $data)
+    public static function create(array $data)
     {
         $self = new static;
-        return DB::table($self->table)->insert($data);
+        return DB::table($self->table)->create($data);
     }
 
     /**
      * Delete specific data inside model table
-     * @param  int|string $id
+     * @param  int $id
      * @return boolean
      */
-    public static function delete($id)
+    public static function destroy($id)
     {
         $self = new static;
         return DB::prepare("DELETE FROM {$self->table} WHERE {$self->primary_key}=?")->executeclose([$id]);

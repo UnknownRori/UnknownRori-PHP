@@ -19,8 +19,8 @@ interface IDB
      * Built in DB method
      */
     public static function table(string $table);
-    public function insert(array $value = []);
-    public function delete(int $id);
+    public function create(array $value = []);
+    public function destroy(int $id);
     public function update(array $value);
     public function find($value, string $column);
     public function where(string $column, string $value, string $logic = '=');

@@ -698,9 +698,9 @@ Theres are few built in database method, for example we will use the example abo
         'password' => "hashed password"
     ];
 
-    $boolean = DB::table('users')->insert($data);
+    $boolean = DB::table('users')->create($data);
 
-Note : to use insert method you should passed associative array instead of normal array
+Note : to use `create` method you should passed associative array instead of normal array
 
 ---
 
@@ -723,14 +723,14 @@ Note : to use insert method you should passed associative array instead of norma
 
     $id = 1;
 
-    $boolean = DB::table('users')->delete($id);
+    $boolean = DB::table('users')->destroy($id);
 
 ### List Method
 
 - table
 - find
-- insert
-- delete
+- create
+- destroy
 - update
 
 ## Database Collection
@@ -857,6 +857,6 @@ To use the relationship that we already define:
 
 - all
 - find
-- insert
-- delete
+- create
+- destroy
 - paginate
