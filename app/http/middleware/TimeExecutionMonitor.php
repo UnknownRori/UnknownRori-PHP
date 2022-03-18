@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Core\Utils\Time;
+
 class TimeExecutionMonitor
 {
     protected static $timeExecution;
@@ -9,9 +11,9 @@ class TimeExecutionMonitor
     public function Run()
     {
         if (is_null(self::$timeExecution)) {
-            self::$timeExecution = microtime(true);
+            self::$timeExecution = Time::microtime(true);
         } else {
-            $timeExecution = round((microtime(true) - self::$timeExecution) * 1000);
+            $timeExecution = round((Time::microtime(true) - self::$timeExecution) * 1000);
 
             echo "
             <div style='background: #ff3737;'>

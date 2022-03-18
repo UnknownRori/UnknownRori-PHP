@@ -18,4 +18,14 @@ class Time
     {
         return time() + (3600 * 24) * $days;
     }
+
+    /**
+     * Return current unix timestamp in microsecond
+     * @param  bool $float
+     * @return string|float
+     */
+    public static function microtime(bool $float = false)
+    {
+        return microtime($float);
+    }
 }
