@@ -2,7 +2,7 @@
 
 namespace Core\Support\Str;
 
-class Str
+class Str implements IStr
 {
     protected $data;
 
