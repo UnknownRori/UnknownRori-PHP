@@ -33,7 +33,7 @@ class CLI
         $app->loadConfig();
 
         $make_warn = "Please add name to the";
-        $list_command = " >> install \n >> serve \n >> cache:clear \n >> make:controller|model|middleware\n";
+        $list_command = " >> install \n >> serve \n >> cache:clear \n >> make:controller|model|middleware \n >> make:controller {name} -r \n";
 
         if (self::$argumments[0] == "help") { // help
             echo $list_command;
@@ -44,8 +44,13 @@ class CLI
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
         }else if (self::$argumments[0] == "cache:clear") { // clear cache
             echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['view_cache']}"));
-        } else if (self::$argumments[0] == "make:controller") { // Make:Controller
-            if (count(self::$argumments) < 2) return "{$make_warn} controller";
+        } else if (isset(self::$argumments[0]) == "make:controller" && isset(self::$argumments[2]) == "-r") { // Make:Controller
+            if (count(self::$argumments) < 3) return "{$make_warn} controller \n";
+            require('template/resourcecontroller.php');
+            $name = self::$argumments[1];
+            self::write(controller($name), "/http/controller/{$name}.php");
+        }  else if (self::$argumments[0] == "make:controller") { // Make:Controller
+            if (count(self::$argumments) < 2) return "{$make_warn} controller \n";
             require('template/controller.php');
             $name = self::$argumments[1];
             self::write(controller($name), "/http/controller/{$name}.php");
@@ -55,7 +60,7 @@ class CLI
             $name = self::$argumments[1];
             self::write(controller($name), "/model/{$name}.php");
         } else if (self::$argumments[0] == "make:middleware") { // Make:Middleware
-            if (count(self::$argumments) < 2) return "{$make_warn} middleware";
+            if (count(self::$argumments) < 2) return "{$make_warn} middleware \n";
             require('template/middleware.php');
             $name = self::$argumments[1];
             self::write(controller($name), "/http/middleware/{$name}.php");
