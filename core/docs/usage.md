@@ -1,3 +1,5 @@
+`Docs Version : 2.0 Alpha`
+
 # Usage Documentation
 
 ## Table of Content
@@ -185,7 +187,7 @@ Or you can use the `route` & `redirect` helper function.
 
     // Redirect
 
-    $uri = redirect('user', ['id' => 1]);
+    redirect('user', ['id' => 1]);
 
 If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
@@ -200,8 +202,8 @@ Route groups allow you to share route attributes, such as middleware across a la
 To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
 
     Route::group('test')->by(function () {
-        Route::get('/group/1', [Group::class, 'index']);
-        Route::get('/group/2', [Group::class, 'index']);
+        Route::get('/group/1', [Controller::class, 'index']);
+        Route::get('/group/2', [Controller::class, 'index']);
     });
 
 ## Middleware
@@ -228,15 +230,15 @@ This command will place new `EnsureAdmin` class inside your `app/http/middleware
         {
             if (Auth::check()) {
                 if (Auth::User()->get('admin')) {
-                    return header("Location: /something");
+                    redirect("dashboard");
                 }
             }
 
-            return header("Location: /login");
+            redirect("login");
         }
     }
 
-As you can see, if the user is not an admin or have not authenticate it will redirect to `/login` if the user is an admin it will redirect to `/something`.
+As you can see, if the user is not an admin or have not authenticate it will redirect to route that named `login` if the user is an admin it will redirect to route that named `dashboard`.
 
 ### Global Middleware
 
@@ -274,6 +276,14 @@ Controller can group related request handling logic into single class. For examp
 
 Let's take a look basic example. Note that the controller extends the base controller class included in this framework (But does not have any functionality yet).
 
+    // web.php in route directory
+    <?php
+
+    Route::get("/", [Welcome::class, "index"]);
+
+
+
+    // Welcome.php in controller directory
     <?php
 
     namespace App\Http\Controller;
@@ -381,6 +391,10 @@ In this framework you can call `Session` Class helper which can be typed on Cont
         }
     }
 
+Or you can use the `session` helper function to make life much more easier.
+
+    session()->get('key');
+
 #### Retrieve All Session Data
 
 If you would like to retrieve all the data in the session, you may just not passing any parameter.
@@ -391,7 +405,7 @@ If you would like to retrieve all the data in the session, you may just not pass
 
 To store data in the session, you will typically use `Session` helper class method called `set`
 
-    Session::unset('name', 'John');
+    Session::set('name', 'John');
 
 ### Deleting Data
 
@@ -427,7 +441,7 @@ The `Core\Support\Collection` class provide simple and yet convinient wrapper wi
         return strtoupper($name);
     });
 
-    $modifiedArticle = $article->getData();
+    $modifiedArticle = $article->get();
 
 ### Creating Collection
 
@@ -445,13 +459,14 @@ As mentioned above the `Collection` class helper return collection instance for 
 - map
 - filter
 - split
-- getData
 - removeKeyInt
 - push
 - pop
 - merge
 - remove
 - save
+- update
+- rollback
 - revert
 
 ## Str
