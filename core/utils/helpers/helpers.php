@@ -1,6 +1,5 @@
 <?php
 
-require_once 'function/debug.php';
 require_once 'function/view.php';
 require_once 'function/env.php';
 require_once 'function/collect.php';
