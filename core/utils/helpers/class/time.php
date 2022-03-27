@@ -62,4 +62,15 @@ class Time
     {
         return microtime($float);
     }
+
+    /**
+     * Format passed unix timestamp
+     * @param  string|int  $time
+     * @param  string      $format "F j, Y, g:i a"
+     * @return string
+     */
+    public static function format($time, $format = "F j, Y, g:i a")
+    {
+        return date($format, $time);
+    }
 }
