@@ -74,7 +74,9 @@
 
   - File Storage
 
-    - File Upload
+    - File
+
+    - Uploading File
 
 - Security
 
@@ -510,7 +512,25 @@ Example usage
 
 In this framework provide basic and yet very elegants, thanks to the `Core\Support\Filesystem\Storage` class, all the configuration on the filesystem can be located in `app/config/filesystem.php`.
 
-## Storing Files
+There also some `Core\Support\Filesystem\File` class that help manage basic operation on file, for example write, read, modified time, deletion, copy.
+
+    use Core\Support\Filesystem\File
+
+    $file = new File("app/storage/tests.json");
+    echo $file->get();
+    echo $file->modified();
+
+#### Available Method
+
+- copy
+- write
+- destroy
+- type
+- get
+- path
+- modified
+- create
+- lastaccess
 
 ### File Uploads
 
