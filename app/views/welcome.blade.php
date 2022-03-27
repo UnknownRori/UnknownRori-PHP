@@ -26,7 +26,7 @@
                     <div class="pt-8 text-base leading-7 font-semibold">
                         <p class="text-gray-900">Want to dig deeper into Rori-PHP?</p>
                         <p>
-                            <a href="https://github.com/UnknownRori/unknownrori-php-core/blob/master/usage.md" class="text-sky-500 hover:text-sky-600">Read the docs &rarr;</a>
+                            <a href="https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md" class="text-sky-500 hover:text-sky-600">Read the docs &rarr;</a>
                         </p>
                     </div>
                 </div>
