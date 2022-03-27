@@ -25,5 +25,7 @@ return [
         'views' => "{$_ENV['APP_DIR']}/views",
         'cache' => "app/cache",
         'view_cache' => "app/cache/views",
+        'storage_private' => "app/storage",
+        'storage_public' => "public/storage",
     ]
 ];
