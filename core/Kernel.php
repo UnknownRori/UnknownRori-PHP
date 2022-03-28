@@ -2,9 +2,9 @@
 
 namespace Core;
 
-use Core\Support\Http\Middleware;
-use Core\Support\Http\Route;
-use Core\Support\Http\Request;
+use Core\Http\Middleware;
+use Core\Http\Route;
+use Core\Http\Request;
 use Core\Support\Session;
 use Dotenv\Dotenv;
 

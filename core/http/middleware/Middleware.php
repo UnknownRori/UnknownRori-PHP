@@ -1,9 +1,8 @@
 <?php
 
-namespace Core\Support\Http;
+namespace Core\Http;
 
 use Core\KernelException;
-use Exception;
 
 class Middleware implements IMiddleware
 {

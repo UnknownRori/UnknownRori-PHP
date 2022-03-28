@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Support\Http;
+namespace Core\Http;
 
 use Core\KernelException;
-use Core\Support\Http\Middleware;
+use Core\Http\Middleware;
 use Exception;
 
 class Route implements IRoute
@@ -180,9 +180,9 @@ class Route implements IRoute
      */
     public static function GetRoute($name, $data = [])
     {
-        if(array_key_exists($name, self::$nameRoute)){
+        if (array_key_exists($name, self::$nameRoute)) {
             $uri = self::$nameRoute[$name];
-        }else {
+        } else {
             throw new Exception("Named Route {$name} is not registered in the route! did you forgot to register it?");
         }
 

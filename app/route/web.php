@@ -1,6 +1,6 @@
 <?php
 
-use Core\Support\Http\Route;
+use Core\Http\Route;
 
 Route::get('/', function () {
     return view("welcome");
