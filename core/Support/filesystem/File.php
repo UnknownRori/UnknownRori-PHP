@@ -13,8 +13,8 @@ class File implements IFile
      */
     public function __construct(string $filename)
     {
-        if (!file_exists($filename)) return;
         $this->filename = $filename;
+        if (!$this->file_exists()) $this->write("");
     }
 
     /**
@@ -51,9 +51,22 @@ class File implements IFile
         return unlink($this->filename);
     }
 
+    /**
+     * Check file type (not sure if it's work properly use it with caution)
+     * @return string|false
+     */
     public function type()
     {
         return filetype($this->filename);
+    }
+
+    /**
+     * Check if the file exists
+     * @return bool
+     */
+    public function file_exists()
+    {
+        return file_exists($this->filename);
     }
 
     /**
@@ -78,26 +91,29 @@ class File implements IFile
      * Get the modified file timestamp
      * @return int|false
      */
-    public function modified()
+    public function time_modified()
     {
-        return filemtime($this->filename);
+        if ($this->file_exists()) return filemtime($this->filename);
+        return False;
     }
 
     /**
      * Get the create file timestamp
      * @return int|false
      */
-    public function create()
+    public function time_create()
     {
-        return filectime($this->filename);
+        if ($this->file_exists()) return filectime($this->filename);
+        return False;
     }
 
     /**
      * Get the last access file timestamp
      * @return int|false
      */
-    public function lastaccess()
+    public function time_lastaccess()
     {
-        return fileatime($this->filename);
+        if ($this->file_exists()) return fileatime($this->filename);
+        return False;
     }
 }
