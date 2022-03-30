@@ -14,7 +14,6 @@ class File implements IFile
     public function __construct(string $filename)
     {
         $this->filename = $filename;
-        if (!$this->file_exists()) $this->write("");
     }
 
     /**
@@ -48,7 +47,8 @@ class File implements IFile
      */
     public function destroy()
     {
-        return unlink($this->filename);
+        if ($this->file_exists()) return unlink($this->filename);
+        return False;
     }
 
     /**
