@@ -16,6 +16,7 @@ class KernelException implements IException
      */
     public static function Init()
     {
+        if (extension_loaded("xdebug")) return;
         set_exception_handler(function ($e) {
             echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
             throw new Exception($e);
