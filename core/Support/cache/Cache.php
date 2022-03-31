@@ -11,35 +11,56 @@ class Cache implements ICache
 
     protected $option;
 
-    public function __construct()
+    private function __construct()
     {
         $this->option = require "{$_ENV['APP_DIR']}/config/cache.php";
     }
 
     /**
-     * Cache specific instruction alongside with the key and store it
+     * Cache resulted data in passed function with expiration timer in second
+     * @param  string   $key
+     * @param  int      $time
+     * @param  callable $callback
+     * @return mixed
      */
-    public static function remember(string $key, int $time = 3600, callable $callback)
+    public static function remember(string $key, int $time, callable $callback): mixed
     {
         $self = new self;
         if ($self->option['type'] == "filesystem") {
             switch ($self->option['cache_type']) {
                 case "json":
-                    return $self->json($key, $time, $callback);
+                    $cache = new File("{$_ENV['cache']}/app/{$key}.json");
+                    if ($cache->time_modified() + $time > Time::now()) {
+                        return Json::Decode($cache->get());
+                    } else {
+                        $result = call_user_func($callback);
+                        $cache->write(Json::Encode($result));
+                        return $result;
+                    }
                     break;
             }
         }
     }
 
-    private function json($key, $time, $callback)
+    /**
+     * Cache resulted data in passed function forever
+     * @param  string   $key
+     * @param  callable $callback
+     * @return mixed
+     */
+    public static function rememberForever(string $key, callable $callback): mixed
     {
-        $cache = new File("{$_ENV['cache']}/app/{$key}.json");
-        if ($cache->time_modified() + $time > Time::now()) {
-            return Json::Decode($cache->get());
-        } else {
-            $result = call_user_func($callback);
-            $cache->write(Json::Encode($result));
-            return $result;
+        $self = new self;
+        if ($self->option['type'] == "filesystem") {
+            switch ($self->option['cache_type']) {
+                case "json":
+                    $cache = new File("{$_ENV['cache']}/app/{$key}.json");
+                    if ($cache->file_exists()) return Json::Decode($cache->get());
+                    $result = call_user_func($callback);
+                    $cache->write(Json::Encode($result));
+                    return $result;
+                    break;
+            }
         }
     }
 }
