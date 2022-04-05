@@ -3,7 +3,7 @@
 namespace Core\Support;
 
 use Core\Database\DB;
-use Core\Support\Http\Request;
+use Core\Http\Request;
 
 class Collection implements ICollection
 {
@@ -17,12 +17,12 @@ class Collection implements ICollection
      */
     public function __construct($data)
     {
-        if(is_array($data)) {
+        if (is_array($data)) {
             $this->original = $data;
             $this->data = $data;
             return;
         }
-        
+
         $this->original = [$data];
         $this->data = [$data];
     }
@@ -67,14 +67,14 @@ class Collection implements ICollection
      */
     public function get($key = null)
     {
-        if(!$this->is_null()) {
+        if (!$this->is_null()) {
             if (!is_null($key)) {
                 if (is_array($key)) {
                     return array_map(function ($key) {
                         return $this->data[$key];
                     }, $key);
                 }
-                if(!$this->is_null($key)) {
+                if (!$this->is_null($key)) {
                     return $this->data[$key];
                 }
             };
@@ -93,11 +93,12 @@ class Collection implements ICollection
 
     /**
      * Check if original collection is null or not
+     * @param  string|int $key
      * @return boolean
      */
-    public function is_null($key = null)
+    public function is_null(string|int $key = null)
     {
-        if(is_null($key)) return count($this->data) == 0;
+        if (is_null($key)) return count($this->data) == 0;
         else return !array_key_exists($key, $this->data);
         return False;
     }
@@ -108,10 +109,10 @@ class Collection implements ICollection
 
     /**
      * Map the Data Value of Collection
-     * @param  callable @callback
+     * @param  callable $callback
      * @return array
      */
-    public function map($callback)
+    public function map(callable $callback)
     {
         $this->data = array_map($callback, $this->data);
         return $this;
@@ -119,6 +120,7 @@ class Collection implements ICollection
 
     /**
      * Remove Integer Key inside the collection
+     * @return void
      */
     public function removeKeyInt()
     {
@@ -166,10 +168,10 @@ class Collection implements ICollection
 
     /**
      * Push the value inside the collection
-     * @param  string|int $val
+     * @param  mixed $val
      * @return this
      */
-    public function push(string|int $val)
+    public function push(mixed $val)
     {
         array_push($this->data, $val);
         return $this;
@@ -215,16 +217,6 @@ class Collection implements ICollection
         }
 
         return $this;
-    }
-
-    /**
-     * Destroy collection
-     * @param Core\Support\Collection $collection
-     * @return void
-     */
-    public static function destroy($collection)
-    {
-        unset($collection);
     }
 
     /**
@@ -277,7 +269,6 @@ class Collection implements ICollection
     public function revert()
     {
         $this->data = $this->original;
-        if (!is_null($this->table)) return DB::table($this->table)->update($this->original);
         return $this;
     }
 

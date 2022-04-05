@@ -24,7 +24,7 @@ class Auth implements IAuth
      */
     public static function User()
     {
-        if(!Auth::check()) return;
+        if (!Auth::check()) return;
         $User = new static;
         $User->userData = Session::get(self::$option['session_name']);
         return $User;
@@ -58,7 +58,7 @@ class Auth implements IAuth
                 $data->save();
                 Session::set(self::$option['session_name'], $data);
             } else {
-                Collection::destroy($data);
+                unset($data);
             }
         } else {
             Session::unset(self::$option['session_name']);

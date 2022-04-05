@@ -8,20 +8,22 @@ interface ICollection
 
     public function first();
     public function last();
-    public function find($needle);
+    public function find(mixed $needle);
     public function get(array|string $key = null);
     public function key();
 
     // Collection Manipulation
 
-    public function map($callback);
-    public function filter($callback, $mode = ARRAY_FILTER_USE_KEY);
+    public function map(callable $callback);
+    public function removeKeyInt();
+    public function filter(callable $callback, $mode = ARRAY_FILTER_USE_KEY);
     public function split(int $length);
-    public function push(string|int $val);
+    public function push(mixed $val);
     public function merge(array $array);
     public function remove(array $key);
-    public static function destroy($collection);
     public function save();
+    public function rollback();
+    public function revert();
 
     /**
      * DB Collection Pagination
