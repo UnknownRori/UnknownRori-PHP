@@ -7,6 +7,7 @@ use Core\Utils\Regex;
 class Validator
 {
     private $data;
+    private $valid = [];
 
     private function __construct(array|string|int|bool $data)
     {
@@ -31,18 +32,18 @@ class Validator
      */
     public function regex(array|string $rules): string|int|bool|array
     {
+        if (!is_array($rules)) return Regex::occurance($this->data, $rules) ? $this->data : False;
+
         $key = array_keys($rules);
-
-        if (is_null($key)) return Regex::occurance($this->data, $rules) ? $this->data : False;
-
-        $valid = [];
+        $data = collect($this->data)->remove($key);
+        $this->data = collect($this->data)->remove(array_keys($data->get()))->get();
 
         for ($i = 0; $i < count($rules); $i++) {
             if (!Regex::occurance($this->data[$key[$i]], $rules[$key[$i]])) return False;
-            array_push($valid, Regex::occurance($this->data[$key[$i]], $rules[$key[$i]]));
+            array_push($this->valid, Regex::occurance($this->data[$key[$i]], $rules[$key[$i]]));
         }
 
-        return $valid ? $this->data : False;
+        return $this->valid ? $this->data : False;
     }
 
     /**
@@ -55,43 +56,55 @@ class Validator
     {
         $rules_key = array_keys($rules);
 
-        $valid = [];
-
         if (!is_array($this->data)) {
             for ($i = 0; $i < count($rules_key); $i++) {
                 $explode = explode(":", $rules[$rules_key[$i]]);
                 $function = $explode[0];
-                array_push($valid, $this->$function(isset($explode[1]) ? $explode[1] : null));
+
+                $result = $this->$function(isset($explode[1]) ? $explode[1] : null);
+                if (!$result) return False;
+                array_push($this->valid, $result);
             }
-            if (in_array(false, $valid)) return False;
+            if (in_array(false, $this->valid)) return False;
             return $this->data;
         }
+
+        $data = collect($this->data)->remove($rules_key);
+        $this->data = collect($this->data)->remove(array_keys($data->get()))->get();
         $data_key = array_keys($this->data);
-        for ($i = 0; $i < count($data_key); $i++) {
+
+        for ($i = 0; $i < count($rules); $i++) {
             for ($j = 0; $j < count($rules[$rules_key[$i]]); $j++) {
                 $explode = explode(":", $rules[$rules_key[$i]][$j]);
                 $function = $explode[0];
-                var_dump($rules[$rules_key[$i]][$j]);
-                if (isset($explode[1])) array_push($valid, $this->$function(isset($explode[1]) ? $explode[1] : false, $data_key[$i]));
-                else array_push($valid, $this->$function($data_key[$i]));
+                if (isset($explode[1])) {
+                    $result = $this->$function(isset($explode[1]) ? $explode[1] : false, $data_key[$i]);
+                    if (!$result) return False;
+                    array_push($this->valid, $result);
+                } else {
+                    $result = $this->$function($data_key[$i]);
+                    if (!$result) return False;
+                    array_push($this->valid, $result);
+                };
             }
         }
-        if (in_array(false, $valid)) return False;
+
+        if (in_array(false, $this->valid)) return False;
         return $this->data;
     }
 
     /**
-     * /-------------------\
-     * |Built in rules area|
-     * \-------------------/
+     * /----------------------\
+     * |Built in rules section|
+     * \----------------------/
      */
 
     /**
      * Validate current pointer is a string or not
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function string(string $offset = null): bool
+    private function string(string|int $offset = null): bool
     {
         if (is_null($offset)) return is_string($this->data);
         return is_string($this->data[$offset]);
@@ -99,10 +112,10 @@ class Validator
 
     /**
      * Validate current pointer is a boolean or not
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function bool($offset = null): bool
+    private function bool(string|int $offset = null): bool
     {
         if (is_null($offset)) return is_bool($this->data);
         return is_bool($this->data[$offset]);
@@ -110,10 +123,10 @@ class Validator
 
     /**
      * Validate current pointer is a numeric or not
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function numeric($offset = null): bool
+    private function numeric(string|int $offset = null): bool
     {
         if (is_null($offset)) return is_numeric($this->data);
         return is_numeric($this->data[$offset]);
@@ -121,10 +134,10 @@ class Validator
 
     /**
      * Validate current pointer is an ip address or not
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function ip($offset = null): bool
+    private function ip(string|int $offset = null): bool
     {
         if (is_null($offset)) return filter_var($this->data, FILTER_VALIDATE_IP) ? True : False;
         return filter_var($this->data[$offset], FILTER_VALIDATE_IP) ? True : False;
@@ -132,10 +145,10 @@ class Validator
 
     /**
      * Validate current pointer is an email or not
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function email($offset = null): bool
+    private function email(string|int $offset = null): bool
     {
         if (is_null($offset)) return filter_var($this->data, FILTER_VALIDATE_EMAIL) ? True : False;
         return filter_var($this->data[$offset], FILTER_VALIDATE_EMAIL) ? True : False;
@@ -144,10 +157,10 @@ class Validator
     /**
      * Validate current pointer is it have minimum character or total number
      * @param  int    $min
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function min(int $min, $offset = null): bool
+    private function min(int $min, string|int $offset = null): bool
     {
         if (is_null($offset)) {
             if ($this->numeric()) return float($this->data) > $min ? True : False;
@@ -163,22 +176,19 @@ class Validator
     /**
      * Validate current pointer is it have maximum character or total number
      * @param  int    $min
-     * @param  string $offset
+     * @param  string|int $offset
      * @return bool
      */
-    private function max(int $max, $offset = null)
+    private function max(int $max, string|int $offset = null)
     {
         if (is_null($offset)) {
-            if ($this->numeric()) return float($this->data) > $max ? True : False;
-            elseif ($this->string()) return strlen($this->data) > $max ? True : False;
+            if ($this->numeric()) return float($this->data) < $max ? True : False;
+            elseif ($this->string()) return strlen($this->data) < $max ? True : False;
             return false;
         } else {
-            if ($this->numeric($offset)) return float($this->data[$offset]) > $max ? True : False;
-            elseif ($this->string($offset)) return strlen($this->data[$offset]) > $max ? True : False;
+            if ($this->numeric($offset)) return float($this->data[$offset]) < $max ? True : False;
+            elseif ($this->string($offset)) return strlen($this->data[$offset]) < $max ? True : False;
             return false;
         }
-        // if ($this->numeric()) return float($this->data) < $max ? True : False;
-        // elseif ($this->string()) return strlen($this->data) < $max ? True : False;
-        // return false;
     }
 }
