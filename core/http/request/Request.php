@@ -2,6 +2,8 @@
 
 namespace Core\Http;
 
+use Core\Support\Validator\Validator;
+
 class Request implements IRequest
 {
 
@@ -32,6 +34,16 @@ class Request implements IRequest
     {
         if (!is_null($key)) return $_REQUEST[$key];
         return $_REQUEST;
+    }
+
+    /**
+     * Get all data from any method and then validate using `validator` class
+     * @param  mixed $rules
+     * @return mixed
+     */
+    public static function Validate(mixed $rules): mixed
+    {
+        return Validator::Validate(Request::Request())->rules($rules);
     }
 
     /**
