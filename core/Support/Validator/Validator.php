@@ -10,7 +10,7 @@ class Validator
     private $data;
     private $valid = [];
     public  $message = [];
-    private static $session = "VALIDATE_MESSAGE";
+    public static $session = "VALIDATE_MESSAGE";
 
     private function __construct(array|string|int|bool $data)
     {
@@ -84,11 +84,11 @@ class Validator
                 $explode = explode(":", $rules[$rules_key[$i]][$j]);
                 $function = $explode[0];
                 if (isset($explode[1])) {
-                    $result = $this->$function(isset($explode[1]) ? $explode[1] : false, $data_key[$i]);
+                    $result = $this->$function(isset($explode[1]) ? $explode[1] : false, array_key_exists($i, $data_key) ? $data_key[$i] : null);
                     // if (!$result) return False;
                     array_push($this->valid, $result);
                 } else {
-                    $result = $this->$function($data_key[$i]);
+                    $result = $this->$function(array_key_exists($i, $data_key) ? $data_key[$i] : null);
                     // if (!$result) return False;
                     array_push($this->valid, $result);
                 };
