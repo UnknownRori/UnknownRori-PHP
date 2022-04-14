@@ -34,6 +34,14 @@
 
     - Writing Controller
 
+  - Validation
+
+    - Introduction
+
+    - Validator
+
+    - Request Validate
+
   - Views
 
     - Introduction
@@ -77,6 +85,14 @@
     - File
 
     - Uploading File
+
+  - Cache
+
+    - Introduction
+
+    - Configuration
+
+    - Cache Usage
 
 - Security
 
@@ -305,6 +321,60 @@ Let's take a look basic example. Note that the controller extends the base contr
 
 When incoming request matches the specified uri, the `index` method on `App\Http\Controller\Welcome` class will be invoked.
 
+## Validation
+
+### Introduction
+
+UnknownRori-PHP provide some approaches validation your application's incoming data. The most common way to use method `Validate` in `Validator` class.
+
+If the validation fail it the `Validate` method will return `False` but if success it will return the data that passed the rules (you can pass data that does not defined in the rules but it wont be returned if the validation success).
+
+### Validator
+
+First let's assume we have following route
+
+    // stored in app/route/web.php
+
+    Route::get('/user/show', [UserController::class, 'show']);
+    Route::post('/user', [UserController::class, 'show']);
+
+and the controller with validation logic
+
+    // stored in app/http/controller/UserController.php
+
+    <?php
+
+    namespace App\Http\Controller;
+
+    use App\Model\Users;
+    use Core\Http\Request;
+    use Core\Support\Validator\Validator;
+    use Core\Utils\Hash;
+
+    class UserController
+    {
+        public function show()
+        {
+            $validate = Validator::Validate(Request::get())->rules(['id' => ['numeric']]);
+            dd(Users::find($validate['id']));
+        }
+        public function store()
+        {
+            $validate = Request::Validate([
+                'name' => ["string", "min:2"],
+                "email" => ["string", "email"],
+                "password" => ["string"],
+            ]);
+            Users::create($validate);
+        }
+    }
+
+### Request Validate
+
+Because using `Validator` class need to pass the data you might want to use `Validate` method that ship in the `Request` class.
+
+    $validate = Request::Validate(['id' => ["numeric"]]);
+
 ## Views
 
 ### Introduction
@@ -475,6 +545,8 @@ As mentioned above the `Collection` class helper return collection instance for 
 
 `\Core\Support\Str` provide simple and yet convinient String function wrapper, it also come with Str helper function to make life even easier.
 
+### Creating Str
+
 To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
 
     // Using helper hunction
@@ -505,8 +577,6 @@ Example usage
 - lower
 - get
 - substr
-
-### Creating Str
 
 ## File Storage
 
@@ -540,6 +610,27 @@ In web application, one of the most common use cases for storing files is storin
     use Core\Support\Http\Request;
 
     Storage::upload(Request::File('image'));
+
+## Cache
+
+### Introduction
+
+Some data retrival or proccessing data task performed by your application could be CPU intensive task or take several minute to complete. When this is the case, it is common to cache the retrieved data for a time so it can be retrieved more quickly on subsequent requests of the same data.
+
+### Configuration
+
+Your application's cache configuration is stored in `app/config/cache.php`. In this file you may specify which cache method to use, by default it will use filesystem json to cache data.
+
+### Cache Usage
+
+To use cache you can call `remember` method in `Cache` class.
+
+    use App\Model\Users;
+    use Core\Support\Cache\Cache;
+
+    $data = Cache::remember('key', 3600, function () {
+        return Users::all();
+    })
 
 # Security
 
