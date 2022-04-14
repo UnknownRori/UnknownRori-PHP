@@ -77,20 +77,28 @@ class Validator
 
         array_map(function ($key) {
             $this->message[$key] = [];
-        }, $data_key);
+        }, $rules_key);
 
         for ($i = 0; $i < count($rules); $i++) {
             for ($j = 0; $j < count($rules[$rules_key[$i]]); $j++) {
                 $explode = explode(":", $rules[$rules_key[$i]][$j]);
                 $function = $explode[0];
                 if (isset($explode[1])) {
-                    $result = $this->$function(isset($explode[1]) ? $explode[1] : false, array_key_exists($i, $data_key) ? $data_key[$i] : null);
-                    // if (!$result) return False;
-                    array_push($this->valid, $result);
+                    if (isset($data_key[$i])) {
+                        $result = $this->$function(isset($explode[1]) ? $explode[1] : false, $data_key[$i]);
+                        // if (!$result) return False;
+                        array_push($this->valid, $result);
+                    } else {
+                        $this->setMessage("Cannot be empty!", $rules_key[$i]);
+                    }
                 } else {
-                    $result = $this->$function(array_key_exists($i, $data_key) ? $data_key[$i] : null);
-                    // if (!$result) return False;
-                    array_push($this->valid, $result);
+                    if (isset($data_key[$i])) {
+                        $result = $this->$function($data_key[$i]);
+                        // if (!$result) return False;
+                        array_push($this->valid, $result);
+                    } else {
+                        $this->setMessage("Cannot be empty!", $rules_key[$i]);
+                    }
                 };
             }
         }
@@ -109,6 +117,20 @@ class Validator
     {
         if (!is_null($key)) return Session::get(self::$session)[$key];
         return Session::get(self::$session);
+    }
+
+    /**
+     * Set validation message
+     * @param  string     $message
+     * @param  string|int $offset
+     * @return void
+     */
+    private function setMessage($message, $offset = null): void
+    {
+        if (!in_array($message, $this->message[$offset])) {
+            array_push($this->message[$offset], $message);
+            array_push($this->valid, False);
+        }
     }
 
     /**
@@ -205,22 +227,22 @@ class Validator
     private function min(int $min, string|int $offset = null): bool
     {
         if (is_null($offset)) {
-            if ($this->numeric()) {
+            if (is_numeric($this->data)) {
                 $result = float($this->data) > $min ? True : False;
                 if (!$result) array_push($this->message, "Must be above {$min}");
                 return $result;
-            } elseif ($this->string()) {
+            } elseif (is_string($this->data)) {
                 $result = strlen($this->data) > $min ? True : False;
                 if (!$result) array_push($this->message, $min > 1 ? "Must be above {$min} characters" : "Must be above {$min} character");
                 return $result;
             }
             return false;
         } else {
-            if ($this->numeric($offset)) {
+            if (is_numeric($this->data[$offset])) {
                 $result = float($this->data[$offset]) > $min ? True : False;
                 if (!$result) array_push($this->message[$offset], "Must be above {$min}");
                 return $result;
-            } elseif ($this->string($offset)) {
+            } elseif (is_string($this->data[$offset])) {
                 $result = strlen($this->data[$offset]) > $min ? True : False;
                 if (!$result) array_push($this->message[$offset], $min > 1 ? "Must be above {$min} characters" : "Must be above {$min} character");
                 return $result;
@@ -238,21 +260,21 @@ class Validator
     private function max(int $max, string|int $offset = null)
     {
         if (is_null($offset)) {
-            if ($this->numeric()) {
+            if (is_numeric($this->data)) {
                 $result = float($this->data) < $max ? True : False;
                 if (!$result) array_push($this->message, "Must be above {$max}");
                 return $result;
-            } elseif ($this->string()) {
+            } elseif (is_string($this->data)) {
                 $result = strlen($this->data) < $max ? True : False;
                 if (!$result) array_push($this->message, $max > 1 ? "Must be below {$max} characters" : "Must be below {$max} character");
                 return $result;
             }
         } else {
-            if ($this->numeric($offset)) {
+            if (is_numeric($this->data[$offset])) {
                 $result = float($this->data[$offset]) < $max ? True : False;
                 if (!$result) array_push($this->message[$offset], "Must be below {$max}");
                 return $result;
-            } elseif ($this->string($offset)) {
+            } elseif (is_string($this->data[$offset])) {
                 $result = strlen($this->data[$offset]) < $max ? True : False;
                 if (!$result) array_push($this->message[$offset], $max > 1 ? "Must be below {$max} characters" : "Must be below {$max} character");
                 return $result;
