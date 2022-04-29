@@ -16,6 +16,7 @@ class KernelException implements IException
      */
     public static function Init()
     {
+        if (!env('APP_DEBUG', true));
         if (extension_loaded("xdebug")) return;
         set_exception_handler(function ($e) {
             echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
@@ -30,7 +31,7 @@ class KernelException implements IException
      */
     public static function RouteNotDefined()
     {
-        throw new Exception("Route is not defined, did you forget to register it in web route? | ");
+        if (env('APP_DEBUG', true)) throw new Exception("Route is not defined, did you forget to register it in web route? | ");
     }
 
     /**
@@ -38,7 +39,7 @@ class KernelException implements IException
      */
     public static function ClassMethod($controller, $method)
     {
-        throw new Exception("{$controller} does not respond to the {$method} action. | ");
+        if (env('APP_DEBUG', true)) throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
 
     /**
@@ -46,7 +47,7 @@ class KernelException implements IException
      */
     public static function MiddlewareNotDefined()
     {
-        throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
+        if (env('APP_DEBUG', true)) throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
     }
 
     /**
@@ -54,7 +55,7 @@ class KernelException implements IException
      */
     public static function PDO_ERROR($e)
     {
-        throw new Exception("{$e} | ");
+        if (env('APP_DEBUG', true)) throw new Exception("{$e} | ");
     }
 
     /**
@@ -62,7 +63,7 @@ class KernelException implements IException
      */
     public static function Hash($algo)
     {
-        throw new Exception("There is no supported algo called {$algo} in this framework | ");
+        if (env('APP_DEBUG', true)) throw new Exception("There is no supported algo called {$algo} in this framework | ");
     }
 
     /**
@@ -70,6 +71,16 @@ class KernelException implements IException
      */
     public static function KeyExists($key, $array)
     {
-        throw new Exception("Key {$key} already exist inside {$array}");
+        if (env('APP_DEBUG', true)) throw new Exception("Key {$key} already exist inside {$array}");
+    }
+
+    public static function RouteNameNotExists($name)
+    {
+        if (env('APP_DEBUG', true)) throw new Exception("Named Route {$name} is not registered in the route! did you forgot to register it?");
+    }
+
+    public static function UndefinedRelation($relation)
+    {
+        if (env('APP_DEBUG', true)) throw new Exception("Undefined {$relation}, did you forget to attach these property in Model?");
     }
 }

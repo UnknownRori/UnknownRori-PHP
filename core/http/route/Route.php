@@ -183,7 +183,7 @@ class Route implements IRoute
         if (array_key_exists($name, self::$nameRoute)) {
             $uri = self::$nameRoute[$name];
         } else {
-            throw new Exception("Named Route {$name} is not registered in the route! did you forgot to register it?");
+            KernelException::RouteNameNotExists($name);
         }
 
         $value = array_values($data);

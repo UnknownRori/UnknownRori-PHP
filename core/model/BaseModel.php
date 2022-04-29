@@ -64,7 +64,7 @@ class BaseModel implements IBaseModel
 
                 return $result;
             } else {
-                throw new Exception("Undefined {$relation}, did you forget to attach these property in Model?");
+                KernelException::UndefinedRelation($relation);
             }
         }
 
@@ -118,7 +118,7 @@ class BaseModel implements IBaseModel
 
                 return $result;
             } else {
-                throw new Exception("Undefined {$relation}, did you forget to attach these property in Model??");
+                KernelException::UndefinedRelation($relation);
             }
         }
         return DB::table($self->table)->all();
