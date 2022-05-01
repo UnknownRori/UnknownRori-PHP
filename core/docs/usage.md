@@ -154,19 +154,19 @@
 
 The most basic Rori-PHP routes accept a URI and a closure, provide a simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
-    ```php
-    Route::get('/', function () {
-        return view("welcome");
-    });
-    ```
+```php
+Route::get('/', function () {
+    return view("welcome");
+});
+```
 
 Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using `controller` classes. Controllers can group related request handling logic into a single class. For example, a UserController class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/http/controller` directory.
 
 You can define a route to this controller method like so:
 
-    ```php
-    Route::get('/', [Home::class, 'index']);
-    ```
+```php
+Route::get('/', [Home::class, 'index']);
+```
 
 ### Default Route Files
 
@@ -174,56 +174,56 @@ All UnknownRori-PHP routes are defined in route file, which is located in `app/r
 
 For most application, you will begin by defining routes inside `app/route/web.php` file, these defined route URL can be accessed using your browser, for example `localhost:8080/user` in your browser
 
-    ```php
-    Route::get('/user', [User::class, 'index']);
-    ```
+```php
+Route::get('/user', [User::class, 'index']);
+```
 
 The router allows you to register routes that respond to any HTTP verb
 
-    ```php
-    Route::get('/', [Welcome::class, 'index']);
-    Route::post('/', [Welcome::class, 'index']);
-    Route::delete('/', [Welcome::class, 'index']);
-    Route::patch('/', [Welcome::class, 'index']);
-    ```
+```php
+Route::get('/', [Welcome::class, 'index']);
+Route::post('/', [Welcome::class, 'index']);
+Route::delete('/', [Welcome::class, 'index']);
+Route::patch('/', [Welcome::class, 'index']);
+```
 
 ### Route Name prefix
 
 Named routes allow the convenient generation of URI or redirect for specific routes. You may specify a name for route by chaining `name` method onto route definition
 
-    ```php
-    Route::get('/user', [UserController::class, 'index'])->name('user');
-    ```
+```php
+Route::get('/user', [UserController::class, 'index'])->name('user');
+```
 
 #### Generating URI to Named Routes
 
 Once you assigned a name on given route, you may use the route's name when generating URI or `redirect` helper method
 
-    ```php
-    // Generating URI
-    $uri = Route::GetRoute('user', ['id' => 1]);
+```php
+// Generating URI
+$uri = Route::GetRoute('user', ['id' => 1]);
 
-    // Redirect
-    Route::Redirect('user', ['id' => 1]);
-    ```
+// Redirect
+Route::Redirect('user', ['id' => 1]);
+```
 
 Or you can use the `route` & `redirect` helper function.
 
-    ```php
-    // Generate URI
+```php
+// Generate URI
 
-    $uri = route('user', ['id' => 1]);
+$uri = route('user', ['id' => 1]);
 
-    // Redirect
+// Redirect
 
-    redirect('user', ['id' => 1]);
-    ```
+redirect('user', ['id' => 1]);
+```
 
 If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
-    ```php
-    $url = route('profile', ['id' => 1]);
-    ```
+```php
+$url = route('profile', ['id' => 1]);
+```
 
 ### Route Group
 
@@ -233,12 +233,12 @@ Route groups allow you to share route attributes, such as middleware across a la
 
 To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
 
-    ```php
-    Route::group('test')->by(function () {
-        Route::get('/group/1', [Controller::class, 'index']);
-        Route::get('/group/2', [Controller::class, 'index']);
-    });
-    ```
+```php
+Route::group('test')->by(function () {
+    Route::get('/group/1', [Controller::class, 'index']);
+    Route::get('/group/2', [Controller::class, 'index']);
+});
+```
 
 ## Middleware
 
@@ -248,33 +248,31 @@ Middleware provide a convenient mechanism for inspecting and filtering HTTP requ
 
 To create new middleware, use `make:middleware` cli command
 
-    ```
     php cli make:middleware EnsureAdmin
-    ```
 
 This command will place new `EnsureAdmin` class inside your `app/http/middleware`. In this middleware, we will only allow access the route if the user is authenticate as admin, if the user haven't authenticate it will redirect back to login uri, if already authenticate it will redirect back to home.
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
-    use Core\Auth;
+use Core\Auth;
 
-    class EnsureAdmin
+class EnsureAdmin
+{
+    public function Run()
     {
-        public function Run()
-        {
-            if (Auth::check()) {
-                if (Auth::User()->get('admin')) {
-                    redirect("dashboard");
-                }
+        if (Auth::check()) {
+            if (Auth::User()->get('admin')) {
+                redirect("dashboard");
             }
-
-            redirect("login");
         }
+
+        redirect("login");
     }
-    ```
+}
+```
 
 As you can see, if the user is not an admin or have not authenticate it will redirect to route that named `login` if the user is an admin it will redirect to route that named `dashboard`.
 
@@ -287,28 +285,28 @@ If you want a middleware to run during every http request to your application, y
 If you would like to assign middleware to specific route, you should first assign the middleware key in your
 application's `app/config/middleware.php` file by default the array key `named`, you may add your own middleware.
 
-    ```php
-    /**
-    * Register middleware named can be used using route or middleware class
-    * route : $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
-    * Middleware::Run('namedMiddleware');
-    */
-    'named' => [
-        'test' => App\Http\Middleware\test::class, // This is still for testing purposes
-    ]
-    ```
+```php
+/**
+* Register middleware named can be used using route or middleware class
+* route : $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
+* Middleware::Run('namedMiddleware');
+*/
+'named' => [
+    'auth' => App\Http\Middleware\Auth::class,
+]
+```
 
 Once the middleware has been defined in middleware config, you may use the middleware method to assign middleware to route.
 
-    ```php
-    Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware);
-    ```
+```php
+Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware);
+```
 
 You may assign multiple middleware to the route by passing an array of middleware names to middleware method.
 
-    ```php
-    Route::get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
-    ```
+```php
+Route::get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
+```
 
 ## Controller
 
@@ -320,31 +318,31 @@ Controller can group related request handling logic into single class. For examp
 
 Let's take a look basic example. Note that the controller extends the base controller class included in this framework (But does not have any functionality yet).
 
-    ```php
-    // web.php in route directory
-    <?php
+```php
+// web.php in route directory
+<?php
 
-    Route::get("/", [Welcome::class, "index"]);
+Route::get("/", [Welcome::class, "index"]);
 
 
-    // Welcome.php in controller directory
-    <?php
+// Welcome.php in controller directory
+<?php
 
-    namespace App\Http\Controller;
+namespace App\Http\Controller;
 
-    use App\Model\Users;
-    use Core\Controller;
+use App\Model\Users;
+use Core\Controller;
 
-    class Welcome extends Controller
+class Welcome extends Controller
+{
+    function index()
     {
-        function index()
-        {
-            return view('welcome', [
-                'users' => Users::find(1)
-            ]);
-        }
+        return view('welcome', [
+            'users' => Users::find(1)
+        ]);
     }
-    ```
+}
+```
 
 When incoming request matches the specified uri, the `index` method on `App\Http\Controller\Welcome` class will be invoked.
 
@@ -360,53 +358,53 @@ If the validation fail it the `Validate` method will return `False` but if succe
 
 First let's assume we have following route
 
-    ```php
-    // stored in app/route/web.php
+```php
+// stored in app/route/web.php
 
-    Route::get('/user/show', [UserController::class, 'show']);
-    Route::post('/user', [UserController::class, 'show']);
-    ```
+Route::get('/user/show', [UserController::class, 'show']);
+Route::post('/user', [UserController::class, 'show']);
+```
 
 and the controller with validation logic
 
-    ```php
-    // stored in app/http/controller/UserController.php
+```php
+// stored in app/http/controller/UserController.php
 
-    <?php
+<?php
 
-    namespace App\Http\Controller;
+namespace App\Http\Controller;
 
-    use App\Model\Users;
-    use Core\Http\Request;
-    use Core\Support\Validator\Validator;
-    use Core\Utils\Hash;
+use App\Model\Users;
+use Core\Http\Request;
+use Core\Support\Validator\Validator;
+use Core\Utils\Hash;
 
-    class UserController
+class UserController
+{
+    public function show()
     {
-        public function show()
-        {
-            $validate = Validator::Validate(Request::get())->rules(['id' => ['numeric']]);
-            dd(Users::find($validate['id']));
-        }
-        public function store()
-        {
-            $validate = Request::Validate([
-                'name' => ["string", "min:2"],
-                "email" => ["string", "email"],
-                "password" => ["string"],
-            ]);
-            Users::create($validate);
-        }
+        $validate = Validator::Validate(Request::get())->rules(['id' => ['numeric']]);
+        dd(Users::find($validate['id']));
     }
-    ```
+    public function store()
+    {
+        $validate = Request::Validate([
+            'name' => ["string", "min:2"],
+            "email" => ["string", "email"],
+            "password" => ["string"],
+        ]);
+        Users::create($validate);
+    }
+}
+```
 
 ### Request Validate
 
 Because using `Validator` class need to pass the data you might want to use `Validate` method that ship in the `Request` class.
 
-    ```php
-    $validate = Request::Validate(['id' => ["numeric"]]);
-    ```
+```php
+$validate = Request::Validate(['id' => ["numeric"]]);
+```
 
 ## Views
 
@@ -414,12 +412,11 @@ Because using `Validator` class need to pass the data you might want to use `Val
 
 Of course it's not pratical to return entire HTML documents directly from your routes and controllers. Thankfully, views provide a convinient way to place all of our HTML in seperate files. Views seperate your controller / application logic from your presentation logic and are stored in `app/views` directory. a simple view might look like this.
 
-    ```php
+```html
     <!-- View stored in app/views/welcome.php -->
 
-    <!DOCTYPE html>
-    <html lang="en">
-
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -431,39 +428,39 @@ Of course it's not pratical to return entire HTML documents directly from your r
         Hello <?= $users->get('name') ?>
     </body>
 
-    </html>
-    ```
+</html>
+```
 
 Since this view is stored in `app/views`, we may return it using global `view` helper inside our controller
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controller;
+namespace App\Http\Controller;
 
-    use App\Model\Users;
-    use Core\Controller;
+use App\Model\Users;
+use Core\Controller;
 
-    class Welcome extends Controller
+class Welcome extends Controller
+{
+    function index()
     {
-        function index()
-        {
-            return view('welcome', [
-                'users' => Users::find(1)
-            ]);
-        }
+        return view('welcome', [
+            'users' => Users::find(1)
+        ]);
     }
-    ```
+}
+```
 
 ### Passing Data to Views
 
 As you saw in the previous example, you may pass an array of data to views to make that data available to the view:
 
-    ```php
-    return view('greetings', [
-        'name' => 'Jane'
-    ]);
-    ```
+```php
+return view('greetings', [
+    'name' => 'Jane'
+]);
+```
 
 When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
 
@@ -473,15 +470,15 @@ When passing information in this manner, the data should be an array with key / 
 
 Example :
 
-    ```php
-    {{ $foo }}
-    ```
+```php
+{{ $foo }}
+```
 
 it will compiled as
 
-    ```php
-    <?php echo \htmlentities($foo, ENT_QUOTES, 'UTF-8', false); ?>
-    ```
+```php
+<?php echo \htmlentities($foo, ENT_QUOTES, 'UTF-8', false); ?>
+```
 
 ## Session
 
@@ -489,62 +486,62 @@ it will compiled as
 
 In this framework you can call `Session` Class helper which can be typed on Controller or on the view.
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controller;
+namespace App\Http\Controller;
 
-    use Core\Controller;
-    use Core\Support\Session;
+use Core\Controller;
+use Core\Support\Session;
 
-    class Welcome extends Controller
+class Welcome extends Controller
+{
+    function index()
     {
-        function index()
-        {
-            return view('welcome', [
-                'users' => Session::get('key')
-            ]);
-        }
+        return view('welcome', [
+            'users' => Session::get('key')
+        ]);
     }
-    ```
+}
+```
 
 Or you can use the `session` helper function to make life much more easier.
 
-    ```php
-    session()->get('key');
-    ```
+```php
+session()->get('key');
+```
 
 #### Retrieve All Session Data
 
 If you would like to retrieve all the data in the session, you may just not passing any parameter.
 
-    ```php
-    Session::get();
-    ```
+```php
+Session::get();
+```
 
 ### Storing Data
 
 To store data in the session, you will typically use `Session` helper class method called `set`
 
-    ```php
-    Session::set('name', 'John');
-    ```
+```php
+Session::set('name', 'John');
+```
 
 ### Deleting Data
 
 To delete data in the session you can use the Session helper class method called `unset`
 
-    ```php
-    Session::unset('name');
-    ```
+```php
+Session::unset('name');
+```
 
 ### Destroying Current Session
 
 To destroy the current session you can use these method.
 
-    ```php
-    Session::destroy();
-    ```
+```php
+Session::destroy();
+```
 
 # Digging Deeper
 
@@ -558,27 +555,27 @@ CLI is Command Line Interface included in this framework, CLI exists at the root
 
 The `Core\Support\Collection` class provide simple and yet convinient wrapper with array of data, to make even more convinient is using the `collect` helper function but the effect is exactly the same, for example:
 
-    ```php
-    $article = collect([
-        'title' => 'Lorem',
-        'content' => 'Lorem ipsum',
-        'author' => 'John',
-    ]);
+```php
+$article = collect([
+    'title' => 'Lorem',
+    'content' => 'Lorem ipsum',
+    'author' => 'John',
+]);
 
-    $article->map(function ($name) {
-        return strtoupper($name);
-    });
+$article->map(function ($name) {
+    return strtoupper($name);
+});
 
-    $modifiedArticle = $article->get();
-    ```
+$modifiedArticle = $article->get();
+```
 
 ### Creating Collection
 
 As mentioned above the `Collection` class helper return collection instance for the given array.
 
-    ```php
-    $collection = collect([1, 2, 3])
-    ```
+```php
+$collection = collect([1, 2, 3])
+```
 
 ### Available Method
 
@@ -608,24 +605,24 @@ As mentioned above the `Collection` class helper return collection instance for 
 
 To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
 
-    ```php
-    // Using helper hunction
+```php
+// Using helper hunction
 
-    $str = Str('Foo');
+$str = Str('Foo');
 
-    // Using the class itself
-    use Core\Support\Str\Str;
+// Using the class itself
+use Core\Support\Str\Str;
 
-    $str = new Str('Foo');
-    ```
+$str = new Str('Foo');
+```
 
 Example usage
 
-    ```php
-    // Using helper function
+```php
+// Using helper function
 
-    $str = Str('foo')->upper(); // it will return FOO instead of Foo
-    ```
+$str = Str('foo')->upper(); // it will return FOO instead of Foo
+```
 
 ### Available Method
 
@@ -649,13 +646,13 @@ In this framework provide basic and yet very elegants, thanks to the `Core\Suppo
 
 There also some `Core\Support\Filesystem\File` class that help manage basic operation on file, for example write, read, modified time, deletion, copy.
 
-    ```php
-    use Core\Support\Filesystem\File
+```php
+use Core\Support\Filesystem\File
 
-    $file = new File("app/storage/tests.json");
-    echo $file->get();
-    echo $file->modified();
-    ```
+$file = new File("app/storage/tests.json");
+echo $file->get();
+echo $file->modified();
+```
 
 #### Available Method
 
@@ -673,12 +670,12 @@ There also some `Core\Support\Filesystem\File` class that help manage basic oper
 
 In web application, one of the most common use cases for storing files is storing user uploaded files such as photos or documents, in this framework makes relative easy to store uploaded file using `upload` method
 
-    ```php
-    use Core\Support\Filesystem\Storage;
-    use Core\Support\Http\Request;
+```php
+use Core\Support\Filesystem\Storage;
+use Core\Support\Http\Request;
 
-    Storage::upload(Request::File('image'));
-    ```
+Storage::upload(Request::File('image'));
+```
 
 ## Cache
 
@@ -694,14 +691,14 @@ Your application's cache configuration is stored in `app/config/cache.php`. In t
 
 To use cache you can call `remember` method in `Cache` class.
 
-    ```php
-    use App\Model\Users;
-    use Core\Support\Cache\Cache;
+```php
+use App\Model\Users;
+use Core\Support\Cache\Cache;
 
-    $data = Cache::remember('key', 3600, function () {
-        return Users::all();
-    })
-    ```
+$data = Cache::remember('key', 3600, function () {
+    return Users::all();
+})
+```
 
 # Security
 
@@ -713,27 +710,27 @@ Many web application provide a way for users to authenticate with the applicatio
 
 We will access authentication in this framework via `Core\Auth` class, now let's check out the `attempt` method, the attempt method is normaly used to handle authentication attempt from your application login form, if the authentication successfully, it will use `session` to keep the user logged in.
 
-    ```php
-    use Core\Auth;
+```php
+use Core\Auth;
 
-    Auth::attempt([
-        'username' => 'John',
-        'password' => 'John_Password'
-    ]);
-    ```
+Auth::attempt([
+    'username' => 'John',
+    'password' => 'John_Password'
+]);
+```
 
 You can customize `Auth` class behavior inside the `app/config/auth.php`
 
-    ```php
-    return [
-        'table' => 'users',
-        'session_name' => 'USER',
-        'primary_key' => 'id',
-        'unique_key' => 'name',
-        'verify_key' => 'password',
-        'guarded' => ['password', 'email'],
-    ];
-    ```
+```php
+return [
+    'table' => 'users',
+    'session_name' => 'USER',
+    'primary_key' => 'id',
+    'unique_key' => 'name',
+    'verify_key' => 'password',
+    'guarded' => ['password', 'email'],
+];
+```
 
 `table` key is used for target verification table.
 
@@ -751,9 +748,9 @@ You can customize `Auth` class behavior inside the `app/config/auth.php`
 
 Theres are time that the route needed to be protected for example the `/dasbhoard` should be accessible on logged in users, these route protection use middleware that can be define in route
 
-    ```php
-    Route::get('/dashboard', [Dashboard::class, 'index'])->middleware('auth');
-    ```
+```php
+Route::get('/dashboard', [Dashboard::class, 'index'])->middleware('auth');
+```
 
 You can create your own middleware for security purposes and added in the `app/config/middleware.php` to register middleware for route.
 
@@ -761,11 +758,11 @@ You can create your own middleware for security purposes and added in the `app/c
 
 Logging out the users using the built in authentication is very easy we can use `logout` method to log the users out.
 
-    ```php
-    use Core\Auth;
+```php
+use Core\Auth;
 
-    Auth::logout();
-    ```
+Auth::logout();
+```
 
 ## Hashing
 
@@ -781,22 +778,22 @@ The default hashing driver for your application can be configured in `.env` file
 
 To hash a password you can call `make` method on `Core\Utils\Hash`:
 
-    ```php
-    use Core\Utils\Hash;
+```php
+use Core\Utils\Hash;
 
-    Hash::make("Something");
-    ```
+Hash::make("Something");
+```
 
 ### Verify
 
 The `check` method provided by `Hash` helper class allows you to verify that given plain-text string corresponds to given hash.
 
-    ```php
-    if(Hash::check($plaintext, $hash))
-    {
-        // Do something.
-    }
-    ```
+```php
+if(Hash::check($plaintext, $hash))
+{
+    // Do something.
+}
+```
 
 # Database
 
@@ -820,31 +817,31 @@ In this example we are doing raw query:
 
 Note : Since we running a raw query there is possibilty that we might run into sql injection attack.
 
-    ```php
-    // Selecting all data inside a table using raw sql
-    use Core\Database\DB;
+```php
+// Selecting all data inside a table using raw sql
+use Core\Database\DB;
 
-    $users = DB::query("SELECT * FROM users")->fetchAll();
-    ```
+$users = DB::query("SELECT * FROM users")->fetchAll();
+```
 
 ---
 
-    ```php
-    // Selecting specific data inside a table using raw sql
-    use Core\Database\DB;
+```php
+// Selecting specific data inside a table using raw sql
+use Core\Database\DB;
 
-    $id = 1;
+$id = 1;
 
-    $users = DB::query("SELECT * FROM users WHERE id={$id}")->fetch();
-    ```
+$users = DB::query("SELECT * FROM users WHERE id={$id}")->fetch();
+```
 
 In the example above, `query` method is used to put all our sql query while the `fetchAll` method is used to fetch all the selected data, while fetch will only return one data, after that it will store inside users variable.
 
-    ```php
-    // Inserting data inside a table using raw sql
-    use Core\Database\DB;
-    $boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeclose();
-    ```
+```php
+// Inserting data inside a table using raw sql
+use Core\Database\DB;
+$boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeclose();
+```
 
 So in the example above is an simple example how to put a thing inside database's table, and there are 2 method for executing query `execute` method and `executeclose` method, these two method are slightly bit different, the diffrence is `executeclose` is executing the sql query and then close the connection, same as `fetch` and `fetchAll` method these will always close the connection.
 
@@ -852,33 +849,33 @@ So in the example above is an simple example how to put a thing inside database'
 
 Since doing raw query is vulnerable with sql injection attack, there are available method that use prepared statement, let's do same example but using prepared statement
 
-    ```php
-    // Selecting all data inside a table using prepared statement
-    use Core\Database\DB;
+```php
+// Selecting all data inside a table using prepared statement
+use Core\Database\DB;
 
-    $users_collection = DB::prepare("SELECT * FROM users")->fetchAll();
-    ```
-
----
-
-    ```php
-    // Selecting specific data inside a table using prepared statement
-    use Core\Database\DB;
-
-    $id = 1;
-
-    $user_collection = DB::prepare("SELECT * FROM users WHERE id=?")->fetch([$id]);
-    ```
+$users_collection = DB::prepare("SELECT * FROM users")->fetchAll();
+```
 
 ---
 
-    ```php
-    // Inserting data inside a table using prepared statement
-    use Core\Database\DB;
+```php
+// Selecting specific data inside a table using prepared statement
+use Core\Database\DB;
 
-    $data = ["John", "John@mail.com", "HashedPassword"];
-    $boolean  = DB::prepare("INSERT INTO users (name, email, password) VALUES(?, ?, ?)")->executeclose($data);
-    ```
+$id = 1;
+
+$user_collection = DB::prepare("SELECT * FROM users WHERE id=?")->fetch([$id]);
+```
+
+---
+
+```php
+// Inserting data inside a table using prepared statement
+use Core\Database\DB;
+
+$data = ["John", "John@mail.com", "HashedPassword"];
+$boolean  = DB::prepare("INSERT INTO users (name, email, password) VALUES(?, ?, ?)")->executeclose($data);
+```
 
 ### List Method
 
@@ -898,65 +895,65 @@ Built in database method is available in `Core\Database\DB` classes, these metho
 
 Theres are few built in database method, for example we will use the example above for demonstration:
 
-    ```php
-    // Selecting all data inside a table using Built in
-    use Core\Database\DB;
+```php
+// Selecting all data inside a table using Built in
+use Core\Database\DB;
 
-    $users_collection = DB::table('users')->all();
-    ```
-
----
-
-    ```php
-    // Selecting specific data inside a table using prepared statement
-    use Core\Database\DB;
-
-    $user_collection = DB::table('users')->find(1);
-    ```
+$users_collection = DB::table('users')->all();
+```
 
 ---
 
-    ```php
-    // Inserting data inside a table using prepared statement
-    use Core\Database\DB;
+```php
+// Selecting specific data inside a table using prepared statement
+use Core\Database\DB;
 
-    $data = [
-        'name' => "John",
-        'email' => "John@mail.com",
-        'password' => "hashed password"
-    ];
+$user_collection = DB::table('users')->find(1);
+```
 
-    $boolean = DB::table('users')->create($data);
-    ```
+---
+
+```php
+// Inserting data inside a table using prepared statement
+use Core\Database\DB;
+
+$data = [
+    'name' => "John",
+    'email' => "John@mail.com",
+    'password' => "hashed password"
+];
+
+$boolean = DB::table('users')->create($data);
+```
 
 Note : to use `create` method you should passed associative array instead of normal array
 
 ---
 
-    ```php
-    // Updating data in database
-    use Core\Database\DB;
+```php
+// Updating data in database
+use Core\Database\DB;
 
-    $data = [
-        'id' => 1,
-        'name' => "John Smith",
-        'email' => "John@mail.com",
-        'password' => "hashed password"
-    ];
+$data = [
+    'id' => 1,
+    'name' => "John Smith",
+    'email' => "John@mail.com",
+    'password' => "hashed password"
+];
 
-    $boolean = DB::table('users')->update($data);
-    ```
+$boolean = DB::table('users')->update($data);
+```
 
 ---
 
-    ```php
-        // Deleting data in database
-        use Core\Database\DB;
+```php
+    // Deleting data in database
+    use Core\Database\DB;
 
-        $id = 1;
+    $id = 1;
 
-        $boolean = DB::table('users')->destroy($id);
-    ```
+    $boolean = DB::table('users')->destroy($id);
+```
 
 ### List Method
 
@@ -972,33 +969,33 @@ Since all the database returning value is in `Core\Support\Collection`, you can 
 
 Note : This feature only work using `find` method
 
-    ```php
-    use Core\Database\DB;
+```php
+use Core\Database\DB;
 
-    $user = DB::table('users')->find(2);
+$user = DB::table('users')->find(2);
 
-    $user->fill([
-        "name" => "John Smith",
-        "email" => "John@mail.com",
-        "password" => "hashedpassword"
-    ]);
+$user->fill([
+    "name" => "John Smith",
+    "email" => "John@mail.com",
+    "password" => "hashedpassword"
+]);
 
-    $boolean = $user->save();
-    ```
+$boolean = $user->save();
+```
 
 Or maybe you `fill` half of the data it will work regardless as long you use `fill` method.
 
-    ```php
-    use Core\Database\DB;
+```php
+use Core\Database\DB;
 
-    $user = DB::table('users')->find(2);
+$user = DB::table('users')->find(2);
 
-    $user->fill([
-        "email" => "JohnSmith@mail.com",
-    ]);
+$user->fill([
+    "email" => "JohnSmith@mail.com",
+]);
 
-    $boolean = $user->save();
-    ```
+$boolean = $user->save();
+```
 
 ## Database Model
 
@@ -1012,40 +1009,40 @@ To get started, let's create model. Model typically live in the `app/model` and 
 
 After generating the class the file will looks like this
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Models;
-    use Core\Model;
+namespace App\Models;
+use Core\Model;
 
-    class Posts extends Model
-    {
-        // Code Here
-    }
-    ```
+class Posts extends Model
+{
+    // Code Here
+}
+```
 
 ### Table Name
 
 After glancing on the file above, you may noticed that we did not tell the model which database table correspond to this Posts Model, so let's add this object property inside `Posts` class
 
-    ```php
-    protected $table = 'post';
-    ```
+```php
+protected $table = 'post';
+```
 
 After we add this we now have the basic CRUD using model, we can use the same name convention method in `Core\Database\DB`, like find, where, insert, delete, all.
 
-    ```php
-    // Selecting all data using database model
-    use App\Models\Posts;
+```php
+// Selecting all data using database model
+use App\Models\Posts;
 
-    $posts = Posts::all();
-    ```
+$posts = Posts::all();
+```
 
 Database model will always assume that database table has primary key `id`. If necessarry, you may define `protected $primary_key` property on your model to specify a different column that serves as your model's primary key.
 
-    ```php
-    protected $primary_key = 'posts_id';
-    ```
+```php
+protected $primary_key = 'posts_id';
+```
 
 ### Model Relationship
 
@@ -1059,52 +1056,52 @@ Defining the relationship inside your model is very simple, by using protected o
 
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a user may have an infinite number of posts.
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Model;
+namespace App\Model;
 
-    use App\Models\Posts;
-    use Core\Model;
+use App\Models\Posts;
+use Core\Model;
 
 
-    class Users extends Model
-    {
-        protected $table = "users";
-        protected $hasMany = [Posts::class, 'users_id'];
-    }
-    ```
+class Users extends Model
+{
+    protected $table = "users";
+    protected $hasMany = [Posts::class, 'users_id'];
+}
+```
 
 To use the relationship that we already define:
 
-    ```php
-    Users::find(1, 'hasMany');
-    ```
+```php
+Users::find(1, 'hasMany');
+```
 
 ##### Belongs To
 
 Now that we can access all of a user's posts, let's define a relationship to allow a posts to access its parent user. To define the inverse of a hasMany relationship, define a relationship method on the child model which calls the belongsTo method:
 
-    ```php
-    <?php
+```php
+<?php
 
-    namespace App\Models;
+namespace App\Models;
 
-    use App\Model\Users;
-    use Core\Model;
+use App\Model\Users;
+use Core\Model;
 
-    class Posts extends Model
-    {
-        protected $table = 'post';
-        protected $belongsTo = [Users::class, 'users_id'];
-    }
-    ```
+class Posts extends Model
+{
+    protected $table = 'post';
+    protected $belongsTo = [Users::class, 'users_id'];
+}
+```
 
 To use the relationship that we already define:
 
-    ```php
-    Posts::find(1, 'belongsTo');
-    ```
+```php
+Posts::find(1, 'belongsTo');
+```
 
 ### List Method
 
