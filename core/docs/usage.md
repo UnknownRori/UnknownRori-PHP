@@ -4,151 +4,149 @@
 
 ## Table of Content
 
-- The Basic
+- [The Basic](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#the-basic)
 
-  - Routing
+  - [Routing](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#routing)
 
-    - Default Route Files
+    - [Default Route Files](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#default-route-files)
 
-    - Route Name prefix
+    - [Route Name prefix](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#route-name-prefix)
 
-      - Generating URI to Named Routes
+      - [Generating URI to Named Routes](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#generating-uri-to-named-routes)
 
-    - Route Group
+    - [Route Group](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#route-group)
 
-      - Middleware
+      - [Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware)
 
-  - Middleware
+  - [Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware-1)
 
-    - Introduction
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-middleware)
 
-    - Defining Middleware
+    - [Defining Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-middleware)
 
-    - Global Middleware
+    - [Global Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#global-middleware)
 
-    - Assigning Middleware to Routes
+    - [Assigning Middleware to Routes](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#assigning-middleware-to-routes)
 
-  - Controller
+  - [Controller](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#controller)
 
-    - Introduction
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction)
 
-    - Writing Controller
+    - [Writing Controller](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#writing-controller)
 
-  - Validation
+  - [Validation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validation)
 
-    - Introduction
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-1)
 
-    - Validator
+    - [Validator](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validator)
 
-    - Request Validate
+    - [Request Validate](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#request-validate)
 
-  - Views
+  - [Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#views)
 
-    - Introduction
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-2)
 
-    - Passing Data to Views
+    - [Passing Data to Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#passing-data-to-views)
 
-    - Blade One
+    - [Blade One](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#blade-one)
 
-  - Session
+  - [Session](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#session)
 
-    - Interacting with the Session
+    - [Retrieve Data](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#retrieve-data)
 
-      - Retrieve Data
+    - [Retrieve All Session Data](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#retrieve-all-session-data)
 
-        - Retrieve All Session Data
+    - [Storing Data](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#storing-data)
 
-      - Storing Data
+    - [Deleting Data](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#deleting-data)
 
-      - Deleting Data
+    - [Destroying Current Session](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#destroying-current-session)
 
-      - Destroying Current Session
+- [Digging Deeper](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#digging-deeper)
 
-- Digging Deeper
+  - [CLI](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#cli)
 
-  - CLI
+  - [Collection](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#collection)
 
-  - Collection
+    - [Creating Collection](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#creating-collection)
 
-    - Creating Collection
+    - [Available Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#available-method)
 
-    - Available Method
+  - [Str](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#str)
 
-  - Str
+    - [Creating Str](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#creating-str)
 
-    - Creating Str
+    - [Available Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#available-method-1)
 
-    - Available Method
+  - [File Storage](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#file-storage)
 
-  - File Storage
+    - [File](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#file)
 
-    - File
+    - [Uploading File](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#file-uploads)
 
-    - Uploading File
+  - [Cache](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#cache)
 
-  - Cache
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-3)
 
-    - Introduction
+    - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration)
 
-    - Configuration
+    - [Cache Usage](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#cache-usage)
 
-    - Cache Usage
+- [Security](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#security)
 
-- Security
+  - [Authentication](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#authentication)
 
-  - Authentication
+    - [Authenticating Users](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#authenticating-users)
 
-    - Authenticating Users
+    - [Protecting Route](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#protecting-route)
 
-    - Protecting Route
+    - [Logging out the users](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#logging-out-the-users)
 
-    - Logging out the users
+  - [Hashing](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#hashing)
 
-  - Hashing
+    - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration-1)
 
-    - Configuration
+    - [Basic Usage](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#basic-usage)
 
-    - Basic Usage
+    - [Verify](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#verify)
 
-    - Verify
+- [Database](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#overview)
 
-- Database
+  - [Overview](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration-2)
 
-  - Overview
+  - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration-2)
 
-  - Configuration
+  - [Query](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#query)
 
-  - Query
+    - [Raw Query](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#raw-query)
 
-    - Raw Query
+    - [Prepared Statement](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#prepared-statement)
 
-    - Prepared Statement
+    - [List Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#list-method)
 
-    - List Method
+  - [Built in Database Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#built-in-database-method)
 
-  - Built in Database Method
+    - [Overview](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#overview-1)
 
-    - Overview
+    - [List Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#list-method-1)
 
-    - List Method
+  - [Database Collection](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#database-collection)
 
-  - Database Collection
+  - [Database Model](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#database-model)
 
-  - Database Model
+    - [Generating Model Class](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#generating-model-class)
 
-    - Generating Model Class
+    - [Table Name](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#table-name)
 
-    - Table Name
+    - [Model Relationship](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#model-relationship)
 
-    - Model Relationship
+      - [Defining Relationship](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-relationship)
 
-      - Defining Relationship
+        - [Has Many](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#has-many)
 
-        - Has Many
+        - [Belongs To](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#belongs-to)
 
-        - Belongs To
-
-    - List Method
+    - [List Method](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#list-method-2)
 
 # The Basic
 
@@ -156,15 +154,19 @@
 
 The most basic Rori-PHP routes accept a URI and a closure, provide a simple and expressive method of defining routes and behavior without complicated routing configuration files:
 
+    ```php
     Route::get('/', function () {
         return view("welcome");
     });
+    ```
 
 Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using `controller` classes. Controllers can group related request handling logic into a single class. For example, a UserController class might handle all incoming requests related to users, including showing, creating, updating, and deleting users. By default, controllers are stored in the `app/http/controller` directory.
 
 You can define a route to this controller method like so:
 
+    ```php
     Route::get('/', [Home::class, 'index']);
+    ```
 
 ### Default Route Files
 
@@ -172,33 +174,42 @@ All UnknownRori-PHP routes are defined in route file, which is located in `app/r
 
 For most application, you will begin by defining routes inside `app/route/web.php` file, these defined route URL can be accessed using your browser, for example `localhost:8080/user` in your browser
 
+    ```php
     Route::get('/user', [User::class, 'index']);
+    ```
 
 The router allows you to register routes that respond to any HTTP verb
 
+    ```php
     Route::get('/', [Welcome::class, 'index']);
     Route::post('/', [Welcome::class, 'index']);
     Route::delete('/', [Welcome::class, 'index']);
     Route::patch('/', [Welcome::class, 'index']);
+    ```
 
 ### Route Name prefix
 
 Named routes allow the convenient generation of URI or redirect for specific routes. You may specify a name for route by chaining `name` method onto route definition
 
+    ```php
     Route::get('/user', [UserController::class, 'index'])->name('user');
+    ```
 
 #### Generating URI to Named Routes
 
 Once you assigned a name on given route, you may use the route's name when generating URI or `redirect` helper method
 
+    ```php
     // Generating URI
     $uri = Route::GetRoute('user', ['id' => 1]);
 
     // Redirect
     Route::Redirect('user', ['id' => 1]);
+    ```
 
 Or you can use the `route` & `redirect` helper function.
 
+    ```php
     // Generate URI
 
     $uri = route('user', ['id' => 1]);
@@ -206,10 +217,13 @@ Or you can use the `route` & `redirect` helper function.
     // Redirect
 
     redirect('user', ['id' => 1]);
+    ```
 
 If the named route defines parameters, you may pass the parameters as the second argument to the route function. The given parameters will automatically be inserted into the generated URL in their correct positions:
 
+    ```php
     $url = route('profile', ['id' => 1]);
+    ```
 
 ### Route Group
 
@@ -219,10 +233,12 @@ Route groups allow you to share route attributes, such as middleware across a la
 
 To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
 
+    ```php
     Route::group('test')->by(function () {
         Route::get('/group/1', [Controller::class, 'index']);
         Route::get('/group/2', [Controller::class, 'index']);
     });
+    ```
 
 ## Middleware
 
@@ -232,10 +248,13 @@ Middleware provide a convenient mechanism for inspecting and filtering HTTP requ
 
 To create new middleware, use `make:middleware` cli command
 
+    ```
     php cli make:middleware EnsureAdmin
+    ```
 
 This command will place new `EnsureAdmin` class inside your `app/http/middleware`. In this middleware, we will only allow access the route if the user is authenticate as admin, if the user haven't authenticate it will redirect back to login uri, if already authenticate it will redirect back to home.
 
+    ```php
     <?php
 
     namespace App\Http\Middleware;
@@ -255,6 +274,7 @@ This command will place new `EnsureAdmin` class inside your `app/http/middleware
             redirect("login");
         }
     }
+    ```
 
 As you can see, if the user is not an admin or have not authenticate it will redirect to route that named `login` if the user is an admin it will redirect to route that named `dashboard`.
 
@@ -267,22 +287,28 @@ If you want a middleware to run during every http request to your application, y
 If you would like to assign middleware to specific route, you should first assign the middleware key in your
 application's `app/config/middleware.php` file by default the array key `named`, you may add your own middleware.
 
-        /**
-        * Register middleware named can be used using route or middleware class
-        * route : $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
-        * Middleware::Run('namedMiddleware');
-        */
-        'named' => [
-            'test' => App\Http\Middleware\test::class, // This is still for testing purposes
-        ]
+    ```php
+    /**
+    * Register middleware named can be used using route or middleware class
+    * route : $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
+    * Middleware::Run('namedMiddleware');
+    */
+    'named' => [
+        'test' => App\Http\Middleware\test::class, // This is still for testing purposes
+    ]
+    ```
 
 Once the middleware has been defined in middleware config, you may use the middleware method to assign middleware to route.
 
+    ```php
     Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware);
+    ```
 
 You may assign multiple middleware to the route by passing an array of middleware names to middleware method.
 
+    ```php
     Route::get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
+    ```
 
 ## Controller
 
@@ -294,11 +320,11 @@ Controller can group related request handling logic into single class. For examp
 
 Let's take a look basic example. Note that the controller extends the base controller class included in this framework (But does not have any functionality yet).
 
+    ```php
     // web.php in route directory
     <?php
 
     Route::get("/", [Welcome::class, "index"]);
-
 
 
     // Welcome.php in controller directory
@@ -318,6 +344,7 @@ Let's take a look basic example. Note that the controller extends the base contr
             ]);
         }
     }
+    ```
 
 When incoming request matches the specified uri, the `index` method on `App\Http\Controller\Welcome` class will be invoked.
 
@@ -333,13 +360,16 @@ If the validation fail it the `Validate` method will return `False` but if succe
 
 First let's assume we have following route
 
+    ```php
     // stored in app/route/web.php
 
     Route::get('/user/show', [UserController::class, 'show']);
     Route::post('/user', [UserController::class, 'show']);
+    ```
 
 and the controller with validation logic
 
+    ```php
     // stored in app/http/controller/UserController.php
 
     <?php
@@ -368,12 +398,15 @@ and the controller with validation logic
             Users::create($validate);
         }
     }
+    ```
 
 ### Request Validate
 
 Because using `Validator` class need to pass the data you might want to use `Validate` method that ship in the `Request` class.
 
+    ```php
     $validate = Request::Validate(['id' => ["numeric"]]);
+    ```
 
 ## Views
 
@@ -381,6 +414,7 @@ Because using `Validator` class need to pass the data you might want to use `Val
 
 Of course it's not pratical to return entire HTML documents directly from your routes and controllers. Thankfully, views provide a convinient way to place all of our HTML in seperate files. Views seperate your controller / application logic from your presentation logic and are stored in `app/views` directory. a simple view might look like this.
 
+    ```php
     <!-- View stored in app/views/welcome.php -->
 
     <!DOCTYPE html>
@@ -398,9 +432,11 @@ Of course it's not pratical to return entire HTML documents directly from your r
     </body>
 
     </html>
+    ```
 
 Since this view is stored in `app/views`, we may return it using global `view` helper inside our controller
 
+    ```php
     <?php
 
     namespace App\Http\Controller;
@@ -417,14 +453,17 @@ Since this view is stored in `app/views`, we may return it using global `view` h
             ]);
         }
     }
+    ```
 
 ### Passing Data to Views
 
 As you saw in the previous example, you may pass an array of data to views to make that data available to the view:
 
+    ```php
     return view('greetings', [
         'name' => 'Jane'
     ]);
+    ```
 
 When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
 
@@ -434,11 +473,15 @@ When passing information in this manner, the data should be an array with key / 
 
 Example :
 
+    ```php
     {{ $foo }}
+    ```
 
 it will compiled as
 
+    ```php
     <?php echo \htmlentities($foo, ENT_QUOTES, 'UTF-8', false); ?>
+    ```
 
 ## Session
 
@@ -446,6 +489,7 @@ it will compiled as
 
 In this framework you can call `Session` Class helper which can be typed on Controller or on the view.
 
+    ```php
     <?php
 
     namespace App\Http\Controller;
@@ -462,34 +506,45 @@ In this framework you can call `Session` Class helper which can be typed on Cont
             ]);
         }
     }
+    ```
 
 Or you can use the `session` helper function to make life much more easier.
 
+    ```php
     session()->get('key');
+    ```
 
 #### Retrieve All Session Data
 
 If you would like to retrieve all the data in the session, you may just not passing any parameter.
 
+    ```php
     Session::get();
+    ```
 
 ### Storing Data
 
 To store data in the session, you will typically use `Session` helper class method called `set`
 
+    ```php
     Session::set('name', 'John');
+    ```
 
 ### Deleting Data
 
 To delete data in the session you can use the Session helper class method called `unset`
 
+    ```php
     Session::unset('name');
+    ```
 
 ### Destroying Current Session
 
 To destroy the current session you can use these method.
 
+    ```php
     Session::destroy();
+    ```
 
 # Digging Deeper
 
@@ -503,6 +558,7 @@ CLI is Command Line Interface included in this framework, CLI exists at the root
 
 The `Core\Support\Collection` class provide simple and yet convinient wrapper with array of data, to make even more convinient is using the `collect` helper function but the effect is exactly the same, for example:
 
+    ```php
     $article = collect([
         'title' => 'Lorem',
         'content' => 'Lorem ipsum',
@@ -514,12 +570,15 @@ The `Core\Support\Collection` class provide simple and yet convinient wrapper wi
     });
 
     $modifiedArticle = $article->get();
+    ```
 
 ### Creating Collection
 
 As mentioned above the `Collection` class helper return collection instance for the given array.
 
+    ```php
     $collection = collect([1, 2, 3])
+    ```
 
 ### Available Method
 
@@ -549,6 +608,7 @@ As mentioned above the `Collection` class helper return collection instance for 
 
 To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
 
+    ```php
     // Using helper hunction
 
     $str = Str('Foo');
@@ -557,12 +617,15 @@ To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
     use Core\Support\Str\Str;
 
     $str = new Str('Foo');
+    ```
 
 Example usage
 
+    ```php
     // Using helper function
 
     $str = Str('foo')->upper(); // it will return FOO instead of Foo
+    ```
 
 ### Available Method
 
@@ -580,15 +643,19 @@ Example usage
 
 ## File Storage
 
+### File
+
 In this framework provide basic and yet very elegants, thanks to the `Core\Support\Filesystem\Storage` class, all the configuration on the filesystem can be located in `app/config/filesystem.php`.
 
 There also some `Core\Support\Filesystem\File` class that help manage basic operation on file, for example write, read, modified time, deletion, copy.
 
+    ```php
     use Core\Support\Filesystem\File
 
     $file = new File("app/storage/tests.json");
     echo $file->get();
     echo $file->modified();
+    ```
 
 #### Available Method
 
@@ -606,10 +673,12 @@ There also some `Core\Support\Filesystem\File` class that help manage basic oper
 
 In web application, one of the most common use cases for storing files is storing user uploaded files such as photos or documents, in this framework makes relative easy to store uploaded file using `upload` method
 
+    ```php
     use Core\Support\Filesystem\Storage;
     use Core\Support\Http\Request;
 
     Storage::upload(Request::File('image'));
+    ```
 
 ## Cache
 
@@ -625,12 +694,14 @@ Your application's cache configuration is stored in `app/config/cache.php`. In t
 
 To use cache you can call `remember` method in `Cache` class.
 
+    ```php
     use App\Model\Users;
     use Core\Support\Cache\Cache;
 
     $data = Cache::remember('key', 3600, function () {
         return Users::all();
     })
+    ```
 
 # Security
 
@@ -642,15 +713,18 @@ Many web application provide a way for users to authenticate with the applicatio
 
 We will access authentication in this framework via `Core\Auth` class, now let's check out the `attempt` method, the attempt method is normaly used to handle authentication attempt from your application login form, if the authentication successfully, it will use `session` to keep the user logged in.
 
+    ```php
     use Core\Auth;
 
     Auth::attempt([
         'username' => 'John',
         'password' => 'John_Password'
     ]);
+    ```
 
 You can customize `Auth` class behavior inside the `app/config/auth.php`
 
+    ```php
     return [
         'table' => 'users',
         'session_name' => 'USER',
@@ -659,6 +733,7 @@ You can customize `Auth` class behavior inside the `app/config/auth.php`
         'verify_key' => 'password',
         'guarded' => ['password', 'email'],
     ];
+    ```
 
 `table` key is used for target verification table.
 
@@ -676,7 +751,9 @@ You can customize `Auth` class behavior inside the `app/config/auth.php`
 
 Theres are time that the route needed to be protected for example the `/dasbhoard` should be accessible on logged in users, these route protection use middleware that can be define in route
 
+    ```php
     Route::get('/dashboard', [Dashboard::class, 'index'])->middleware('auth');
+    ```
 
 You can create your own middleware for security purposes and added in the `app/config/middleware.php` to register middleware for route.
 
@@ -684,7 +761,11 @@ You can create your own middleware for security purposes and added in the `app/c
 
 Logging out the users using the built in authentication is very easy we can use `logout` method to log the users out.
 
+    ```php
+    use Core\Auth;
+
     Auth::logout();
+    ```
 
 ## Hashing
 
@@ -700,18 +781,22 @@ The default hashing driver for your application can be configured in `.env` file
 
 To hash a password you can call `make` method on `Core\Utils\Hash`:
 
+    ```php
     use Core\Utils\Hash;
 
     Hash::make("Something");
+    ```
 
 ### Verify
 
 The `check` method provided by `Hash` helper class allows you to verify that given plain-text string corresponds to given hash.
 
+    ```php
     if(Hash::check($plaintext, $hash))
     {
         // Do something.
     }
+    ```
 
 # Database
 
@@ -729,31 +814,37 @@ In this framework database configuration can be found inside `app/config/db.php`
 
 Once you have configured your database connection,  you may run query using `Core\Database\DB` class, in this class it provide wide variety method to do, example doing raw query or prepared statement query and more!
 
-### `Important Note` : All the returning value from all these query is a `Core\Support\Collection`
+Important Note : All the returning value from all these query is a `Core\Support\Collection`
 
 In this example we are doing raw query:
 
 Note : Since we running a raw query there is possibilty that we might run into sql injection attack.
 
+    ```php
     // Selecting all data inside a table using raw sql
     use Core\Database\DB;
 
     $users = DB::query("SELECT * FROM users")->fetchAll();
+    ```
 
 ---
 
+    ```php
     // Selecting specific data inside a table using raw sql
     use Core\Database\DB;
 
     $id = 1;
 
     $users = DB::query("SELECT * FROM users WHERE id={$id}")->fetch();
+    ```
 
 In the example above, `query` method is used to put all our sql query while the `fetchAll` method is used to fetch all the selected data, while fetch will only return one data, after that it will store inside users variable.
 
+    ```php
     // Inserting data inside a table using raw sql
     use Core\Database\DB;
     $boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeclose();
+    ```
 
 So in the example above is an simple example how to put a thing inside database's table, and there are 2 method for executing query `execute` method and `executeclose` method, these two method are slightly bit different, the diffrence is `executeclose` is executing the sql query and then close the connection, same as `fetch` and `fetchAll` method these will always close the connection.
 
@@ -761,27 +852,33 @@ So in the example above is an simple example how to put a thing inside database'
 
 Since doing raw query is vulnerable with sql injection attack, there are available method that use prepared statement, let's do same example but using prepared statement
 
+    ```php
     // Selecting all data inside a table using prepared statement
     use Core\Database\DB;
 
     $users_collection = DB::prepare("SELECT * FROM users")->fetchAll();
+    ```
 
 ---
 
+    ```php
     // Selecting specific data inside a table using prepared statement
     use Core\Database\DB;
 
     $id = 1;
 
     $user_collection = DB::prepare("SELECT * FROM users WHERE id=?")->fetch([$id]);
+    ```
 
 ---
 
+    ```php
     // Inserting data inside a table using prepared statement
     use Core\Database\DB;
-    
+
     $data = ["John", "John@mail.com", "HashedPassword"];
     $boolean  = DB::prepare("INSERT INTO users (name, email, password) VALUES(?, ?, ?)")->executeclose($data);
+    ```
 
 ### List Method
 
@@ -801,20 +898,25 @@ Built in database method is available in `Core\Database\DB` classes, these metho
 
 Theres are few built in database method, for example we will use the example above for demonstration:
 
+    ```php
     // Selecting all data inside a table using Built in
     use Core\Database\DB;
 
     $users_collection = DB::table('users')->all();
+    ```
 
 ---
 
+    ```php
     // Selecting specific data inside a table using prepared statement
     use Core\Database\DB;
 
     $user_collection = DB::table('users')->find(1);
+    ```
 
 ---
 
+    ```php
     // Inserting data inside a table using prepared statement
     use Core\Database\DB;
 
@@ -825,11 +927,13 @@ Theres are few built in database method, for example we will use the example abo
     ];
 
     $boolean = DB::table('users')->create($data);
+    ```
 
 Note : to use `create` method you should passed associative array instead of normal array
 
 ---
 
+    ```php
     // Updating data in database
     use Core\Database\DB;
 
@@ -839,17 +943,20 @@ Note : to use `create` method you should passed associative array instead of nor
         'email' => "John@mail.com",
         'password' => "hashed password"
     ];
-    
+
     $boolean = DB::table('users')->update($data);
+    ```
 
 ---
 
-    // Deleting data in database
-    use Core\Database\DB;
+    ```php
+        // Deleting data in database
+        use Core\Database\DB;
 
-    $id = 1;
+        $id = 1;
 
-    $boolean = DB::table('users')->destroy($id);
+        $boolean = DB::table('users')->destroy($id);
+    ```
 
 ### List Method
 
@@ -865,29 +972,33 @@ Since all the database returning value is in `Core\Support\Collection`, you can 
 
 Note : This feature only work using `find` method
 
-        use Core\Database\DB;
+    ```php
+    use Core\Database\DB;
 
-        $user = DB::table('users')->find(2);
-        
-        $user->fill([
-            "name" => "John Smith",
-            "email" => "John@mail.com",
-            "password" => "hashedpassword"
-        ]);
+    $user = DB::table('users')->find(2);
 
-        $boolean = $user->save();
+    $user->fill([
+        "name" => "John Smith",
+        "email" => "John@mail.com",
+        "password" => "hashedpassword"
+    ]);
+
+    $boolean = $user->save();
+    ```
 
 Or maybe you `fill` half of the data it will work regardless as long you use `fill` method.
 
-        use Core\Database\DB;
+    ```php
+    use Core\Database\DB;
 
-        $user = DB::table('users')->find(2);
+    $user = DB::table('users')->find(2);
 
-        $user->fill([
-            "email" => "JohnSmith@mail.com",
-        ]);
+    $user->fill([
+        "email" => "JohnSmith@mail.com",
+    ]);
 
-        $boolean = $user->save();
+    $boolean = $user->save();
+    ```
 
 ## Database Model
 
@@ -901,6 +1012,7 @@ To get started, let's create model. Model typically live in the `app/model` and 
 
 After generating the class the file will looks like this
 
+    ```php
     <?php
 
     namespace App\Models;
@@ -910,23 +1022,30 @@ After generating the class the file will looks like this
     {
         // Code Here
     }
+    ```
 
 ### Table Name
 
 After glancing on the file above, you may noticed that we did not tell the model which database table correspond to this Posts Model, so let's add this object property inside `Posts` class
 
+    ```php
     protected $table = 'post';
+    ```
 
 After we add this we now have the basic CRUD using model, we can use the same name convention method in `Core\Database\DB`, like find, where, insert, delete, all.
 
+    ```php
     // Selecting all data using database model
     use App\Models\Posts;
-    
+
     $posts = Posts::all();
+    ```
 
 Database model will always assume that database table has primary key `id`. If necessarry, you may define `protected $primary_key` property on your model to specify a different column that serves as your model's primary key.
 
+    ```php
     protected $primary_key = 'posts_id';
+    ```
 
 ### Model Relationship
 
@@ -940,6 +1059,7 @@ Defining the relationship inside your model is very simple, by using protected o
 
 A one-to-many relationship is used to define relationships where a single model is the parent to one or more child models. For example, a user may have an infinite number of posts.
 
+    ```php
     <?php
 
     namespace App\Model;
@@ -953,15 +1073,19 @@ A one-to-many relationship is used to define relationships where a single model 
         protected $table = "users";
         protected $hasMany = [Posts::class, 'users_id'];
     }
+    ```
 
 To use the relationship that we already define:
 
+    ```php
     Users::find(1, 'hasMany');
+    ```
 
 ##### Belongs To
 
 Now that we can access all of a user's posts, let's define a relationship to allow a posts to access its parent user. To define the inverse of a hasMany relationship, define a relationship method on the child model which calls the belongsTo method:
 
+    ```php
     <?php
 
     namespace App\Models;
@@ -974,10 +1098,13 @@ Now that we can access all of a user's posts, let's define a relationship to all
         protected $table = 'post';
         protected $belongsTo = [Users::class, 'users_id'];
     }
+    ```
 
 To use the relationship that we already define:
 
+    ```php
     Posts::find(1, 'belongsTo');
+    ```
 
 ### List Method
 
