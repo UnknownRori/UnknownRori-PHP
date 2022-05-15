@@ -3,174 +3,223 @@
 namespace Core\Http;
 
 use Core\KernelException;
-use Core\Http\Middleware;
-use Exception;
 
+/**
+ * Crude implementation routing in php.
+ * [Documentation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#routing)
+ */
 class Route implements IRoute
 {
     protected static $route = [
-        "GET" => [],
-        "POST" => [],
-        "PATCH" => [],
-        "DELETE" => [],
+        'GET' => [],
+        'POST' => [],
+        'PATCH' => [],
+        'DELETE' => [],
     ];
 
     protected static $nameRoute = [];
 
-    private static $temp = [];
+    private $method, $uri, $controller, $middleware, $name;
+
+    private static $groupMiddleware, $groupPrefix, $groupName;
+    private static $groupMiddlewareIteration = 0;
+    private static $groupPrefixIteration = 0;
+    private static $groupNameIteration = 0;
 
     /**
-     * Destroy all the temporary
-     * @param void
+     * Starting point of route class
+     * Register all URI to route
+     * @param string $configRoute
+     */
+    public static function define(string $configRoute): self
+    {
+        $self = new static;
+
+        require($configRoute);
+
+        return $self;
+    }
+
+    /**
+     * Register the URI on route destruct
+     * @return void
      */
     public function __destruct()
     {
-        unset(self::$temp['uri']);
-        unset(self::$temp['method']);
+        if (isset($this->method)) {
+
+            $this->registerPrefix();
+
+            if (!isset(self::$route[$this->method][$this->uri])) {
+                self::$route[$this->method][$this->uri] = ['action' => $this->controller];
+
+                $this->registerMiddleware();
+            } else return report('Route already defined!');
+
+            $this->registerName();
+        }
     }
 
     /**
-     * Starting Point of Route class to Register URI to route
-     * Route::get|post|patch|delete('uri', [controller::class, 'method'])
-     * @param  string $configRoute Configuration File
-     * @return this
+     * Register the URI on `GET` HTTP
+     * @param string         $uri
+     * @param callable|array $controller
      */
-    public static function define($configRoute)
-    {
-        $route = new static;
-        require($configRoute);
-        return $route;
-    }
-
-    /**
-     * Register the uri in http get request
-     * @param string $uri that you want to register
-     * @param array $controller [controllername::class, 'method']
-     */
-    public static function get($uri, $controller = [])
+    public static function get(string $uri, callable|array $controller): self
     {
         $self = new static;
 
-        self::temp('uri', $uri);
-        self::temp('method', 'GET');
-
-        self::setRoute('GET', $uri, $controller);
+        $self->method = 'GET';
+        $self->uri = $uri;
+        $self->controller = $controller;
 
         return $self;
     }
 
     /**
-     * Register the uri in http post request
-     * @param string $uri that you want to register
-     * @param array $controller [controllername::class, 'method']
+     * Register the URI on `POST` HTTP
+     * @param string         $uri
+     * @param callable|array $controller
      */
-    public static function post($uri, $controller = [])
+    public static function post(string $uri, callable|array $controller): self
     {
         $self = new static;
 
-        self::temp('uri', $uri);
-        self::temp('method', 'POST');
-
-        self::setRoute('POST', $uri, $controller);
-
-        return $self;
-    }
-
-
-    /**
-     * Register the uri in http patch request
-     * @param string $uri that you want to register
-     * @param array $controller [controllername::class, 'method']
-     */
-    public static function patch($uri, $controller = [])
-    {
-        $self = new static;
-
-        self::temp('uri', $uri);
-        self::temp('method', 'PATCH');
-
-        self::setRoute('PATCH', $uri, $controller);
+        $self->method = 'POST';
+        $self->uri = $uri;
+        $self->controller = $controller;
 
         return $self;
     }
 
     /**
-     * Register the uri in http delete request
-     * @param string $uri that you want to register
-     * @param array $controller [controllername::class, 'method']
+     * Register the URI on `PATCH` HTTP
+     * @param string         $uri
+     * @param callable|array $controller
      */
-    public static function delete($uri, $controller = [])
+    public static function PATCH(string $uri, callable|array $controller): self
     {
         $self = new static;
 
-        self::temp('uri', $uri);
-        self::temp('method', 'DELETE');
-
-        self::setRoute('DELETE', $uri, $controller);
+        $self->method = 'PATCH';
+        $self->uri = $uri;
+        $self->controller = $controller;
 
         return $self;
     }
 
     /**
-     * Starting point to register multiple routes into same middleware
-     * @param  callable $callback
+     * Register the URI on `DELETE` HTTP
+     * @param string         $uri
+     * @param callable|array $controller
+     */
+    public static function delete(string $uri, callable|array $controller): self
+    {
+        $self = new static;
+
+        $self->method = 'DELETE';
+        $self->uri = $uri;
+        $self->controller = $controller;
+
+        return $self;
+    }
+
+    /**
+     * Register name on URI
+     * @param  string $name
      * @return self
      */
-    public static function group($middleware)
+    public function name(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Register name for group URI
+     * `Group Method`
+     * @param  string $name
+     * @return self
+     */
+    public static function names(string $name): self
     {
         $self = new static;
-        self::temp('middleware', $middleware);
+
+        self::$groupName[self::$groupNameIteration] = $name;
+
+        self::$groupNameIteration++;
+
         return $self;
     }
 
     /**
-     * Register multiple routes into same middleware
+     * Register prefix for group URI
+     * `Group Method`
+     * @param  string $uri
+     * @return self
      */
-    public function by(callable $callback)
+    public static function prefix(string $uri): self
     {
-        self::temp('group_middleware', self::temp('middleware'));
-        call_user_func($callback);
-        unset(self::$temp['group_middleware']);
-        unset(self::$temp['middleware']);
+        $self = new static;
+
+        self::$groupPrefix[self::$groupPrefixIteration] = $uri;
+
+        self::$groupPrefixIteration++;
+
+        return $self;
     }
 
     /**
-     * This method is used to automatic register the route
-     * @param string $method Route HTTP Request Type
-     * @param string $uri Route URI
-     * @param array|callable  $controller Route Controller
+     * Register middleware for group URI.
+     * `Group Method`
+     * @param  string|array $middleware
+     * @return self
      */
-    protected static function setRoute(string $method, string $uri, array|callable $controller)
+    public static function middlewares(string|array $middleware): self
     {
-        if (is_callable($controller)) {
-            self::$route[$method][$uri] = [
-                "action" => $controller
-            ];
-        } else {
-            self::$route[$method][$uri] = [
-                "controller" => $controller[0],
-                "action" => $controller[1],
-            ];
-        }
-        if (self::temp('middleware') || self::temp('group_middleware')) {
-            self::setMiddleware();
-        }
+        $self = new static;
+
+        self::$groupMiddleware[self::$groupMiddlewareIteration] = $middleware;
+
+        self::$groupMiddlewareIteration++;
+
+        return $self;
     }
 
     /**
-     * Register route into named route
-     * @param  string $name
-     * @return this
+     * Register middleware on URI
+     * @param  string|array $middleware
+     * @return self
      */
-    public function name($name)
+    public function middleware(string|array $middleware): self
     {
-        if (!array_key_exists($name, self::$nameRoute)) {
-            self::$nameRoute[$name] = self::$temp['uri'];
-        } else {
-            KernelException::KeyExists($name, 'Name Route');
-        }
+        $self = new static;
 
-        return $this;
+        $this->middleware = $middleware;
+
+        return $self;
+    }
+
+    /**
+     * Initialize Group, chain this method on after `Group Method`
+     * @param  callable $closure
+     * @return void
+     */
+    public function group(callable $closure)
+    {
+        call_user_func($closure);
+
+        if (self::$groupMiddlewareIteration > 0) self::$groupMiddlewareIteration--;
+        if (self::$groupNameIteration > 0) self::$groupNameIteration--;
+        if (self::$groupPrefixIteration > 0) self::$groupPrefixIteration--;
+
+        unset(self::$groupMiddleware[self::$groupMiddlewareIteration]);
+        unset(self::$groupName[self::$groupNameIteration]);
+        unset(self::$groupPrefix[self::$groupPrefixIteration]);
+
+        if (self::$groupMiddlewareIteration == 0) self::$groupMiddleware = null;
+        if (self::$groupNameIteration == 0) self::$groupName = null;
+        if (self::$groupPrefixIteration == 0) self::$groupPrefix = null;
     }
 
     /**
@@ -178,7 +227,7 @@ class Route implements IRoute
      * @param  string $name
      * @return string uri
      */
-    public static function GetRoute($name, $data = [])
+    public static function GetRoute($name, $data = []): string
     {
         if (array_key_exists($name, self::$nameRoute)) {
             $uri = self::$nameRoute[$name];
@@ -207,42 +256,6 @@ class Route implements IRoute
         $uri = self::GetRoute($name, $data);
 
         return header("Location: {$uri}");
-    }
-
-    /**
-     * Register middleware that can be called
-     * @param  string $middleware MiddlewareName
-     * @return this
-     */
-    public function middleware($middleware)
-    {
-        self::temp('middleware', $middleware);
-
-        if (self::temp('uri')) {
-            self::setMiddleware();
-        }
-
-        return $this;
-    }
-
-    /**
-     * This method used to register the temp uri with the temp middleware
-     * @return void
-     */
-    protected static function setMiddleware()
-    {
-        if (self::temp('group_middleware')) {
-            self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
-                ["middleware" => self::$temp['group_middleware']],
-                self::$route[self::$temp['method']][self::$temp['uri']]
-            );
-        } else {
-            self::$route[self::$temp['method']][self::$temp['uri']] = array_merge(
-                ["middleware" => self::$temp['middleware']],
-                self::$route[self::$temp['method']][self::$temp['uri']]
-            );
-            unset(self::$temp['middleware']);
-        }
     }
 
     /**
@@ -289,26 +302,149 @@ class Route implements IRoute
     }
 
     /**
-     * Create Temporary Object Property
+     * For debugging purposes (only work if `APP_DEBUG` is on)
+     * Dumping out all route, named route, and group iteration.
+     * @return array|void
      */
-    protected static function temp($key, $value = null)
+    public static function dump(): array
     {
-        if (is_null($value)) {
-            if (array_key_exists($key, self::$temp)) {
-                return self::$temp[$key];
-            }
-            return false;
-        }
-
-        self::$temp[$key] = $value;
+        if (env('APP_DEBUG', false)) return [
+            'Route' => self::$route,
+            'Named Route' => self::$nameRoute,
+            'Group Middleware Interation' => self::$groupMiddlewareIteration,
+            'Group Name Interation' => self::$groupNameIteration,
+            'Group Prefix Interation' => self::$groupPrefixIteration,
+            'Group Name' => self::$groupName,
+            'Group Prefix' => self::$groupPrefix,
+            'Group Middleware' => self::$groupMiddleware,
+        ];
     }
 
     /**
-     * This is to dump out all the current static property
+     * Register prefix on specific route
+     * @return void
+     */
+    private function registerPrefix()
+    {
+        if (isset(self::$groupPrefix)) {
+            $mergedPrefix = $this->mergePrefix();
+
+            if (!array_key_exists($mergedPrefix, self::$nameRoute)) $this->uri = $mergedPrefix;
+            else return KernelException::KeyExists($mergedPrefix, 'Route Prefix');
+        }
+    }
+
+    /**
+     * Merging current group prefix with current route
+     * @return string
+     */
+    private function mergePrefix(): string
+    {
+        $mergePrefix = [];
+
+        if (isset(self::$groupPrefix)) {
+            for ($i = 0; $i < count(self::$groupPrefix); $i++) {
+                if (isset(self::$groupPrefix[$i])) {
+                    if (is_array(self::$groupPrefix[$i])) {
+                        $mergePrefix = array_merge($mergePrefix, self::$groupPrefix[$i]);
+                    } else {
+                        $mergePrefix = array_merge($mergePrefix, [self::$groupPrefix[$i]]);
+                    }
+                }
+            }
+        }
+
+        $mergedName = implode('/', $mergePrefix);
+        return "{$mergedName}/{$this->uri}";
+    }
+
+    /**
+     * Register name on specific route
+     * @return void
+     */
+    private function registerName()
+    {
+        if (isset(self::$groupName)) {
+            $mergedName = $this->mergeName();
+
+            if (!array_key_exists($mergedName, self::$nameRoute)) self::$nameRoute[$mergedName] = $this->uri;
+            else return KernelException::KeyExists($mergedName, 'Named Route');
+        } else if (isset($this->name)) {
+            if (!isset(self::$nameRoute[$this->name])) self::$nameRoute[$this->name] = $this->uri;
+            else return KernelException::KeyExists($this->name, 'Named Route');
+        }
+    }
+
+    /**
+     * Mergin current name group with current name route
+     * @return string
+     */
+    private function mergeName(): string
+    {
+        $mergedName = [];
+
+        if (isset(self::$groupName)) {
+            for ($i = 0; $i < count(self::$groupName); $i++) {
+                if (isset(self::$groupName[$i])) {
+                    if (is_array(self::$groupName[$i])) {
+                        $mergedName = array_merge($mergedName, self::$groupName[$i]);
+                    } else {
+                        $mergedName = array_merge($mergedName, [self::$groupName[$i]]);
+                    }
+                }
+            }
+        }
+
+        $mergedName = implode('.', $mergedName);
+        return "{$mergedName}.{$this->name}";
+    }
+
+    /**
+     * Register middleware with current route
+     * @return void
+     */
+    private function registerMiddleware(): void
+    {
+        if (isset(self::$groupMiddleware)) {
+            $mergedMiddleware = $this->mergeMiddleware();
+
+            if (isset($this->middleware)) {
+                if (is_array($this->middleware)) $mergedMiddleware = array_merge($mergedMiddleware, $this->middleware);
+                else $mergedMiddleware = array_merge($mergedMiddleware, [$this->middleware]);
+            }
+
+            self::$route[$this->method][$this->uri] = array_merge(
+                self::$route[$this->method][$this->uri],
+                ['middleware' => $mergedMiddleware]
+            );
+        } else {
+            if (isset($this->middleware)) {
+                self::$route[$this->method][$this->uri] = array_merge(
+                    self::$route[$this->method][$this->uri],
+                    ['middleware' => $this->middleware]
+                );
+            }
+        }
+    }
+
+    /**
+     * Merge the middleware group with current middleware
      * @return array
      */
-    public static function dump()
+    private function mergeMiddleware(): array
     {
-        return ['temp' => self::$temp, 'route' => self::$route, 'nameRoute' => self::$nameRoute];
+        $mergedMiddleware = [];
+
+        for ($i = 0; $i < count(self::$groupMiddleware); $i++) {
+            if (isset(self::$groupMiddleware[$i])) {
+                if (is_array(self::$groupMiddleware[$i])) {
+                    $mergedMiddleware = array_merge($mergedMiddleware, self::$groupMiddleware[$i]);
+                } else {
+                    $mergedMiddleware = array_merge($mergedMiddleware, [self::$groupMiddleware[$i]]);
+                }
+            }
+        }
+
+        return $mergedMiddleware;
     }
 }

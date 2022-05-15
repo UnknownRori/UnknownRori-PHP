@@ -4,14 +4,17 @@ namespace Core\Http;
 
 interface IRoute
 {
-    public static function define($configRoute);
-    public static function get($uri, $controller);
-    public static function post($uri, $controller);
-    public static function delete($uri, $controller);
-    public static function patch($uri, $controller);
-    public function middleware($middleware);
-    public static function GetRoute($name, $data);
+    public static function define(string $configRoute): self;
+    public static function get(string $uri, callable|array $controller): self;
+    public static function post(string $uri, callable|array $controller): self;
+    public static function delete(string $uri, callable|array $controller): self;
+    public static function patch(string $uri, callable|array $controller): self;
+    public function middleware(string|array $middleware): self;
+    public static function middlewares(string|array $middleware): self;
+    public function name(string $name): self;
+    public static function names(string $name): self;
+    public static function prefix(string $uri): self;
+    public static function GetRoute($name, $data): string;
     public static function Redirect($name, $data);
     public function Run($uri, $requestType);
-    public function name($name);
 }
