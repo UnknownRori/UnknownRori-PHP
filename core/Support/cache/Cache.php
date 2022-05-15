@@ -31,7 +31,7 @@ class Cache implements ICache
                 case "json":
                     $cache = new File("{$_ENV['cache']}/app/{$key}.json");
                     if ($cache->time_modified() + $time > Time::now()) {
-                        return Json::Decode($cache->get());
+                        return Json::Decode($cache->get(), true);
                     } else {
                         $result = call_user_func($callback);
                         $cache->write(Json::Encode($result));
