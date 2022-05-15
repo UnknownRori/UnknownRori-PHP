@@ -18,6 +18,12 @@
 
       - [Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware)
 
+      - [Prefix](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#prefix)
+
+      - [Name Prefix](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#name-prefix)
+
+      - [Chaining the Group](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#chaining-the-group)
+
   - [Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware-1)
 
     - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-middleware)
@@ -231,12 +237,72 @@ Route groups allow you to share route attributes, such as middleware across a la
 
 #### Middleware
 
-To assign middleware to all route inside the group, you may used group method to define middleware and the route of the group
+To assign `middleware` to all route inside the group, you may used `middlewares` method to define `middleware` and the route of the group
+
+You can learn more about `middleware` in the [`middleware`](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware-1) section
 
 ```php
-Route::group('test')->by(function () {
+Route::middlewares('test')->group(function () {
     Route::get('/group/1', [Controller::class, 'index']);
     Route::get('/group/2', [Controller::class, 'index']);
+});
+```
+
+You may also want the route has multiple middleware, you can do this by putting `array` instead of `string` of middleware.
+
+```php
+Route::middlewares(['auth', 'verify_token'])->group(function () {
+    Route::get('/group/1', [Controller::class, 'index']);
+    Route::get('/group/2', [Controller::class, 'index']);
+});
+```
+
+You may also want to put some of the route has specific middleware than the other you can do this by chaining the route definition with `middleware` method.
+
+```php
+Route::middlewares(['auth', 'verify_token'])->group(function () {
+    Route::get('/group/1', [Controller::class, 'index']);
+    Route::get('/group/2', [Controller::class, 'index'])->middleware('ensureAdmin');
+});
+```
+
+#### Prefix
+
+To assign same `URI` path inside the group you can use `prefix` method, these method will define the route inside the group to has same `URI` path from group and merged with your current route `URI`
+
+```php
+Route::prefix('auth')->group(function () {
+    Route::get('login', [Controller::class, 'login']);
+    Route::post('logout', [Controller::class, 'logout']);
+});
+```
+
+From these example above this will intepreted in the route as `domain.com/auth/login` and `domain.com/auth/logout`.
+
+#### Name Prefix
+
+To assign same name in the route group you can use `names` method, these method will add a name before your route `name` definition.
+
+```php
+Route::names('auth')->group(function () {
+    Route::get('login', [Controller::class, 'login'])->name('login');
+    Route::get('logout', [Controller::class, 'logout'])->name('logout');
+});
+```
+
+On the example above these will intepreted by the route as,
+`auth.login` and `auth.logout` route's name.
+
+Note : you must chain individual route definition with `name` method or it will throw an error `name already defined!`.
+
+#### Chaining the group
+
+You also allowed to chain the group before getting initialized by `group` method, and it should still working as expected.
+
+```php
+Route::names('auth')->prefix('auth')->group(function () {
+    Route::get('login', [Controller::class, 'login'])->name('login');
+    Route::get('logout', [Controller::class, 'logout'])->name('logout');
 });
 ```
 
