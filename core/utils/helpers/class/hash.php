@@ -22,7 +22,7 @@ class Hash
                 return password_hash($value, PASSWORD_ARGON2ID, require("{$_ENV['APP_DIR']}/config/hash.php"));
                 break;
             default:
-                KernelException::Hash($_ENV['HASH_ALGO']);
+                KernelException::hash($_ENV['HASH_ALGO']);
                 break;
         }
     }

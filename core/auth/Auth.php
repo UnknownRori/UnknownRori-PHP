@@ -22,7 +22,7 @@ class Auth implements IAuth
      * Get UserData from session
      * @return static
      */
-    public static function User()
+    public static function user()
     {
         if (!Auth::check()) return;
         $User = new static;

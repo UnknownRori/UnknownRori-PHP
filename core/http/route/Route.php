@@ -267,7 +267,7 @@ class Route implements IRoute
         if (array_key_exists($name, self::$nameRoute)) {
             $uri = self::$nameRoute[$name];
         } else {
-            KernelException::RouteNameNotExists($name);
+            KernelException::routeNameNotExists($name);
         }
 
         $value = array_values($data);
@@ -302,7 +302,7 @@ class Route implements IRoute
     public function Run($uri, $requestType)
     {
         if (!array_key_exists($uri, self::$route[$requestType])) {
-            return KernelException::RouteNotDefined();
+            return KernelException::routeNotDefined();
         }
 
         return $this->call(self::$route[$requestType][$uri]);
@@ -316,7 +316,7 @@ class Route implements IRoute
     protected function call($route)
     {
         if (array_key_exists('middleware', $route)) {
-            Middleware::Run($route['middleware']);
+            Middleware::run($route['middleware']);
         }
 
         if (is_callable($route['action'])) {
@@ -329,7 +329,7 @@ class Route implements IRoute
 
 
             if (!method_exists($controller, $action)) {
-                KernelException::ClassMethod($route['controller'], $action);
+                KernelException::classMethod($route['controller'], $action);
             }
 
             return $controller->$action();
@@ -412,7 +412,7 @@ class Route implements IRoute
             $mergedPrefix = $this->mergePrefix();
 
             if (!array_key_exists($mergedPrefix, self::$nameRoute)) $this->uri = $mergedPrefix;
-            else return KernelException::KeyExists($mergedPrefix, 'Route Prefix');
+            else return KernelException::keyExists($mergedPrefix, 'Route Prefix');
         }
     }
 
@@ -450,10 +450,10 @@ class Route implements IRoute
             $mergedName = $this->mergeName();
 
             if (!array_key_exists($mergedName, self::$nameRoute)) self::$nameRoute[$mergedName] = $this->uri;
-            else return KernelException::KeyExists($mergedName, 'Named Route');
+            else return KernelException::keyExists($mergedName, 'Named Route');
         } else if (isset($this->name)) {
             if (!isset(self::$nameRoute[$this->name])) self::$nameRoute[$this->name] = $this->uri;
-            else return KernelException::KeyExists($this->name, 'Named Route');
+            else return KernelException::keyExists($this->name, 'Named Route');
         }
     }
 

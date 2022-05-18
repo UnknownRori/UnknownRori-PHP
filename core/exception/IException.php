@@ -4,9 +4,13 @@ namespace Core;
 
 interface IException
 {
-    public static function RouteNotDefined();
-    public static function ClassMethod($controller, $method);
-    public static function MiddlewareNotDefined();
+    public static function init();
+    public static function routeNotDefined();
+    public static function classMethod($controller, $method);
+    public static function middlewareNotDefined();
     public static function PDO_ERROR($e);
-    public static function Hash($algo);
+    public static function hash($algo);
+    public static function keyExists($key, $array);
+    public static function routeNameNotExists($name);
+    public static function undefinedRelation($relation);
 }

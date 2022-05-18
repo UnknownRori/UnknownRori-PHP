@@ -12,7 +12,7 @@ class Middleware implements IMiddleware
      * Initialize Middleware instance
      * @return static
      */
-    protected static function Provide()
+    protected static function provide()
     {
         $class = new static();
         $class->middleware = require("{$_ENV['APP_DIR']}/config/middleware.php");
@@ -25,9 +25,9 @@ class Middleware implements IMiddleware
      * @param  string $type
      * @return void
      */
-    public static function RunAll(string $type)
+    public static function runAll(string $type)
     {
-        $self = Middleware::Provide();
+        $self = Middleware::provide();
 
         array_map(function ($namespace) {
             $middleware = new $namespace;
@@ -41,9 +41,9 @@ class Middleware implements IMiddleware
      * @param  string|array $middleware
      * @return void
      */
-    public static function Run(array | string $middleware)
+    public static function run(array | string $middleware)
     {
-        $self = Middleware::Provide();
+        $self = Middleware::provide();
         if (is_array($middleware)) {
             array_map(function ($middleware) use ($self) {
                 if (array_key_exists($middleware, $self->middleware['named'])) {
@@ -51,7 +51,7 @@ class Middleware implements IMiddleware
                     $middleware = new $namespace;
                     $middleware->Run();
                 } else {
-                    KernelException::MiddlewareNotDefined();
+                    KernelException::middlewareNotDefined();
                 }
             }, $middleware);
         } else {
@@ -60,7 +60,7 @@ class Middleware implements IMiddleware
                 $middleware = new $namespace;
                 $middleware->Run();
             } else {
-                KernelException::MiddlewareNotDefined();
+                KernelException::middlewareNotDefined();
             }
         }
     }

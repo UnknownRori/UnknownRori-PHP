@@ -20,7 +20,7 @@ class Request implements IRequest
      * Get current uri method
      * @return string
      */
-    public static function Method()
+    public static function method()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
@@ -30,7 +30,7 @@ class Request implements IRequest
      * @param  string $key
      * @return mixed
      */
-    public static function Request($key = null)
+    public static function all(string $key = null)
     {
         if (!is_null($key)) return $_REQUEST[$key];
         return $_REQUEST;
@@ -41,9 +41,9 @@ class Request implements IRequest
      * @param  mixed $rules
      * @return mixed
      */
-    public static function Validate(mixed $rules): mixed
+    public static function validate(mixed $rules)
     {
-        return Validator::Validate(Request::Request())->rules($rules);
+        return Validator::Validate(Request::all())->rules($rules);
     }
 
     /**
@@ -51,7 +51,7 @@ class Request implements IRequest
      * @param  string $key
      * @return mixed
      */
-    public static function Get($key = null)
+    public static function get(string $key = null)
     {
         if (!is_null($key)) return $_GET[$key];
         return $_GET;
@@ -62,7 +62,7 @@ class Request implements IRequest
      * @param  string $key
      * @return mixed
      */
-    public static function Post($key = null)
+    public static function post(string $key = null)
     {
         if (!is_null($key)) return $_POST[$key];
         return $_POST;
@@ -73,7 +73,7 @@ class Request implements IRequest
      * @param  string $key
      * @return file
      */
-    public static function File($key = null)
+    public static function file(string $key = null)
     {
         if (!is_null($key)) return $_FILES[$key];
         return $_FILES;

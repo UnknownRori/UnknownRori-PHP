@@ -14,7 +14,7 @@ class KernelException implements IException
      * Initialize UnknownRori-PHP Custom Exception Handler
      * @return  void
      */
-    public static function Init()
+    public static function init()
     {
         if (!env('APP_DEBUG', true));
         if (extension_loaded("xdebug")) return;
@@ -29,7 +29,7 @@ class KernelException implements IException
     /**
      * Throw Exception about Route not defined
      */
-    public static function RouteNotDefined()
+    public static function routeNotDefined()
     {
         if (env('APP_DEBUG', true)) throw new Exception("Route is not defined, did you forget to register it in web route? | ");
     }
@@ -37,7 +37,7 @@ class KernelException implements IException
     /**
      * Throw Exception about Controller Method not founds
      */
-    public static function ClassMethod($controller, $method)
+    public static function classMethod($controller, $method)
     {
         if (env('APP_DEBUG', true)) throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
@@ -45,7 +45,7 @@ class KernelException implements IException
     /**
      * Throw Middleware not found
      */
-    public static function MiddlewareNotDefined()
+    public static function middlewareNotDefined()
     {
         if (env('APP_DEBUG', true)) throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
     }
@@ -61,7 +61,7 @@ class KernelException implements IException
     /**
      * Throw Hash Algorithm not found
      */
-    public static function Hash($algo)
+    public static function hash($algo)
     {
         if (env('APP_DEBUG', true)) throw new Exception("There is no supported algo called {$algo} in this framework | ");
     }
@@ -69,17 +69,17 @@ class KernelException implements IException
     /**
      * Throw an error if key already exists inside the array
      */
-    public static function KeyExists($key, $array)
+    public static function keyExists($key, $array)
     {
         if (env('APP_DEBUG', true)) throw new Exception("Key {$key} already exist inside {$array}");
     }
 
-    public static function RouteNameNotExists($name)
+    public static function routeNameNotExists($name)
     {
         if (env('APP_DEBUG', true)) throw new Exception("Named Route {$name} is not registered in the route! did you forgot to register it?");
     }
 
-    public static function UndefinedRelation($relation)
+    public static function undefinedRelation($relation)
     {
         if (env('APP_DEBUG', true)) throw new Exception("Undefined {$relation}, did you forget to attach these property in Model?");
     }

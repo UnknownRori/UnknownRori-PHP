@@ -27,7 +27,7 @@ class Kernel implements IKernel
      */
     public static function Start()
     {
-        KernelException::Init();
+        KernelException::init();
 
         $App = new static;
 
@@ -40,11 +40,11 @@ class Kernel implements IKernel
         if (preg_match($App->option['regex'], $_SERVER["REQUEST_URI"])) {
             return false;
         } else {
-            Middleware::RunAll('runtime');
+            Middleware::runAll('runtime');
 
             Route::define("{$_ENV['APP_DIR']}/route/web.php")->Run("/" . Request::URI(), Request::Method());
 
-            Middleware::RunAll('runtime');
+            Middleware::runAll('runtime');
         }
 
         return $App;
