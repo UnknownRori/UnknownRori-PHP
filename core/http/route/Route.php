@@ -97,7 +97,7 @@ class Route implements IRoute
      * @param string         $uri
      * @param callable|array $controller
      */
-    public static function PATCH(string $uri, callable|array $controller): self
+    public static function patch(string $uri, callable|array $controller): self
     {
         $self = new static;
 
