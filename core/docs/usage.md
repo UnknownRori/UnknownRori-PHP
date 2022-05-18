@@ -40,6 +40,8 @@
 
     - [Writing Controller](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#writing-controller)
 
+    - [Route Resource](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#route-resource)
+
   - [Validation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validation)
 
     - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-1)
@@ -411,6 +413,44 @@ class Welcome extends Controller
 ```
 
 When incoming request matches the specified uri, the `index` method on `App\Http\Controller\Welcome` class will be invoked.
+
+### Route Resource
+
+Sometime we want to make our life easier when writing a route definition, there are some method will come in handy if used properly, `resource` method will register typical `CRUD` like `index`, `show`, `create`, `store`, `edit`, `update`, `destroy`.
+
+example:
+
+```php
+// web.php
+Route::resource('user', [UserController::class]);
+```
+
+On current route system, it will generate these definition.
+
+```
+GET    : http://127.0.0.1:8000/user        | [UserController::class, index]
+
+GET    : http://127.0.0.1:8000/user/show   | [UserController::class, show]
+
+GET    : http://127.0.0.1:8000/user/create | [UserController::class, create]
+
+POST   : http://127.0.0.1:8000/user/create | [UserController::class, store]
+
+GET    : http://127.0.0.1:8000/user/edit   | [UserController::class, edit]
+
+PATCH  : http://127.0.0.1:8000/user/edit   | [UserController::class, update]
+
+DELETE : http://127.0.0.1:8000/user/delete | [UserController::class, destroy]
+```
+
+You can also filter some of the method that will registered by using `except` or `only` method.
+
+```php
+Route::resource('user', UserController::class)->except(['index', 'show']);
+Route::resource('user2', UserController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+```
+
+In the example above these will create typical `CRUD` but only `create`, `store`, `edit`, `update`, `destroy` method.
 
 ## Validation
 
