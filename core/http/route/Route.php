@@ -323,9 +323,9 @@ class Route implements IRoute
             return call_user_func($route['action']);
         } else {
 
-            $namespacedController = "App\Http\Controller\\{$route['controller']}";
+            $namespacedController = "App\Http\Controller\\{$route['action'][0]}";
             $controller = new $namespacedController;
-            $action = $route['action'];
+            $action = $route['action'][1];
 
 
             if (!method_exists($controller, $action)) {
@@ -345,25 +345,39 @@ class Route implements IRoute
         for ($i = 0; $i < count($this->methods); $i++) {
             switch ($this->methods[$i]) {
                 case 'index':
-                    Route::get("{$this->uri}", [$this->controller, 'index'])->name("{$this->uri}.index")->middleware($this->middleware);
+                    Route::get("{$this->uri}", [$this->controller, 'index'])
+                        ->name("{$this->uri}.index")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'show':
-                    Route::get("{$this->uri}/show", [$this->controller, 'show'])->name("{$this->uri}.show")->middleware($this->middleware);
+                    Route::get("{$this->uri}/show", [$this->controller, 'show'])
+                        ->name("{$this->uri}.show")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'create':
-                    Route::get("{$this->uri}/create", [$this->controller, 'create'])->name("{$this->uri}.create")->middleware($this->middleware);
+                    Route::get("{$this->uri}/create", [$this->controller, 'create'])
+                        ->name("{$this->uri}.create")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'store':
-                    Route::post("{$this->uri}/create", [$this->controller, 'store'])->name("{$this->uri}.store")->middleware($this->middleware);
+                    Route::post("{$this->uri}/create", [$this->controller, 'store'])
+                        ->name("{$this->uri}.store")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'edit':
-                    Route::get("{$this->uri}/edit", [$this->controller, 'edit'])->name("{$this->uri}.edit")->middleware($this->middleware);
+                    Route::get("{$this->uri}/edit", [$this->controller, 'edit'])
+                        ->name("{$this->uri}.edit")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'update':
-                    Route::patch("{$this->uri}/edit", [$this->controller, 'update'])->name("{$this->uri}.update")->middleware($this->middleware);
+                    Route::patch("{$this->uri}/edit", [$this->controller, 'update'])
+                        ->name("{$this->uri}.update")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
                 case 'destroy':
-                    Route::delete("{$this->uri}/destroy", [$this->controller, 'destroy'])->name("{$this->uri}.destroy")->middleware($this->middleware);
+                    Route::delete("{$this->uri}/destroy", [$this->controller, 'destroy'])
+                        ->name("{$this->uri}.destroy")
+                        ->middleware($this->middleware ? $this->middleware : []);
                     break;
             }
         }
