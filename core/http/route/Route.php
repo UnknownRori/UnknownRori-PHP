@@ -19,7 +19,7 @@ class Route implements IRoute
 
     protected static $nameRoute = [];
 
-    private $method, $uri, $controller, $middleware, $name;
+    private $method, $uri, $controller, $middleware, $name, $resource;
 
     private static $groupMiddleware, $groupPrefix, $groupName;
     private static $groupMiddlewareIteration = 0;
@@ -46,7 +46,11 @@ class Route implements IRoute
      */
     public function __destruct()
     {
-        if (isset($this->method)) {
+        if (isset($this->methods)) {
+            array_multisort($this->methods);
+
+            $this->registerResource();
+        } else if (isset($this->method)) {
 
             $this->registerPrefix();
 
@@ -69,9 +73,9 @@ class Route implements IRoute
     {
         $self = new static;
 
-        $self->method = 'GET';
-        $self->uri = $uri;
-        $self->controller = $controller;
+        $self->method       = 'GET';
+        $self->uri          = $uri;
+        $self->controller   = $controller;
 
         return $self;
     }
@@ -85,9 +89,9 @@ class Route implements IRoute
     {
         $self = new static;
 
-        $self->method = 'POST';
-        $self->uri = $uri;
-        $self->controller = $controller;
+        $self->method       = 'POST';
+        $self->uri          = $uri;
+        $self->controller   = $controller;
 
         return $self;
     }
@@ -101,9 +105,9 @@ class Route implements IRoute
     {
         $self = new static;
 
-        $self->method = 'PATCH';
-        $self->uri = $uri;
-        $self->controller = $controller;
+        $self->method       = 'PATCH';
+        $self->uri          = $uri;
+        $self->controller   = $controller;
 
         return $self;
     }
@@ -117,11 +121,42 @@ class Route implements IRoute
     {
         $self = new static;
 
-        $self->method = 'DELETE';
-        $self->uri = $uri;
-        $self->controller = $controller;
+        $self->method       = 'DELETE';
+        $self->uri          = $uri;
+        $self->controller   = $controller;
 
         return $self;
+    }
+
+    /**
+     * Register the URI on standard HTTP verb
+     * @param  string $uri
+     * @param         $controller
+     */
+    public static function resource(string $uri, $controller): self
+    {
+        $self = new static;
+
+        $self->resource   = true;
+        $self->uri        = $uri;
+        $self->controller = $controller;
+        $self->methods    = ['index', 'show', 'create', 'store', 'edit', 'update', 'destroy'];
+
+        return $self;
+    }
+
+    public function only(array $methods): self
+    {
+        $this->methods = array_intersect($methods, $this->methods);
+
+        return $this;
+    }
+
+    public function except(array $methods): self
+    {
+        $this->methods = array_diff($this->methods, $methods);
+
+        return $this;
     }
 
     /**
@@ -298,6 +333,39 @@ class Route implements IRoute
             }
 
             return $controller->$action();
+        }
+    }
+
+    /**
+     * For registering resource route
+     * @return void
+     */
+    public function registerResource()
+    {
+        for ($i = 0; $i < count($this->methods); $i++) {
+            switch ($this->methods[$i]) {
+                case 'index':
+                    Route::get("{$this->uri}", [$this->controller, 'index'])->name("{$this->uri}.index")->middleware($this->middleware);
+                    break;
+                case 'show':
+                    Route::get("{$this->uri}/show", [$this->controller, 'show'])->name("{$this->uri}.show")->middleware($this->middleware);
+                    break;
+                case 'create':
+                    Route::get("{$this->uri}/create", [$this->controller, 'create'])->name("{$this->uri}.create")->middleware($this->middleware);
+                    break;
+                case 'store':
+                    Route::post("{$this->uri}/create", [$this->controller, 'store'])->name("{$this->uri}.store")->middleware($this->middleware);
+                    break;
+                case 'edit':
+                    Route::get("{$this->uri}/edit", [$this->controller, 'edit'])->name("{$this->uri}.edit")->middleware($this->middleware);
+                    break;
+                case 'update':
+                    Route::patch("{$this->uri}/edit", [$this->controller, 'update'])->name("{$this->uri}.update")->middleware($this->middleware);
+                    break;
+                case 'destroy':
+                    Route::delete("{$this->uri}/destroy", [$this->controller, 'destroy'])->name("{$this->uri}.destroy")->middleware($this->middleware);
+                    break;
+            }
         }
     }
 
