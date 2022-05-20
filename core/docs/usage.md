@@ -367,7 +367,7 @@ application's `app/config/middleware.php` file by default the array key `named`,
 Once the middleware has been defined in middleware config, you may use the middleware method to assign middleware to route.
 
 ```php
-Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware);
+Route::get('uri', [controller::class, 'method'])->middleware('namedMiddleware');
 ```
 
 You may assign multiple middleware to the route by passing an array of middleware names to middleware method.
