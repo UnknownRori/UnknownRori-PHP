@@ -10,7 +10,7 @@ interface IDB
     public static function query(string $query);
     public static function prepare(string $query);
     public function execute(array $value = []);
-    public function executeclose(array $value = []);
+    public function executeClose(array $value = []);
     public function fetchAll(array $value = []);
     public function fetch(array $value = []);
     public function close();

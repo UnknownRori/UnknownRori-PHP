@@ -64,7 +64,7 @@ class BaseModel implements IBaseModel
 
                 return $result;
             } else {
-                KernelException::UndefinedRelation($relation);
+                KernelException::undefinedRelation($relation);
             }
         }
 
@@ -118,7 +118,7 @@ class BaseModel implements IBaseModel
 
                 return $result;
             } else {
-                KernelException::UndefinedRelation($relation);
+                KernelException::undefinedRelation($relation);
             }
         }
         return DB::table($self->table)->all();

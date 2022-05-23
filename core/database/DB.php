@@ -78,7 +78,7 @@ class DB implements IDB
      * @param  array $value
      * @return boolean
      */
-    public function executeclose(array $value = [])
+    public function executeClose(array $value = [])
     {
         $return = $this->query->execute($value);
         $this->close();

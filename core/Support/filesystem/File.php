@@ -47,7 +47,7 @@ class File implements IFile
      */
     public function destroy()
     {
-        if ($this->file_exists()) return unlink($this->filename);
+        if ($this->exists()) return unlink($this->filename);
         return False;
     }
 
@@ -64,7 +64,7 @@ class File implements IFile
      * Check if the file exists
      * @return bool
      */
-    public function file_exists()
+    public function exists()
     {
         return file_exists($this->filename);
     }
@@ -91,9 +91,9 @@ class File implements IFile
      * Get the modified file timestamp
      * @return int|false
      */
-    public function time_modified()
+    public function modified()
     {
-        if ($this->file_exists()) return filemtime($this->filename);
+        if ($this->exists()) return filemtime($this->filename);
         return False;
     }
 
@@ -101,9 +101,9 @@ class File implements IFile
      * Get the create file timestamp
      * @return int|false
      */
-    public function time_create()
+    public function createTimestamp()
     {
-        if ($this->file_exists()) return filectime($this->filename);
+        if ($this->exists()) return filectime($this->filename);
         return False;
     }
 
@@ -111,9 +111,9 @@ class File implements IFile
      * Get the last access file timestamp
      * @return int|false
      */
-    public function time_lastaccess()
+    public function lastAccess()
     {
-        if ($this->file_exists()) return fileatime($this->filename);
+        if ($this->exists()) return fileatime($this->filename);
         return False;
     }
 }

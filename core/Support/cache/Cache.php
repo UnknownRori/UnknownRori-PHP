@@ -30,7 +30,7 @@ class Cache implements ICache
             switch ($self->option['cache_type']) {
                 case "json":
                     $cache = new File("{$_ENV['cache']}/app/{$key}.json");
-                    if ($cache->time_modified() + $time > Time::now()) {
+                    if ($cache->modified() + $time > Time::now()) {
                         return Json::Decode($cache->get(), true);
                     } else {
                         $result = call_user_func($callback);
@@ -55,7 +55,7 @@ class Cache implements ICache
             switch ($self->option['cache_type']) {
                 case "json":
                     $cache = new File("{$_ENV['cache']}/app/{$key}.json");
-                    if ($cache->file_exists()) return Json::Decode($cache->get());
+                    if ($cache->modified()) return Json::Decode($cache->get());
                     $result = call_user_func($callback);
                     $cache->write(Json::Encode($result));
                     return $result;

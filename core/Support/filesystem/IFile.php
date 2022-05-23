@@ -48,23 +48,23 @@ interface IFile
      * Check if the file exists
      * @return bool
      */
-    public function file_exists();
+    public function exists();
 
     /**
      * Get the modified file timestamp
      * @return int|false
      */
-    public function time_modified();
+    public function modified();
 
     /**
      * Get the create file timestamp
      * @return int|false
      */
-    public function time_create();
+    public function createTimestamp();
 
     /**
      * Get the last access file timestamp
      * @return int|false
      */
-    public function time_lastaccess();
+    public function lastAccess();
 }

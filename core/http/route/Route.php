@@ -262,7 +262,7 @@ class Route implements IRoute
      * @param  string $name
      * @return string uri
      */
-    public static function GetRoute($name, $data = []): string
+    public static function getRoute($name, $data = []): string
     {
         if (array_key_exists($name, self::$nameRoute)) {
             $uri = self::$nameRoute[$name];
@@ -286,7 +286,7 @@ class Route implements IRoute
      * @param  array  $data passed argumment to include on redirect
      * @return void
      */
-    public static function Redirect($name, $data = [])
+    public static function redirect($name, $data = [])
     {
         $uri = self::GetRoute($name, $data);
 

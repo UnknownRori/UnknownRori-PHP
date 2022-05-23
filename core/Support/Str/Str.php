@@ -60,7 +60,7 @@ class Str implements IStr
      * Uppercase the every first word
      * @return string
      */
-    public function upperfirst()
+    public function upperFirst()
     {
         return $this->data = ucfirst($this->data);
     }
@@ -69,7 +69,7 @@ class Str implements IStr
      * Uppercase the first word
      * @return string
      */
-    public function upperfirstword()
+    public function upperFirstWord()
     {
         return $this->data = ucwords($this->data);
     }

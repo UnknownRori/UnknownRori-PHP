@@ -209,10 +209,10 @@ Once you assigned a name on given route, you may use the route's name when gener
 
 ```php
 // Generating URI
-$uri = Route::GetRoute('user', ['id' => 1]);
+$uri = Route::getRoute('user', ['id' => 1]);
 
 // Redirect
-Route::Redirect('user', ['id' => 1]);
+Route::redirect('user', ['id' => 1]);
 ```
 
 Or you can use the `route` & `redirect` helper function.
@@ -489,12 +489,12 @@ class UserController
 {
     public function show()
     {
-        $validate = Validator::Validate(Request::get())->rules(['id' => ['numeric']]);
+        $validate = Validator::validate(Request::get())->rules(['id' => ['numeric']]);
         dd(Users::find($validate['id']));
     }
     public function store()
     {
-        $validate = Request::Validate([
+        $validate = Request::validate([
             'name' => ["string", "min:2"],
             "email" => ["string", "email"],
             "password" => ["string"],
@@ -509,7 +509,7 @@ class UserController
 Because using `Validator` class need to pass the data you might want to use `Validate` method that ship in the `Request` class.
 
 ```php
-$validate = Request::Validate(['id' => ["numeric"]]);
+$validate = Request::validate(['id' => ["numeric"]]);
 ```
 
 ## Views
@@ -622,7 +622,7 @@ session()->get('key');
 If you would like to retrieve all the data in the session, you may just not passing any parameter.
 
 ```php
-Session::get();
+$session = Session::get();
 ```
 
 ### Storing Data
@@ -714,7 +714,7 @@ To create the `Str` Object we can call `\Core\Support\Str` or use `Str` function
 ```php
 // Using helper hunction
 
-$str = Str('Foo');
+$str = str('Foo');
 
 // Using the class itself
 use Core\Support\Str\Str;
@@ -727,7 +727,7 @@ Example usage
 ```php
 // Using helper function
 
-$str = Str('foo')->upper(); // it will return FOO instead of Foo
+$str = str('foo')->upper(); // it will return FOO instead of Foo
 ```
 
 ### Available Method
@@ -736,8 +736,8 @@ $str = Str('foo')->upper(); // it will return FOO instead of Foo
 - split
 - explode
 - ltrim
-- upperfirst
-- upperfirstword
+- upperFirst
+- upperFirstWord
 - count
 - length
 - lower
@@ -769,8 +769,8 @@ echo $file->modified();
 - get
 - path
 - modified
-- create
-- lastaccess
+- createTimestamp
+- lastAccess
 
 ### File Uploads
 
@@ -780,7 +780,7 @@ In web application, one of the most common use cases for storing files is storin
 use Core\Support\Filesystem\Storage;
 use Core\Support\Http\Request;
 
-Storage::upload(Request::File('image'));
+Storage::upload(Request::file('image'));
 ```
 
 ## Cache
@@ -946,7 +946,7 @@ In the example above, `query` method is used to put all our sql query while the 
 ```php
 // Inserting data inside a table using raw sql
 use Core\Database\DB;
-$boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeclose();
+$boolean  = DB::query("INSERT INTO users (username, email, password) VALUES('John', 'John@mail.com', 'Hashed Password')")->executeClose();
 ```
 
 So in the example above is an simple example how to put a thing inside database's table, and there are 2 method for executing query `execute` method and `executeclose` method, these two method are slightly bit different, the diffrence is `executeclose` is executing the sql query and then close the connection, same as `fetch` and `fetchAll` method these will always close the connection.
