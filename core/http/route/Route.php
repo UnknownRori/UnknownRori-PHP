@@ -18,6 +18,7 @@ class Route implements IRoute
     ];
 
     protected static $nameRoute = [];
+    public static $api;
 
     private $method, $uri, $controller, $middleware, $name, $resource;
 
@@ -27,13 +28,31 @@ class Route implements IRoute
     private static $groupNameIteration = 0;
 
     /**
-     * Starting point of route class
+     * Starting point of web route class
      * Register all URI to route
      * @param string $configRoute
      */
-    public static function define(string $configRoute): self
+    public static function defineWeb(string $configRoute): self
     {
         $self = new static;
+
+        require($configRoute);
+
+        return $self;
+    }
+
+    /**
+     * Starting point of api route class
+     * Register all URI to route
+     * @param string $configRoute
+     */
+    public static function defineApi(string $configRoute): self
+    {
+        $self = new static;
+
+        self::$api = true;
+
+        header('Content-Type: application/json');
 
         require($configRoute);
 
@@ -46,6 +65,11 @@ class Route implements IRoute
      */
     public function __destruct()
     {
+        
+        if(self::$api) {
+            $this->uri =  '/api' . $this->uri;
+        }
+
         if (isset($this->methods)) {
             array_multisort($this->methods);
 

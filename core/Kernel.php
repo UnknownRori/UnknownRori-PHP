@@ -37,14 +37,23 @@ class Kernel implements IKernel
 
         Session::start($App->option['session']);
 
+        $uri = Request::URI();
+        $result = explode('/', $uri);
+        
         if (preg_match($App->option['regex'], $_SERVER["REQUEST_URI"])) {
             return false;
+        } else if($result[0] == 'api') {
+            Middleware::runAll('api');
+            
+            Route::defineApi("{$_ENV['APP_DIR']}/route/api.php")->Run("/" . Request::URI(), Request::Method());
+
+            Middleware::runAll('api');
         } else {
-            Middleware::runAll('runtime');
+            Middleware::runAll('web');
 
-            Route::define("{$_ENV['APP_DIR']}/route/web.php")->Run("/" . Request::URI(), Request::Method());
+            Route::defineWeb("{$_ENV['APP_DIR']}/route/web.php")->Run("/" . Request::URI(), Request::Method());
 
-            Middleware::runAll('runtime');
+            Middleware::runAll('web');
         }
 
         return $App;

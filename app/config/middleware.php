@@ -9,8 +9,12 @@ return [
      * Middleware::RunAll('namedMiddleware');
      * example : Middleware::RunAll('runtime');
      */
-    'runtime' => [
+    'web' => [
         App\Http\Middleware\TimeExecutionMonitor::class,
+    ],
+
+    'api' => [
+        //
     ],
 
     /**

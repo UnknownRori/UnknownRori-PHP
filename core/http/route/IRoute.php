@@ -4,7 +4,8 @@ namespace Core\Http;
 
 interface IRoute
 {
-    public static function define(string $configRoute): self;
+    public static function defineWeb(string $configRoute): self;
+    public static function defineApi(string $configRoute): self;
     public static function get(string $uri, callable|array $controller): self;
     public static function post(string $uri, callable|array $controller): self;
     public static function delete(string $uri, callable|array $controller): self;
