@@ -42,9 +42,15 @@
 
     - [Route Resource](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#route-resource)
 
-  - [Validation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validation)
+  - [Response](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#response)
 
     - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-1)
+
+    - [Creating Response](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#creating-response)
+
+  - [Validation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validation)
+
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-2)
 
     - [Validator](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validator)
 
@@ -52,7 +58,7 @@
 
   - [Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#views)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-2)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-3)
 
     - [Passing Data to Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#passing-data-to-views)
 
@@ -94,7 +100,7 @@
 
   - [Cache](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#cache)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-3)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-4)
 
     - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration)
 
@@ -118,9 +124,9 @@
 
     - [Verify](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#verify)
 
-- [Database](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#overview)
+- [Database](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#database)
 
-  - [Overview](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration-2)
+  - [Overview](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#overview)
 
   - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration-2)
 
@@ -451,6 +457,39 @@ Route::resource('user2', UserController::class)->only(['create', 'store', 'edit'
 ```
 
 In the example above these will create typical `CRUD` but only `create`, `store`, `edit`, `update`, `destroy` method.
+
+## Response
+
+### Introduction
+
+When we are working with frontend project using library like `vue` or `react` we may need rest api set up and `UnknownRori-PHP` has some convinient function and class to help making a api is easy.
+
+### Creating Response
+
+First of all we will take a look on helper function of `response` class, the function is `response` that return of instance of `response` class.
+
+These function can send out header or response data.
+
+```php
+// stored in app/route/api.php
+
+Route::get('/user', function () {
+    return response()
+                ->json([
+                    'name' => 'John Doe',
+                    'address' => 'Somewhere'
+                ], 200)
+                ->withHeaders([
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]);
+});
+```
+
+Normally we don't need to specify the content type because we already passing a data using `json` method.
+
+
+
 
 ## Validation
 
