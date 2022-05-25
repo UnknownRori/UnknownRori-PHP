@@ -52,7 +52,9 @@ class Route implements IRoute
 
         self::$api = true;
 
-        require($configRoute);
+        Route::prefix('/api')->group(function () use ($configRoute) {
+            require($configRoute);
+        });
 
         return $self;
     }
@@ -453,8 +455,8 @@ class Route implements IRoute
             }
         }
 
-        $mergedName = implode('/', $mergePrefix);
-        return "{$mergedName}/{$this->uri}";
+        $mergedName = implode('', $mergePrefix);
+        return "{$mergedName}{$this->uri}";
     }
 
     /**

@@ -2,10 +2,6 @@
 
 use Core\Http\Route;
 
-Route::get('/api', function () {
+Route::get('', function () {
     return response()->json(['message' => 'Hello World!'], 200);
-});
-
-Route::prefix('/api')->group(function () {
-    //
 });

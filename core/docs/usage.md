@@ -273,9 +273,9 @@ Route::middlewares(['auth', 'verify_token'])->group(function () {
 To assign same `URI` path inside the group you can use `prefix` method, these method will define the route inside the group to has same `URI` path from group and merged with your current route `URI`
 
 ```php
-Route::prefix('auth')->group(function () {
-    Route::get('login', [Controller::class, 'login']);
-    Route::post('logout', [Controller::class, 'logout']);
+Route::prefix('/auth')->group(function () {
+    Route::get('/login', [Controller::class, 'login']);
+    Route::post('/logout', [Controller::class, 'logout']);
 });
 ```
 
@@ -302,9 +302,9 @@ Note : you must chain individual route definition with `name` method or it will 
 You also allowed to chain the group before getting initialized by `group` method, and it should still working as expected.
 
 ```php
-Route::names('auth')->prefix('auth')->group(function () {
-    Route::get('login', [Controller::class, 'login'])->name('login');
-    Route::get('logout', [Controller::class, 'logout'])->name('logout');
+Route::names('auth')->prefix('/auth')->group(function () {
+    Route::get('/login', [Controller::class, 'login'])->name('login');
+    Route::get('/logout', [Controller::class, 'logout'])->name('logout');
 });
 ```
 
