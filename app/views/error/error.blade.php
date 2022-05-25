@@ -30,8 +30,7 @@
                 </h1>
             </div>
             <span class="text-gray-400 text-sm underline">
-                <!-- @dd($_SERVER) -->
-                <a href="">http:://{{ $_SERVER['HTTP_REFERER'] }}</a>
+                <a href="">http:://{{ $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] }}</a>
             </span>
         </div>
         <div class="border-4 bg-white shadow-xl ring-1 ring-gray-900/5 rounded p-6 mb-5">
