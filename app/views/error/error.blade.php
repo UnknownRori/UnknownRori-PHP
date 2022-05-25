@@ -23,7 +23,7 @@
             </div>
             <div class="p-4">
                 <h4 class="text-gray-400">
-                    {{ $e->getTrace()[0]['class'] }}
+                    {{ isset($e->getTrace()[0]['class']) ? $e->getTrace()[0]['class'] : $e->getTrace()[0]['function'] }}
                 </h4>
                 <h1 class=" text-3xl p-4 text-red-700">
                     {{ $e->getMessage() }}
@@ -42,15 +42,17 @@
             <div>
                 <table class="border-2 border-slate-300 w-[100%] shadow-xl ring-1 rounded">
                     <tr class="border-2 border-slate-300 bg-slate-400">
+                        <td class="p-3 ring-1 ring-slate-300">Trace</td>
                         <td class="p-3 ring-1 ring-slate-300">File</td>
-                        <td class="p-3 ring-1 ring-slate-300">Class</td>
+                        <td class="p-3 ring-1 ring-slate-300">Class / Function</td>
                         <td class="p-3 ring-1 ring-slate-300">Line</td>
                     </tr>
-                    @foreach($e->getTrace() as $data)
+                    @foreach($e->getTrace() as $key=>$data)
                     <tr class="border-slate-400 bg-slate-200">
-                        <td class="p-3 ring-slate-300 ring-1">{{ $data['file'] }}</td>
-                        <td class="p-3 ring-slate-300 ring-1">{{ $data['class'] }}</td>
-                        <td class="p-3 ring-slate-300 ring-1">{{ $data['line'] }}</td>
+                        <td class="p-3 ring-slate-300 ring-1">{{ $key }}</td>
+                        <td class="p-3 ring-slate-300 ring-1">{{ isset($data['file']) ? $data['file'] : $data['function'] }}</td>
+                        <td class="p-3 ring-slate-300 ring-1">{{ isset($data['class']) ? $data['class'] : $data['function'] }}</td>
+                        <td class="p-3 ring-slate-300 ring-1">{{ isset($data['line']) ? $data['line'] : '' }}</td>
                     </tr>
                     @endforeach
                 </table>
