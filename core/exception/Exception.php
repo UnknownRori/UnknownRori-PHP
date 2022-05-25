@@ -2,8 +2,8 @@
 
 namespace Core;
 
+use Core\Http\Middleware;
 use Core\Http\Route;
-use Core\Utils\Json;
 use Exception;
 
 /**
@@ -19,11 +19,11 @@ class KernelException implements IException
     public static function init()
     {
         if (!env('APP_DEBUG', true));
-        if (extension_loaded("xdebug")) return;
         set_exception_handler(function ($e) {
-            echo "<pre style='{$_ENV["ERROR_STYLE"]}'>";
-            throw new Exception($e);
-            echo '</pre>';
+            view('error.error', [
+                'e' => $e
+            ]);
+            Middleware::runAll('web');
             die;
         });
     }
@@ -38,7 +38,7 @@ class KernelException implements IException
             if(Route::$api) {
                 return response()->json([ 'message' => 'There is no page to be displayed!' ], 404);
             }else {
-                throw new Exception("Route is not defined, did you forget to register it in web route? | ");
+                throw new Exception("Route is not defined, did you forget to register it in web route?");
             }
         }
     }
@@ -49,7 +49,7 @@ class KernelException implements IException
     public static function classMethod($controller, $method)
     {
         abort(500);
-        if (env('APP_DEBUG', true)) throw new Exception("{$controller} does not respond to the {$method} action. | ");
+        if (env('APP_DEBUG', true)) throw new Exception("{$controller} does not respond to the {$method} action.");
     }
 
     /**
@@ -58,7 +58,7 @@ class KernelException implements IException
     public static function middlewareNotDefined()
     {
         abort(500);
-        if (env('APP_DEBUG', true)) throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
+        if (env('APP_DEBUG', true)) throw new Exception("Middleware not found! did you forget to add it on http/kernel.php?");
     }
 
     /**
@@ -67,7 +67,7 @@ class KernelException implements IException
     public static function PDO_ERROR($e)
     {
         abort(500);
-        if (env('APP_DEBUG', true)) throw new Exception("{$e} | ");
+        if (env('APP_DEBUG', true)) throw new Exception("{$e}");
     }
 
     /**
@@ -76,7 +76,7 @@ class KernelException implements IException
     public static function hash($algo)
     {
         abort(500);
-        if (env('APP_DEBUG', true)) throw new Exception("There is no supported algo called {$algo} in this framework | ");
+        if (env('APP_DEBUG', true)) throw new Exception("There is no supported algo called {$algo} in this framework");
     }
 
     /**
