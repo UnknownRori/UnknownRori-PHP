@@ -8,3 +8,4 @@ require_once 'function/Str.php';
 require_once 'function/session.php';
 require_once 'function/exception.php';
 require_once 'function/typecasting.php';
+require_once 'function/response.php';

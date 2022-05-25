@@ -52,8 +52,6 @@ class Route implements IRoute
 
         self::$api = true;
 
-        header('Content-Type: application/json');
-
         require($configRoute);
 
         return $self;
@@ -65,11 +63,6 @@ class Route implements IRoute
      */
     public function __destruct()
     {
-        
-        if(self::$api) {
-            $this->uri =  '/api' . $this->uri;
-        }
-
         if (isset($this->methods)) {
             array_multisort($this->methods);
 

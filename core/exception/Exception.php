@@ -33,14 +33,14 @@ class KernelException implements IException
      */
     public static function routeNotDefined()
     {
-        http_response_code(404);
+        abort(404);
         if (env('APP_DEBUG', true)) {
             if(Route::$api) {
-                echo Json::Encode(['message' => 'Route not found!']);
+                return response()->json([ 'message' => 'There is no page to be displayed!' ], 404);
             }else {
                 throw new Exception("Route is not defined, did you forget to register it in web route? | ");
             }
-        };
+        }
     }
 
     /**
@@ -48,7 +48,7 @@ class KernelException implements IException
      */
     public static function classMethod($controller, $method)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("{$controller} does not respond to the {$method} action. | ");
     }
 
@@ -57,7 +57,7 @@ class KernelException implements IException
      */
     public static function middlewareNotDefined()
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("Middleware not found! did you forget to add it on http/kernel.php? | ");
     }
 
@@ -66,7 +66,7 @@ class KernelException implements IException
      */
     public static function PDO_ERROR($e)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("{$e} | ");
     }
 
@@ -75,7 +75,7 @@ class KernelException implements IException
      */
     public static function hash($algo)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("There is no supported algo called {$algo} in this framework | ");
     }
 
@@ -84,19 +84,19 @@ class KernelException implements IException
      */
     public static function keyExists($key, $array)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("Key {$key} already exist inside {$array}");
     }
 
     public static function routeNameNotExists($name)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("Named Route {$name} is not registered in the route! did you forgot to register it?");
     }
 
     public static function undefinedRelation($relation)
     {
-        http_response_code(500);
+        abort(500);
         if (env('APP_DEBUG', true)) throw new Exception("Undefined {$relation}, did you forget to attach these property in Model?");
     }
 }
