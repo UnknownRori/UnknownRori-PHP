@@ -11,6 +11,7 @@ return [
      */
     'web' => [
         App\Http\Middleware\TimeExecutionMonitor::class,
+        App\Http\Middleware\VerifyCSRF::class,
     ],
 
     'api' => [

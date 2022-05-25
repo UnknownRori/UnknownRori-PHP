@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use Core\Http\CSRF;
 use Core\Http\Middleware;
 use Core\Http\Route;
 use Core\Http\Request;
@@ -36,6 +37,8 @@ class Kernel implements IKernel
         $App->loadAuth();
 
         Session::start($App->option['session']);
+
+        CSRF::init();
 
         $uri = Request::URI();
         $result = explode('/', $uri);

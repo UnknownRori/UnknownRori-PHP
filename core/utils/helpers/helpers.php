@@ -9,3 +9,4 @@ require_once 'function/session.php';
 require_once 'function/exception.php';
 require_once 'function/typecasting.php';
 require_once 'function/response.php';
+require_once 'function/csrf.php';

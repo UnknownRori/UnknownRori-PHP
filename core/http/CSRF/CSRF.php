@@ -26,11 +26,15 @@ class CSRF implements ICSRF {
      */
     public static function verify(): void
     {
-        if(Session::check(self::$session)) {
-            if(Request::post('_csrf_token') == Session::get(self::$session)) return;
+        if(Request::method() == 'GET') return;
+        
+        if (Session::check(self::$session)) {
+            if (isset($_POST['_csrf_token'])) {
+                if(Request::post('_csrf_token') == Session::get(self::$session)) return;
+            }
         }
-
-        // Stop executing
+        abort(403);
+        die;
     }
 
     /**
@@ -39,7 +43,7 @@ class CSRF implements ICSRF {
      */
     public static function createToken(): void
     {
-        Session::set(self::$session, Random::byte(40));
+        Session::set(self::$session, md5(uniqid(mt_rand(), true)));
     }
 
     /**
