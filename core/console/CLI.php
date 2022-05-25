@@ -8,7 +8,6 @@ use Exception;
 class CLI
 {
     protected static $argumments = [];
-    public static $version = "2.0 Alpha \n";
 
     /**
      * Initialize CLI
@@ -38,7 +37,7 @@ class CLI
         if (self::$argumments[0] == "help") { // help
             echo $list_command;
         } else if (self::$argumments[0] == "version") { // version
-            echo "UnknownRori-PHP " . self::$version;
+            echo "UnknownRori-PHP " . $_ENV['APP_VERSION'];
         } else if (self::$argumments[0] == "serve") { // serve
             echo "Starting UnknownRori PHP development server : http://127.0.0.1:8000. \n";
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
