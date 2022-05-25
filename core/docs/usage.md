@@ -26,7 +26,7 @@
 
   - [Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#middleware-1)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-middleware)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction)
 
     - [Defining Middleware](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#defining-middleware)
 
@@ -34,9 +34,15 @@
 
     - [Assigning Middleware to Routes](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#assigning-middleware-to-routes)
 
+  - [CSRF Protection](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#csrf-protection)
+
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-1)
+
+    - [Preventing CSRF Requests](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#preventing-csrf-requests)
+
   - [Controller](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#controller)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-2)
 
     - [Writing Controller](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#writing-controller)
 
@@ -44,13 +50,13 @@
 
   - [Response](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#response)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-1)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-3)
 
     - [Creating Response](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#creating-response)
 
   - [Validation](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validation)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-2)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-4)
 
     - [Validator](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#validator)
 
@@ -58,7 +64,7 @@
 
   - [Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#views)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-3)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-5)
 
     - [Passing Data to Views](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#passing-data-to-views)
 
@@ -100,7 +106,7 @@
 
   - [Cache](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#cache)
 
-    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-4)
+    - [Introduction](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#introduction-6)
 
     - [Configuration](https://github.com/UnknownRori/UnknownRori-PHP/blob/master/core/docs/usage.md#configuration)
 
@@ -381,6 +387,35 @@ You may assign multiple middleware to the route by passing an array of middlewar
 ```php
 Route::get('uri', [controller:class, 'method'])->middleware(['firstmiddleware', 'secondmiddleware']);
 ```
+
+## CSRF Protection
+
+### Introduction
+
+Cross-site request forgery are a type of malicious exploit whereby unauthorized commands are performed on behalf of an authenticated user.
+
+### Preventing CSRF Requests
+
+UnknownRori-PHP automatically generates a CSRF token for each active user session managed by the application, this token is used to verify that authenticated user is the person actually making requests to application.
+
+The current session's CSRF token can be accessed via `csrf_token` helper function
+
+```php
+$token = csrf_token();
+```
+
+Anytime you define a `POST`, `PATCH`, `DELETE` in your html form in your application you should include a hidden CSRF `_csrf_token` field in the form so that CSRF protection middleware can validate requests. For convenience, you may use `csrf` helper function to generate hidden token input field.
+
+```php
+<form method="POST" action="/profile">
+    {{ csrf() }}
+ 
+    <!-- Equivalent to... -->
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+</form>
+```
+
+The `App\Http\Middleware\VerifyCSRF::class` middleware, which is included in the `web` middleware group by default will automatically verify the token in the requests input.
 
 ## Controller
 
