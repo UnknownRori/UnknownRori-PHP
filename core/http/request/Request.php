@@ -47,6 +47,23 @@ class Request implements IRequest
     }
 
     /**
+     * Return a list of request header from client
+     * @return array
+     */
+    public static function headers()
+    {
+        $headers = [];
+        $headersList = headers_list();
+
+        for($i = 0; $i < count($headersList); $i++) {
+            $explode = explode(':', $headersList[$i]);
+            $headers[$explode[0]] = $explode[1];
+        }
+
+        return $headers;
+    }
+
+    /**
      * Get data on get method
      * @param  string $key
      * @return mixed
