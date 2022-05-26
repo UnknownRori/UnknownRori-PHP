@@ -54,15 +54,19 @@ class Auth implements IAuth
         if (!$data->is_null()) {
             if (Hash::check($credentials[self::$option['verify_key']], $data->get(self::$option['verify_key']))) {
                 $data->remove(self::$option['guarded']);
-
+                
                 $data->save();
+
                 Session::set(self::$option['session_name'], $data);
+
+                return true;
             } else {
                 unset($data);
             }
         } else {
             Session::unset(self::$option['session_name']);
         }
+        return false;
     }
 
     /**

@@ -408,7 +408,7 @@ Anytime you define a `POST`, `PATCH`, `DELETE` in your html form in your applica
 
 ```php
 <form method="POST" action="/profile">
-    {{ csrf() }}
+    {!! csrf() !!}
  
     <!-- Equivalent to... -->
     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
