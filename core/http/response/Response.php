@@ -13,7 +13,7 @@ class Response implements IResponse
 
     public function __construct()
     {
-
+        //
     }
 
     public function __destruct()
@@ -32,6 +32,9 @@ class Response implements IResponse
 
     /**
      * Send out json response along with http response code
+     * @param  array  $response
+     * @param  int    $code
+     * @return self
      */
     public function json(array $response, int $code = 200): self
     {
@@ -43,12 +46,23 @@ class Response implements IResponse
         return $this;
     }
 
+    /**
+     * add additional header to response
+     * @param  string  $header
+     * @param  string  $value
+     * @return self
+     */
     public function header(string $header, string $value): self
     {
         $this->headers[$header] = $value;
         return $this;
     }
 
+    /**
+     * add additional headers to response
+     * @param  $headers
+     * @return self
+     */
     public function withHeaders(array $headers): self
     {
         $headerKey = array_keys($headers);
