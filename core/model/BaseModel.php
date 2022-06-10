@@ -28,16 +28,23 @@ class BaseModel implements IBaseModel
 
                 if ($relation == 'hasMany') {
                     $query = "SELECT 
-                    {$self->table}.{$self->primary_key} as {$self->table}_id, {$self->table}.*,
-                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.*
+                    {$self->table}.{$self->primary_key} as {$self->table}_id, 
+                    {$self->table}.*,
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, 
+                    {$foreign_model->table}.*
                     FROM {$self->table} 
-                    LEFT JOIN {$foreign_model->table} ON {$foreign_model->table}.{$data[1]} = {$self->table}.{$self->primary_key}
+                    INNER JOIN {$foreign_model->table}
+                    ON {$foreign_model->table}.{$data[1]} = {$self->table}.{$self->primary_key}
                     WHERE {$self->table}.{$self->primary_key}=?";
                     $method = 'fetchAll';
                 } else if ($relation == 'belongsTo') {
-                    $query = "SELECT {$self->table}.{$self->primary_key}    as {$self->table}_id, {$self->table}.*, 
-                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, {$foreign_model->table}.* 
-                    FROM {$self->table} LEFT JOIN {$foreign_model->table} ON {$foreign_model->table}.{$foreign_model->primary_key} = {$self->table}.{$data[1]} 
+                    $query = "SELECT {$self->table}.{$self->primary_key} as {$self->table}_id, 
+                    {$self->table}.*, 
+                    {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, 
+                    {$foreign_model->table}.* 
+                    FROM {$self->table} 
+                    INNER JOIN {$foreign_model->table} 
+                    ON {$foreign_model->table}.{$foreign_model->primary_key} = {$self->table}.{$data[1]} 
                     WHERE {$self->table}.{$self->primary_key}=?";
                     $method = 'fetch';
                 }
@@ -93,7 +100,7 @@ class BaseModel implements IBaseModel
                     {$self->table}.*,
                     {$foreign_model->table}.*
                     FROM {$self->table}
-                    LEFT JOIN {$foreign_model->table} 
+                    INNER JOIN {$foreign_model->table} 
                     ON {$foreign_model->table}.{$data[1]} = {$self->table}.{$self->primary_key}";
                 } else if ($relation == 'belongsTo') {
                     $query = "SELECT 
@@ -101,7 +108,7 @@ class BaseModel implements IBaseModel
                     {$foreign_model->table}.{$foreign_model->primary_key} as {$foreign_model->table}_id, 
                     {$foreign_model->table}.*
                     FROM {$foreign_model->table}
-                    LEFT JOIN {$self->table} 
+                    INNER JOIN {$self->table} 
                     ON {$foreign_model->table}.{$foreign_model->primary_key} = {$self->table}.{$data[1]}";
                 }
 
