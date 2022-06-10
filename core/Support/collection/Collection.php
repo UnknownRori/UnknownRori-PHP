@@ -315,10 +315,14 @@ class Collection implements ICollection
      */
     public function nextPageUrl()
     {
-        if ($this->pagination['total'] > ($this->pagination['per-page'] * Request::Get()['page'])) {
-            return Request::URI() . '?page=' . Request::Get()['page'] + 1;
+        if (isset($_GET['page'])) {
+            if ($this->pagination['total'] > ($this->pagination['per-page'] * Request::Get()['page'])) {
+                return Request::URI() . '?page=' . Request::Get()['page'] + 1;
+            } else {
+                return;
+            }
         } else {
-            return;
+            return Request::URI() . '?page=1';
         }
     }
 
@@ -328,10 +332,12 @@ class Collection implements ICollection
      */
     public function previousPageUrl()
     {
-        if ($this->pagination['total'] < ($this->pagination['per-page'] * Request::Get()['page'])) {
-            return Request::URI() . '?page=' . Request::Get()['page'] - 1;
-        } else {
-            return;
+        if (isset($_GET['page'])) {
+            if ($this->pagination['total'] < ($this->pagination['per-page'] * Request::Get()['page'])) {
+                return Request::URI() . '?page=' . Request::Get()['page'] - 1;
+            } else {
+                return;
+            }
         }
     }
 }
