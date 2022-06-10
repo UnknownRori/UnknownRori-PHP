@@ -2,8 +2,6 @@
 
 namespace Core\Support\Filesystem;
 
-use Core\Support\Collection;
-
 class Storage
 {
     protected static $uploadDir;
@@ -36,17 +34,15 @@ class Storage
 
         if ($file['type'][0] == self::$option->get('type')) {
             if ($file['size'] < self::$option->get('max-size')) {
-
+                $path = explode('/', $path['path'])[2];
+                $path = $path . '/' . basename($file["name"]);
                 if (self::$option->get('overwrite') == true) {
                     move_uploaded_file($file["tmp_name"], $target_upload);
-                    return $target_upload;
                 } else {
-
-                    if (!file_exists($target_upload)) {
+                    if (!file_exists($target_upload))
                         move_uploaded_file($file["tmp_name"], $target_upload);
-                        return $target_upload;
-                    }
                 }
+                return $path;
             }
         }
     }
