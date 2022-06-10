@@ -27,6 +27,12 @@ class Route implements IRoute
     private static $groupPrefixIteration = 0;
     private static $groupNameIteration = 0;
 
+    private static $groupMiddlewareDefiner = false;
+    private static $groupPrefixDefiner = false;
+    private static $groupNameDefiner = false;
+    private static $groupIteration = 0;
+    private static $groupStatus = [];
+
     /**
      * Starting point of web route class
      * Register all URI to route
@@ -202,6 +208,7 @@ class Route implements IRoute
         self::$groupName[self::$groupNameIteration] = $name;
 
         self::$groupNameIteration++;
+        self::$groupNameDefiner = true;
 
         return $self;
     }
@@ -219,6 +226,7 @@ class Route implements IRoute
         self::$groupPrefix[self::$groupPrefixIteration] = $uri;
 
         self::$groupPrefixIteration++;
+        self::$groupPrefixDefiner = true;
 
         return $self;
     }
@@ -236,6 +244,7 @@ class Route implements IRoute
         self::$groupMiddleware[self::$groupMiddlewareIteration] = $middleware;
 
         self::$groupMiddlewareIteration++;
+        self::$groupMiddlewareDefiner = true;
 
         return $self;
     }
@@ -261,19 +270,39 @@ class Route implements IRoute
      */
     public function group(callable $closure)
     {
+        self::$groupStatus[self::$groupIteration]['middleware'] = self::$groupMiddlewareDefiner;
+        self::$groupStatus[self::$groupIteration]['prefix'] = self::$groupPrefixDefiner;
+        self::$groupStatus[self::$groupIteration]['name'] = self::$groupNameDefiner;
+
+        self::$groupMiddlewareDefiner = false;
+        self::$groupPrefixDefiner = false;
+        self::$groupNameDefiner = false;
+
+        self::$groupIteration++;
+
         call_user_func($closure);
 
-        if (self::$groupMiddlewareIteration > 0) self::$groupMiddlewareIteration--;
-        if (self::$groupNameIteration > 0) self::$groupNameIteration--;
-        if (self::$groupPrefixIteration > 0) self::$groupPrefixIteration--;
+        self::$groupIteration--;
 
-        unset(self::$groupMiddleware[self::$groupMiddlewareIteration]);
-        unset(self::$groupName[self::$groupNameIteration]);
-        unset(self::$groupPrefix[self::$groupPrefixIteration]);
+        if (self::$groupStatus[self::$groupIteration]['middleware']) {
+            self::$groupMiddlewareIteration--;
+            unset(self::$groupMiddleware[self::$groupMiddlewareIteration]);
+            if (self::$groupMiddlewareIteration == 0) self::$groupMiddleware = null;
+        }
 
-        if (self::$groupMiddlewareIteration == 0) self::$groupMiddleware = null;
-        if (self::$groupNameIteration == 0) self::$groupName = null;
-        if (self::$groupPrefixIteration == 0) self::$groupPrefix = null;
+        if (self::$groupStatus[self::$groupIteration]['prefix']) {
+            self::$groupPrefixIteration--;
+            unset(self::$groupPrefix[self::$groupPrefixIteration]);
+            if (self::$groupPrefixIteration == 0) self::$groupPrefix = null;
+        }
+
+        if (self::$groupStatus[self::$groupIteration]['name']) {
+            self::$groupNameIteration--;
+            unset(self::$groupName[self::$groupNameIteration]);
+            if (self::$groupNameIteration == 0) self::$groupName = null;
+        }
+
+        unset(self::$groupStatus[self::$groupIteration]);
     }
 
     /**
@@ -361,7 +390,7 @@ class Route implements IRoute
      */
     public function registerResource()
     {
-        if($this->uri[0] == '/') $name = ltrim($this->uri, '/');
+        if ($this->uri[0] == '/') $name = ltrim($this->uri, '/');
 
         for ($i = 0; $i < count($this->methods); $i++) {
             switch ($this->methods[$i]) {
@@ -414,12 +443,17 @@ class Route implements IRoute
         if (env('APP_DEBUG', false)) return [
             'Route' => self::$route,
             'Named Route' => self::$nameRoute,
+            'Group Nest' => self::$groupIteration,
             'Group Middleware Interation' => self::$groupMiddlewareIteration,
             'Group Name Interation' => self::$groupNameIteration,
             'Group Prefix Interation' => self::$groupPrefixIteration,
             'Group Name' => self::$groupName,
             'Group Prefix' => self::$groupPrefix,
             'Group Middleware' => self::$groupMiddleware,
+            'Group Name Definer' => self::$groupNameDefiner,
+            'Group Prefix Definer' => self::$groupPrefixDefiner,
+            'Group Middleware Definer' => self::$groupMiddlewareDefiner,
+            'Group Status' => self::$groupStatus,
         ];
     }
 
