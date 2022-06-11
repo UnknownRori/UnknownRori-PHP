@@ -322,7 +322,7 @@ class Collection implements ICollection
                 return;
             }
         } else {
-            return Request::URI() . '?page=1';
+            return Request::URI() . '?page=2';
         }
     }
 
