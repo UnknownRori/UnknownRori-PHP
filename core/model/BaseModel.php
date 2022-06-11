@@ -50,23 +50,6 @@ class BaseModel implements IBaseModel
                 }
                 $result = DB::prepare($query)->$method([$id]);
 
-                // Filter the result and remove all number
-
-                if (is_array($result->get()[0])) {
-                    $result->map(function ($data) {
-                        return array_filter($data, function ($key) {
-                            if (is_int($key)) return false;
-                            return true;
-                        }, ARRAY_FILTER_USE_KEY);
-                    });
-                } else {
-                    $result->filter(function ($key) {
-                        if (is_int($key)) return false;
-                        return true;
-                    });
-                }
-
-                $result->save();
                 $result->set_table($self->table);
 
                 return $result;
@@ -112,17 +95,7 @@ class BaseModel implements IBaseModel
                     ON {$foreign_model->table}.{$foreign_model->primary_key} = {$self->table}.{$data[1]}";
                 }
 
-                // Filter the result and remove all number
-
                 $result = DB::prepare($query)->fetchAll();
-                $result->map(function ($data) {
-                    return array_filter($data, function ($key) {
-                        if (is_int($key)) return false;
-                        return true;
-                    }, ARRAY_FILTER_USE_KEY);
-                });
-
-                $result->save();
                 $result->set_table($self->table);
 
                 return $result;
