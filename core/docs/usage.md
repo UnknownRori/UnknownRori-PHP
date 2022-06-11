@@ -1,4 +1,4 @@
-`Docs Version : 2.0 Alpha`
+`Docs Version : 2.0.2`
 
 # Usage Documentation
 
