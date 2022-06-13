@@ -1,4 +1,4 @@
-`Docs Version : 2.0.2`
+`Docs Version : 2.0.x`
 
 # Usage Documentation
 
@@ -366,11 +366,6 @@ If you would like to assign middleware to specific route, you should first assig
 application's `app/config/middleware.php` file by default the array key `named`, you may add your own middleware.
 
 ```php
-/**
-* Register middleware named can be used using route or middleware class
-* route : $route->get('uri', [controller:class, 'method'])->middleware('namedMiddleware');
-* Middleware::Run('namedMiddleware');
-*/
 'named' => [
     'auth' => App\Http\Middleware\Auth::class,
 ]
@@ -429,13 +424,10 @@ Let's take a look basic example. Note that the controller extends the base contr
 
 ```php
 // web.php in route directory
-<?php
 
 Route::get("/", [Welcome::class, "index"]);
 
-
 // Welcome.php in controller directory
-<?php
 
 namespace App\Http\Controller;
 
@@ -468,21 +460,15 @@ Route::resource('user', [UserController::class]);
 
 On current route system, it will generate these definition.
 
-```
-GET    : http://127.0.0.1:8000/user        | [UserController::class, index]
-
-GET    : http://127.0.0.1:8000/user/show   | [UserController::class, show]
-
-GET    : http://127.0.0.1:8000/user/create | [UserController::class, create]
-
-POST   : http://127.0.0.1:8000/user/create | [UserController::class, store]
-
-GET    : http://127.0.0.1:8000/user/edit   | [UserController::class, edit]
-
-PATCH  : http://127.0.0.1:8000/user/edit   | [UserController::class, update]
-
-DELETE : http://127.0.0.1:8000/user/delete | [UserController::class, destroy]
-```
+| Method | URI                                 | Controller                       |
+|--------|-------------------------------------|----------------------------------|
+| GET    | <http://127.0.0.1:8000/user>        | [UserController::class, index]   |
+| GET    | <http://127.0.0.1:8000/user/show>   | [UserController::class, show]    |
+| GET    | <http://127.0.0.1:8000/user/create> | [UserController::class, create]  |
+| POST   | <http://127.0.0.1:8000/user/create> | [UserController::class, store]   |
+| GET    | <http://127.0.0.1:8000/user/edit>   | [UserController::class, edit]    |
+| PATCH  | <http://127.0.0.1:8000/user/edit>   | [UserController::class, update]  |
+| DELETE | <http://127.0.0.1:8000/user/delete> | [UserController::class, destroy] |
 
 You can also filter some of the method that will registered by using `except` or `only` method.
 
@@ -522,9 +508,6 @@ Route::get('/user', function () {
 ```
 
 Normally we don't need to specify the content type because we already passing a data using `json` method.
-
-
-
 
 ## Validation
 
