@@ -8,31 +8,38 @@ namespace App\Http\Controller;
 
 class {$name}
 {
-    public function index(){
+    public function index()
+    {
         //
     }
 
-    public function show(){
+    public function show()
+    {
         //
     }
 
-    public function create(){
+    public function create()
+    {
         //
     }
 
-    public function store(){
+    public function store()
+    {
         //
     }
 
-    public function edit(){
+    public function edit()
+    {
         //
     }
 
-    public function update(){
+    public function update()
+    {
         //
     }
 
-    public function destroy(){
+    public function destroy()
+    {
         //
     }
 }
