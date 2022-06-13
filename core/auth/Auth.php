@@ -3,7 +3,6 @@
 namespace Core;
 
 use Core\Database\DB;
-use Core\Support\Collection;
 use Core\Support\Session;
 use Core\Utils\Hash;
 
@@ -54,7 +53,7 @@ class Auth implements IAuth
         if (!$data->is_null()) {
             if (Hash::check($credentials[self::$option['verify_key']], $data->get(self::$option['verify_key']))) {
                 $data->remove(self::$option['guarded']);
-                
+
                 $data->save();
 
                 Session::set(self::$option['session_name'], $data);
