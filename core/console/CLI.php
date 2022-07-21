@@ -3,69 +3,63 @@
 namespace Core\Console;
 
 use Core\Kernel;
-use Exception;
+use UnknownRori\Console\Console;
 
 class CLI
 {
-    protected static $argumments = [];
-
-    /**
-     * Initialize CLI
-     * @param array $argv Command Line Argumments
-     * @return void
-     */
-    public static function Start($argv)
+    public static function Start(array $argv): mixed
     {
-        array_shift($argv);
-        self::$argumments = $argv;
-        if (!$argv) {
-            echo "Welcome to the UnknownRori-PHP CLI\n";
-            echo "type help for more information\n";
-        } else {
-            echo self::Command();
-        }
-    }
-
-    public static function Command()
-    {
+        $console = new Console();
         $app = new Kernel();
         $app->loadConfig();
 
-        $make_warn = "Please add name to the";
-        $list_command = " >> install \n >> serve \n >> cache:clear \n >> make:controller|model|middleware \n >> make:controller {name} -r \n";
+        $console->appName = "Rori-PHP's CLI";
+        $console->appDescription = "Rori-PHP Development CLI";
 
-        if (self::$argumments[0] == "help") { // help
-            echo $list_command;
-        } else if (self::$argumments[0] == "version") { // version
+        $console->addCommand('version', "It show CLI's version", function () {
             echo "UnknownRori-PHP " . $_ENV['APP_VERSION'];
-        } else if (self::$argumments[0] == "serve") { // serve
-            echo "Starting UnknownRori PHP development server : http://127.0.0.1:8000. \n";
+        });
+
+        $console->addCommand('serve', "Run Development Server", function () {
+            echo "\e[1mStarting UnknownRori PHP development server : \e[32mhttp://127.0.0.1:8000.\e[0m \n";
             echo (shell_exec("php -S 127.0.0.1:8000 -t ./public ./public/index.php"));
-        }else if (self::$argumments[0] == "cache:clear") { // clear cache
+        });
+
+        $console->addCommand('cache:clear', "Clear app cache", function () {
             echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['view_cache']}"));
-        } else if (isset(self::$argumments[0]) == "make:controller" && isset(self::$argumments[2]) == "-r") { // Make:Controller
-            if (count(self::$argumments) < 3) return "{$make_warn} controller \n";
+        });
+
+        $console->addCommand('make:controller', "Create a controller class", function (string $name) {
             require('template/resourcecontroller.php');
-            $name = self::$argumments[1];
             self::write(controller($name), "/http/controller/{$name}.php");
-        }  else if (self::$argumments[0] == "make:controller") { // Make:Controller
-            if (count(self::$argumments) < 2) return "{$make_warn} controller \n";
+        });
+
+        $console->addCommand('make:controller', "Create a controller class", function (string $name) {
             require('template/controller.php');
-            $name = self::$argumments[1];
             self::write(controller($name), "/http/controller/{$name}.php");
-        } else if (self::$argumments[0] == "make:model") { // Make:Model
-            if (count(self::$argumments) < 2) return "{$make_warn} model! \n";
+        });
+
+        $console->addFlag('make:controller', 'resource', "Create a controller class", Console::FLAG_OVERIDE, function (string $name) {
+            require('template/resourcecontroller.php');
+            self::write(controller($name), "/http/controller/{$name}.php");
+        });
+
+        $console->addCommand('make:model', "Create a controller class", function (string $name) {
             require('template/model.php');
-            $name = self::$argumments[1];
             self::write(controller($name), "/model/{$name}.php");
-        } else if (self::$argumments[0] == "make:middleware") { // Make:Middleware
-            if (count(self::$argumments) < 2) return "{$make_warn} middleware \n";
+        });
+
+        $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
+            require('template/resourcecontroller.php');
+            self::write(controller($name), "/http/controller/{$name}.php");
+        });
+
+        $console->addCommand('make:middleware', "Create a controller class", function (string $name) {
             require('template/middleware.php');
-            $name = self::$argumments[1];
             self::write(controller($name), "/http/middleware/{$name}.php");
-        } else {
-            echo "Theres is no such a command \n";
-        }
+        });
+
+        return $console->serve($argv);
     }
 
     /**

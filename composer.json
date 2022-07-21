@@ -17,6 +17,7 @@
         ]
     },
     "require": {
-        "eftec/bladeone": "^4.4"
+        "eftec/bladeone": "^4.4",
+        "unknownrori/cli": "0.2-alpha"
     }
 }
