@@ -3,6 +3,7 @@
 namespace Core\Console;
 
 use Core\Kernel;
+use RuntimeException;
 use UnknownRori\Console\Console;
 
 class CLI
@@ -30,36 +31,35 @@ class CLI
         });
 
         $console->addCommand('make:controller', "Create a controller class", function (string $name) {
-            require('template/resourcecontroller.php');
-            self::write(controller($name), "/http/controller/{$name}.php");
-        });
-
-        $console->addCommand('make:controller', "Create a controller class", function (string $name) {
-            require('template/controller.php');
-            self::write(controller($name), "/http/controller/{$name}.php");
+            self::createFromTemplate('controller', '/http/controller', $name);
         });
 
         $console->addFlag('make:controller', 'resource', "Create a controller class", Console::FLAG_OVERIDE, function (string $name) {
-            require('template/resourcecontroller.php');
-            self::write(controller($name), "/http/controller/{$name}.php");
+            self::createFromTemplate('resourcecontroller', '/http/controller', $name);
         });
 
         $console->addCommand('make:model', "Create a controller class", function (string $name) {
-            require('template/model.php');
-            self::write(controller($name), "/model/{$name}.php");
+            self::createFromTemplate('model', '/model', $name);
         });
 
-        $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
-            require('template/resourcecontroller.php');
-            self::write(controller($name), "/http/controller/{$name}.php");
-        });
+        // $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
+        //     self::createFromTemplate('resourcecontroller', '/http/controller', $name);
+        // });
 
         $console->addCommand('make:middleware', "Create a controller class", function (string $name) {
-            require('template/middleware.php');
-            self::write(controller($name), "/http/middleware/{$name}.php");
+            self::createFromTemplate('middleware', '/http/middleware', $name);
         });
 
         return $console->serve($argv);
+    }
+
+    public static function createFromTemplate(string $name, string $path, ...$param)
+    {
+        require("template/{$name}.php");
+        if (!self::write(generate($param[0], isset($param[1]) ? $param[1] : null), "{$path}/{$param[0]}.php"))
+            throw new RuntimeException("Cannot generate template!");
+        else
+            shell_exec('composer dump-autoload');
     }
 
     /**
@@ -67,12 +67,15 @@ class CLI
      * @param  mixed  $content
      * @param  string $Path
      */
-    protected static function write($content, $Path)
+    protected static function write($content, $Path): bool
     {
         $template = fopen("{$_ENV['APP_DIR']}/{$Path}", "w");
+
+        if (is_bool($template))
+            return false;
+
         $txt = "{$content}";
         fwrite($template, $txt);
-        fclose($template);
-        echo (shell_exec("composer dump-autoload"));
+        return fclose($template);
     }
 }
