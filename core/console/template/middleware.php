@@ -1,6 +1,6 @@
 <?php
 
-function controller($name)
+function generate(string $name)
 {
     return "<?php
 
