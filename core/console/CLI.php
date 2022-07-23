@@ -34,11 +34,11 @@ class CLI
             self::createFromTemplate('controller', '/http/controller', $name);
         });
 
-        $console->addFlag('make:controller', 'resource', "Create a controller class", Console::FLAG_OVERIDE, function (string $name) {
+        $console->addFlag('make:controller', 'resource', "Create a resource controller class", Console::FLAG_OVERIDE, function (string $name) {
             self::createFromTemplate('resourcecontroller', '/http/controller', $name);
         });
 
-        $console->addCommand('make:model', "Create a controller class", function (string $name) {
+        $console->addCommand('make:model', "Create a model class", function (string $name) {
             self::createFromTemplate('model', '/model', $name);
         });
 
@@ -46,7 +46,7 @@ class CLI
         //     self::createFromTemplate('resourcecontroller', '/http/controller', $name);
         // });
 
-        $console->addCommand('make:middleware', "Create a controller class", function (string $name) {
+        $console->addCommand('make:middleware', "Create a middleware class", function (string $name) {
             self::createFromTemplate('middleware', '/http/middleware', $name);
         });
 
