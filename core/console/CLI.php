@@ -31,28 +31,28 @@ class CLI
             echo (shell_exec("php vendor/eftec/bladeone/lib/BladeOne.php -clearcompile -compilepath {$_ENV['view_cache']}"));
         });
 
-        $console->addCommand('make:controller', "Create a controller class", function (string $name) {
-            self::createFromTemplate('controller', '/http/controller', "{$name}Controller");
+        $console->addCommand('make:controller', "Create a controller class", function (string $name, ?string $modelName = null) {
+            self::createFromTemplate('Controller', '/http/controller', $name, $modelName);
         });
 
-        $console->addFlag('make:controller', 'resource', "Create a resource controller class", Console::FLAG_OVERIDE, function (string $name) {
-            self::createFromTemplate('resourcecontroller', '/http/controller', "{$name}Controller");
+        $console->addFlag('make:controller', 'resource', "Create a resource controller class", Console::FLAG_OVERIDE, function (string $name, ?string $modelName = null) {
+            self::createFromTemplate('ResourceController', '/http/controller', $name, $modelName);
         });
 
         $console->addCommand('make:model', "Create a model class", function (string $name) {
-            self::createFromTemplate('model', '/model', $name);
+            self::createFromTemplate('Model', '/model', $name);
         });
 
         $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
-            self::createFromTemplate('controller', '/http/controller', "{$name}Controller", $name);
+            self::createFromTemplate('Controller', '/http/controller', "{$name}Controller", $name);
         });
 
         $console->addFlag('make:model', 'resource', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
-            self::createFromTemplate('resourcecontroller', '/http/controller', "{$name}Controller", $name);
+            self::createFromTemplate('ResourceController', '/http/controller', "{$name}Controller", $name);
         });
 
         $console->addCommand('make:middleware', "Create a middleware class", function (string $name) {
-            self::createFromTemplate('middleware', '/http/middleware', $name);
+            self::createFromTemplate('Middleware', '/http/middleware', $name);
         });
 
         return $console->serve($argv);
