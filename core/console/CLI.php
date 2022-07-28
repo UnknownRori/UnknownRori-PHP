@@ -13,11 +13,12 @@ class CLI
         $console = new Console();
         $app = new Kernel();
         $app->loadConfig();
+        $console->appVersion = $_ENV['APP_VERSION'];
 
         $console->appName = "Rori-PHP's CLI";
         $console->appDescription = "Rori-PHP Development CLI";
 
-        $console->addCommand('version', "It show CLI's version", function () {
+        $console->addCommand('version', "It show Framework's version", function () {
             echo "UnknownRori-PHP " . $_ENV['APP_VERSION'];
         });
 
@@ -31,20 +32,24 @@ class CLI
         });
 
         $console->addCommand('make:controller', "Create a controller class", function (string $name) {
-            self::createFromTemplate('controller', '/http/controller', $name);
+            self::createFromTemplate('controller', '/http/controller', "{$name}Controller");
         });
 
         $console->addFlag('make:controller', 'resource', "Create a resource controller class", Console::FLAG_OVERIDE, function (string $name) {
-            self::createFromTemplate('resourcecontroller', '/http/controller', $name);
+            self::createFromTemplate('resourcecontroller', '/http/controller', "{$name}Controller");
         });
 
         $console->addCommand('make:model', "Create a model class", function (string $name) {
             self::createFromTemplate('model', '/model', $name);
         });
 
-        // $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
-        //     self::createFromTemplate('resourcecontroller', '/http/controller', $name);
-        // });
+        $console->addFlag('make:model', 'controller', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
+            self::createFromTemplate('controller', '/http/controller', "{$name}Controller", $name);
+        });
+
+        $console->addFlag('make:model', 'resource', "Create a controller class", Console::FLAG_AFTER, function (string $name) {
+            self::createFromTemplate('resourcecontroller', '/http/controller', "{$name}Controller", $name);
+        });
 
         $console->addCommand('make:middleware', "Create a middleware class", function (string $name) {
             self::createFromTemplate('middleware', '/http/middleware', $name);
@@ -56,7 +61,8 @@ class CLI
     public static function createFromTemplate(string $name, string $path, ...$param)
     {
         require("template/{$name}.php");
-        if (!self::write(generate($param[0], isset($param[1]) ? $param[1] : null), "{$path}/{$param[0]}.php"))
+        $action = "generate{$name}";
+        if (!self::write($action($param[0], isset($param[1]) ? $param[1] : null), "{$path}/{$param[0]}.php"))
             throw new RuntimeException("Cannot generate template!");
         else
             shell_exec('composer dump-autoload');
